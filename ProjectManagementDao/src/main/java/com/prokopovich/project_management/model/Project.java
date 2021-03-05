@@ -3,13 +3,13 @@ package com.prokopovich.project_management.model;
 import java.sql.Timestamp;
 
 public class Project {
-    String projectCode;
-    String summary;
-    Timestamp createdDate;
-    Timestamp updatedDate;
-    Timestamp dueDate;
-    String status;
-    int teamId;
+    private String projectCode;
+    private String summary;
+    private Timestamp createdDate;
+    private Timestamp updatedDate;
+    private Timestamp dueDate;
+    private String status;
+    private int teamId;
 
     public Project() {}
 
@@ -78,5 +78,17 @@ public class Project {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    @Override
+    public String toString() {
+        return "Project: " +
+                "projectCode = " + projectCode +
+                ", summary = " + summary +
+                ", createdDate = " + createdDate +
+                ", updatedDate = " + updatedDate +
+                ", dueDate = " + dueDate +
+                ", status = " + status +
+                ", teamId = " + teamId + ';';
     }
 }

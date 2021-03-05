@@ -3,14 +3,14 @@ package com.prokopovich.project_management.model;
 import java.sql.Blob;
 
 public class Account {
-    int accountId;
-    String name;
-    String surname;
-    String patronymic;
-    String email;
-    String password;
-    String role;
-    Blob photo;
+    private int accountId;
+    private String name;
+    private String surname;
+    private String patronymic;
+    private String email;
+    private String password;
+    private String role;
+    private Blob photo;
 
     public Account(){}
 

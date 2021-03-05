@@ -3,12 +3,12 @@ package com.prokopovich.project_management.model;
 import java.sql.Timestamp;
 
 public class Action {
-    int actionId;
-    String type;
-    Timestamp datetime;
-    int reporterAction;
-    int taskCode;
-    String projectCode;
+    private int actionId;
+    private String type;
+    private Timestamp datetime;
+    private int reporterAction;
+    private int taskCode;
+    private String projectCode;
 
     public Action() {}
 

@@ -1,9 +1,9 @@
 package com.prokopovich.project_management.model;
 
 public class Team {
-    int teamId;
-    String teamName;
-    int participantsNumber;
+    private int teamId;
+    private String teamName;
+    private int participantsNumber;
 
     public Team() {}
 

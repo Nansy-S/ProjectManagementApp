@@ -3,13 +3,13 @@ package com.prokopovich.project_management.model;
 import java.sql.Timestamp;
 
 public class Comment {
-    int commentId;
-    String title;
-    String text;
-    Timestamp datetime;
-    String projectCode;
-    int taskCode;
-    int author;
+    private int commentId;
+    private String title;
+    private String text;
+    private Timestamp datetime;
+    private String projectCode;
+    private int taskCode;
+    private int author;
 
     public Comment() { }
 

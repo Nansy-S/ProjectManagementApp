@@ -1,11 +1,11 @@
 package com.prokopovich.project_management.model;
 
 public class User {
-    int userId;
-    String position;
-    int teamId;
-    String currentStatus;
-    String phone;
+    private int userId;
+    private String position;
+    private int teamId;
+    private String currentStatus;
+    private String phone;
 
     public User(){}
 

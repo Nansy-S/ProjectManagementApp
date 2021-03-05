@@ -71,14 +71,14 @@ CREATE TABLE IF NOT EXISTS `project_management_db`.`tasks` (
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `project_management_db`.`task_actions` (
-    `task_action_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `project_management_db`.`actions` (
+    `action_id` INT NOT NULL AUTO_INCREMENT,
     `type` VARCHAR(20) NOT NULL,
     `date_time` DATETIME NOT NULL,
     `reporter_action` INT NOT NULL,
     `task_code` INT NULL,
     `project_code` VARCHAR(20) NOT NULL,
-    PRIMARY KEY (`task_action_id`)
+    PRIMARY KEY (`action_id`)
 ) ENGINE = InnoDB;
 
 
@@ -99,5 +99,6 @@ CREATE TABLE IF NOT EXISTS `project_management_db`.`attachments` (
     `file` BLOB NOT NULL,
     `task_code` INT NOT NULL,
     `project_code` VARCHAR(20) NOT NULL,
+    `user_id` INT NOT NULL,
     PRIMARY KEY (`attachment_id`)
 ) ENGINE = InnoDB;
