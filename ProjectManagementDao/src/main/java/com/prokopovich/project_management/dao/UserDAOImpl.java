@@ -2,6 +2,8 @@ package com.prokopovich.project_management.dao;
 
 import com.prokopovich.project_management.factory.MySqlDAOFactory;
 import com.prokopovich.project_management.model.User;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
     private static final String SQL = "SELECT user_id, position, team_id, current_status, phone FROM users";
+    static Logger logger = LogManager.getLogger(UserDAOImpl.class);
 
     public int createUser(User user) {
         return 0;
@@ -28,10 +31,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public Collection<User> findAll() {
-        try {
+        try(Connection connection = MySqlDAOFactory.getConnection()){
             List<User> users = new ArrayList<User>();
             User userBean;
-            Connection connection = MySqlDAOFactory.getConnection();
             PreparedStatement ptmt = connection.prepareStatement(SQL);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
@@ -42,10 +44,15 @@ public class UserDAOImpl implements UserDAO {
                 userBean.setCurrentStatus(rs.getString(4));
                 userBean.setPhone(rs.getString(5));
                 users.add(userBean);
+                logger.debug("User.userId:" + userBean.getUserId() +
+                        " User.position:" + userBean.getPosition() +
+                        " User.teamId:" + userBean.getTeamId() +
+                        " User.currentStatus:" + userBean.getCurrentStatus()+
+                        " User.phone:" + userBean.getPhone());
             }
-            connection.close();
             return users;
         } catch (SQLException ex) {
+            logger.error(ex.getMessage());
             return Collections.emptyList();
         }
     }
