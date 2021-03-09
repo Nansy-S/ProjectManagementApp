@@ -1,33 +1,34 @@
 package com.prokopovich.project_management.factory;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+import java.util.Properties;
 
 import com.prokopovich.project_management.dao.*;
-import org.apache.commons.dbcp.BasicDataSource;
+import com.prokopovich.project_management.util.PropertiesUtil;
+import org.apache.commons.dbcp2.BasicDataSource;
 
-public class MySQLDAOFactory extends DAOFactory {
+public class MySqlDAOFactory {
     private static final String MYSQL_CONFIG_PROPERTIES = "mysql.properties";
     private static final String DRIVER_CLASS_NAME = "driverClassName";
     private static final String CONNECTION_URL = "connectionUrl";
     private static final String USER = "username";
     private static final String PASSWORD = "password";
-    private static BasicDataSource mDatasource;
+    private static final BasicDataSource mDatasource = new BasicDataSource();
 
-    public MySQLDAOFactory() {
-        ResourceBundle resource = ResourceBundle.getBundle(MYSQL_CONFIG_PROPERTIES);
-        mDatasource = new BasicDataSource();
-        mDatasource.setDriverClassName(resource.getString(DRIVER_CLASS_NAME));
-        mDatasource.setUrl(resource.getString(CONNECTION_URL));
-        mDatasource.setUsername(resource.getString(USER));
-        mDatasource.setPassword(resource.getString(PASSWORD));
+    static {
+        Properties mySqlProperties = new PropertiesUtil()
+                .getProperties(MYSQL_CONFIG_PROPERTIES);
+        mDatasource.setDriverClassName(mySqlProperties.getProperty(DRIVER_CLASS_NAME));
+        mDatasource.setUrl(mySqlProperties.getProperty(CONNECTION_URL));
+        mDatasource.setUsername(mySqlProperties.getProperty(USER));
+        mDatasource.setPassword(mySqlProperties.getProperty(PASSWORD));
     }
 
     public static Connection getConnection() throws SQLException {
         return mDatasource.getConnection();
     }
-
 
     public AccountActionDAO getAccountActionDAO() {
         return null;
@@ -61,7 +62,7 @@ public class MySQLDAOFactory extends DAOFactory {
         return null;
     }
 
-    public UserDAO getUserDAO() {
-        return null;
+    public static UserDAOImpl getUserDAO() {
+        return new UserDAOImpl();
     }
 }

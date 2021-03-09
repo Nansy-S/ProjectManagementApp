@@ -1,6 +1,6 @@
 package com.prokopovich.project_management.dao;
 
-import com.prokopovich.project_management.factory.MySQLDAOFactory;
+import com.prokopovich.project_management.factory.MySqlDAOFactory;
 import com.prokopovich.project_management.model.User;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class UserMySQLDAO implements UserDAO {
+public class UserDAOImpl implements UserDAO {
     private static final String SQL = "SELECT user_id, position, team_id, current_status, phone FROM users";
 
     public int createUser(User user) {
@@ -31,7 +31,7 @@ public class UserMySQLDAO implements UserDAO {
         try {
             List<User> users = new ArrayList<User>();
             User userBean;
-            Connection connection = MySQLDAOFactory.getConnection();
+            Connection connection = MySqlDAOFactory.getConnection();
             PreparedStatement ptmt = connection.prepareStatement(SQL);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
@@ -43,6 +43,7 @@ public class UserMySQLDAO implements UserDAO {
                 userBean.setPhone(rs.getString(5));
                 users.add(userBean);
             }
+            connection.close();
             return users;
         } catch (SQLException ex) {
             return Collections.emptyList();

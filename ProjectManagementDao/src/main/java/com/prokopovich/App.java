@@ -1,13 +1,10 @@
 package com.prokopovich;
 
-import com.prokopovich.project_management.dao.UserMySQLDAO;
+import com.prokopovich.project_management.dao.UserDAOImpl;
 
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-        UserMySQLDAO userDAO = new UserMySQLDAO();
-        System.out.println(userDAO.findAll());
+public class App {
+    public static void main( String[] args ) {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        System.out.println(userDAO.findAll().toString());
     }
 }
