@@ -1,4 +1,4 @@
-package com.prokopovich.project_management.model;
+package com.prokopovich.projectmanagement.model;
 
 import java.sql.Blob;
 

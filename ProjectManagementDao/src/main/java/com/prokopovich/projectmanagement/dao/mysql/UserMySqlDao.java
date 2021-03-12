@@ -1,7 +1,8 @@
-package com.prokopovich.project_management.dao;
+package com.prokopovich.projectmanagement.dao.mysql;
 
-import com.prokopovich.project_management.factory.MySqlDAOFactory;
-import com.prokopovich.project_management.model.User;
+import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
+import com.prokopovich.projectmanagement.dao.UserDao;
+import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -14,9 +15,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
-    private static final String SQL = "SELECT user_id, position, team_id, current_status, phone FROM users";
-    static Logger logger = LogManager.getLogger(UserDAOImpl.class);
+public class UserMySqlDao implements UserDao {
+    private static final String SQL_FIND_ALL = "SELECT * FROM users";
+    static Logger logger = LogManager.getLogger(UserMySqlDao.class);
 
     public int createUser(User user) {
         return 0;
@@ -26,28 +27,28 @@ public class UserDAOImpl implements UserDAO {
         return false;
     }
 
+    @Override
     public User findUser(int userId) {
         return null;
     }
 
-    public Collection<User> findAll() {
-        try(Connection connection = MySqlDAOFactory.getConnection()){
+    @Override
+    public Collection<User> findAllUsers() {
+        try (Connection connection = MySqlDaoFactory.getConnection()) {
             List<User> users = new ArrayList<User>();
             User userBean;
-            PreparedStatement ptmt = connection.prepareStatement(SQL);
-            ResultSet rs = ptmt.executeQuery();
+            PreparedStatement stm = connection.prepareStatement(SQL_FIND_ALL);
+            ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 userBean = new User();
                 userBean.setUserId(rs.getInt(1));
                 userBean.setPosition(rs.getString(2));
-                userBean.setTeamId(rs.getInt(3));
-                userBean.setCurrentStatus(rs.getString(4));
-                userBean.setPhone(rs.getString(5));
+                userBean.setCurrentStatus(rs.getString(3));
+                userBean.setPhone(rs.getString(4));
                 users.add(userBean);
                 logger.debug("User.userId:" + userBean.getUserId() +
                         " User.position:" + userBean.getPosition() +
-                        " User.teamId:" + userBean.getTeamId() +
-                        " User.currentStatus:" + userBean.getCurrentStatus()+
+                        " User.currentStatus:" + userBean.getCurrentStatus() +
                         " User.phone:" + userBean.getPhone());
             }
             return users;

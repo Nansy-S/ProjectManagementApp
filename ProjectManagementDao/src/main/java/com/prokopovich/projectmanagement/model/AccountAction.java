@@ -1,4 +1,4 @@
-package com.prokopovich.project_management.model;
+package com.prokopovich.projectmanagement.model;
 
 public class AccountAction {
     private int actionId;

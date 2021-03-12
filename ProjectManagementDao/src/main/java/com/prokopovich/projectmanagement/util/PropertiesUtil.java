@@ -1,4 +1,4 @@
-package com.prokopovich.project_management.util;
+package com.prokopovich.projectmanagement.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
