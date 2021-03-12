@@ -5,25 +5,21 @@ import java.sql.Blob;
 public class Attachment {
     private int attachmentId;
     private Blob file;
-    private int taskCode;
-    private String projectCode;
-    private int userId;
+    private int taskId;
 
     public Attachment() {}
 
-    public Attachment(int attachmentId, Blob file, int taskCode, String projectCode, int userId) {
+    public Attachment(int attachmentId, Blob file, int taskId) {
         this.attachmentId = attachmentId;
         this.file = file;
-        this.taskCode = taskCode;
-        this.projectCode = projectCode;
-        this.userId = userId;
+        this.taskId = taskId;
     }
 
-    public int getAttachment_id() {
+    public int getAttachmentId() {
         return attachmentId;
     }
 
-    public void setAttachment_id(int attachmentId) {
+    public void setAttachmentId(int attachmentId) {
         this.attachmentId = attachmentId;
     }
 
@@ -35,28 +31,12 @@ public class Attachment {
         this.file = file;
     }
 
-    public int getTask_code() {
-        return taskCode;
+    public int getTaskId() {
+        return taskId;
     }
 
-    public void setTask_code(int taskCode) {
-        this.taskCode = taskCode;
-    }
-
-    public String getProject_code() {
-        return projectCode;
-    }
-
-    public void setProject_code(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
     @Override
@@ -64,8 +44,6 @@ public class Attachment {
         return "Attachment: " +
                 "id = " + attachmentId +
                 ", file = " + file +
-                ", task_code = " + taskCode +
-                ", project_code = " + projectCode +
-                ", userId = " + userId + ';';
+                ", taskId = " + taskId + ';';
     }
 }

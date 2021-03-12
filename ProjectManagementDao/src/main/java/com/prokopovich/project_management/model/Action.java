@@ -6,19 +6,15 @@ public class Action {
     private int actionId;
     private String type;
     private Timestamp datetime;
-    private int reporterAction;
-    private int taskCode;
-    private String projectCode;
+    private int reporter;
 
     public Action() {}
 
-    public Action(int actionId, String type, Timestamp datetime, int reporterAction, int taskCode, String projectCode) {
+    public Action(int actionId, String type, Timestamp datetime, int reporter) {
         this.actionId = actionId;
         this.type = type;
         this.datetime = datetime;
-        this.reporterAction = reporterAction;
-        this.taskCode = taskCode;
-        this.projectCode = projectCode;
+        this.reporter = reporter;
     }
 
     public int getActionId() {
@@ -45,38 +41,20 @@ public class Action {
         this.datetime = datetime;
     }
 
-    public int getReporterAction() {
-        return reporterAction;
+    public int getReporter() {
+        return reporter;
     }
 
-    public void setReporterAction(int reporterAction) {
-        this.reporterAction = reporterAction;
-    }
-
-    public int getTaskCode() {
-        return taskCode;
-    }
-
-    public void setTaskCode(int taskCode) {
-        this.taskCode = taskCode;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    public void setReporter(int reporter) {
+        this.reporter = reporter;
     }
 
     @Override
     public String toString() {
-        return "Action: " +
+        return "\nAction: " +
                 "id = " + actionId +
                 ", type = " + type +
                 ", datetime = " + datetime +
-                ", reporter = " + reporterAction +
-                ", taskCode = " + taskCode +
-                ", projectCode = " + projectCode + ';';
+                ", reporter = " + reporter + ';';
     }
 }

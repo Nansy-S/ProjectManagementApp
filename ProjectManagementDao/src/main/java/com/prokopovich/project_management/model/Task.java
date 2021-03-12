@@ -3,45 +3,55 @@ package com.prokopovich.project_management.model;
 import java.sql.Timestamp;
 
 public class Task {
-    private int taskCode;
-    private String projectCode;
+    private int taskId;
+    private String taskCode;
+    private int projectId;
     private String priority;
     private String currentStatus;
     private Timestamp dueDate;
     private int estimationTime;
-    private int assignee;
     private int reporter;
+    private int assignee;
     private String description;
 
     public Task() {}
 
-    public Task(int taskCode, String projectCode, String priority, String currentStatus, Timestamp dueDate,
-                int estimationTime, int assignee, int reporter, String description) {
+    public Task(int taskId, String taskCode, int projectId, String priority, String currentStatus, Timestamp dueDate,
+                int estimationTime, int reporter, int assignee, String description) {
+        this.taskId = taskId;
         this.taskCode = taskCode;
-        this.projectCode = projectCode;
+        this.projectId = projectId;
         this.priority = priority;
         this.currentStatus = currentStatus;
         this.dueDate = dueDate;
         this.estimationTime = estimationTime;
-        this.assignee = assignee;
         this.reporter = reporter;
+        this.assignee = assignee;
         this.description = description;
     }
 
-    public int getTaskCode() {
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskCode() {
         return taskCode;
     }
 
-    public void setTaskCode(int taskCode) {
+    public void setTaskCode(String taskCode) {
         this.taskCode = taskCode;
     }
 
-    public String getProjectCode() {
-        return projectCode;
+    public int getProjectId() {
+        return projectId;
     }
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     public String getPriority() {
@@ -76,20 +86,20 @@ public class Task {
         this.estimationTime = estimationTime;
     }
 
-    public int getAssignee() {
-        return assignee;
-    }
-
-    public void setAssignee(int assignee) {
-        this.assignee = assignee;
-    }
-
     public int getReporter() {
         return reporter;
     }
 
     public void setReporter(int reporter) {
         this.reporter = reporter;
+    }
+
+    public int getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(int assignee) {
+        this.assignee = assignee;
     }
 
     public String getDescription() {
@@ -102,15 +112,16 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task: " +
-                "taskCode = " + taskCode +
-                ", projectCode = " + projectCode +
+        return "\nTask: " +
+                "taskId = " + taskId +
+                ", taskCode = " + taskCode +
+                ", projectId = " + projectId +
                 ", priority = " + priority +
                 ", currentStatus = " + currentStatus +
                 ", dueDate = " + dueDate +
                 ", estimationTime = " + estimationTime +
-                ", assignee = " + assignee +
                 ", reporter = " + reporter +
+                ", assignee = " + assignee +
                 ", description = " + description + ';';
     }
 }

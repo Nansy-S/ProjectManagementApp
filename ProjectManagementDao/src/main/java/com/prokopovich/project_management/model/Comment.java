@@ -7,20 +7,18 @@ public class Comment {
     private String title;
     private String text;
     private Timestamp datetime;
-    private String projectCode;
-    private int taskCode;
     private int author;
+    private int taskId;
 
     public Comment() { }
 
-    public Comment(int commentId, String title, String text, Timestamp datetime, String projectCode, int taskCode, int author) {
+    public Comment(int commentId, String title, String text, Timestamp datetime, int author, int taskId) {
         this.commentId = commentId;
         this.title = title;
         this.text = text;
         this.datetime = datetime;
-        this.projectCode = projectCode;
-        this.taskCode = taskCode;
         this.author = author;
+        this.taskId = taskId;
     }
 
     public int getCommentId() {
@@ -55,22 +53,6 @@ public class Comment {
         this.datetime = datetime;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public int getTaskCode() {
-        return taskCode;
-    }
-
-    public void setTaskCode(int taskCode) {
-        this.taskCode = taskCode;
-    }
-
     public int getAuthor() {
         return author;
     }
@@ -79,15 +61,22 @@ public class Comment {
         this.author = author;
     }
 
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
     @Override
     public String toString() {
-        return "Comment: " +
+        return "\nComment: " +
                 "id =" + commentId +
                 ", title = " + title +
                 ", text = " + text +
                 ", datetime = " + datetime +
-                ", projectCode = " + projectCode +
-                ", taskCode = " + taskCode +
-                ", author = " + author + ';';
+                ", author = " + author +
+                ", taskId = " + taskId + ';';
     }
 }

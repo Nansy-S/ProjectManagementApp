@@ -3,25 +3,28 @@ package com.prokopovich.project_management.model;
 import java.sql.Timestamp;
 
 public class Project {
+    private int projectId;
     private String projectCode;
     private String summary;
-    private Timestamp createdDate;
-    private Timestamp updatedDate;
     private Timestamp dueDate;
-    private String status;
-    private int teamId;
+    private String currentStatus;
 
     public Project() {}
 
-    public Project(String projectCode, String summary, Timestamp createdDate, Timestamp updatedDate, Timestamp dueDate,
-                   String status, int teamId) {
+    public Project(int projectId, String projectCode, String summary, Timestamp dueDate, String currentStatus) {
+        this.projectId = projectId;
         this.projectCode = projectCode;
         this.summary = summary;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
         this.dueDate = dueDate;
-        this.status = status;
-        this.teamId = teamId;
+        this.currentStatus = currentStatus;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     public String getProjectCode() {
@@ -40,22 +43,6 @@ public class Project {
         this.summary = summary;
     }
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Timestamp getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Timestamp updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
     public Timestamp getDueDate() {
         return dueDate;
     }
@@ -64,31 +51,21 @@ public class Project {
         this.dueDate = dueDate;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCurrentStatus() {
+        return currentStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
     }
 
     @Override
     public String toString() {
-        return "Project: " +
-                "projectCode = " + projectCode +
+        return "\nProject: " +
+                "projectId = " + projectId +
+                ", projectCode = " + projectCode +
                 ", summary = " + summary +
-                ", createdDate = " + createdDate +
-                ", updatedDate = " + updatedDate +
                 ", dueDate = " + dueDate +
-                ", status = " + status +
-                ", teamId = " + teamId + ';';
+                ", currentStatus = " + currentStatus + ';';
     }
 }
