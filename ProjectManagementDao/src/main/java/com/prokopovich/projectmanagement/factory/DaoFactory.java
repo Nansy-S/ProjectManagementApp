@@ -1,7 +1,5 @@
 package com.prokopovich.projectmanagement.factory;
 
-import com.prokopovich.project.management.dao.*;
-import com.prokopovich.project_management.dao.*;
 import com.prokopovich.projectmanagement.dao.*;
 
 public abstract class DaoFactory {

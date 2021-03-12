@@ -4,9 +4,7 @@ import com.prokopovich.projectmanagement.model.User;
 
 import java.util.Collection;
 
-public interface UserDao {
-
-    int createUser(User user);
+public interface UserDao extends GenericDao<User> {
 
     boolean updateUser(int userId);
 

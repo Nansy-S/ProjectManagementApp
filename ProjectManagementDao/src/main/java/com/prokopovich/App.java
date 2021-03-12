@@ -13,11 +13,13 @@ public class App {
         DaoFactory mySQLDAOFactory = DaoFactory.getDAOFactory(DaoFactory.MYSQL);
         UserDao userDAO = mySQLDAOFactory.getUserDAO();
         if(userDAO != null) {
-            userDAO.findAllUsers();
-            for(User user:userDAO.findAllUsers()) {
+            for(User user:userDAO.findAll()) {
                 logger.debug(user);
             }
         }
         else logger.debug("List is empty.");
+
+        logger.debug("\n____________________________");
+        userDAO.findOne(2);
     }
 }

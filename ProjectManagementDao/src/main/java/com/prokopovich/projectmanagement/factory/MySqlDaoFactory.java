@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.prokopovich.project.management.dao.*;
-import com.prokopovich.project_management.dao.*;
 import com.prokopovich.projectmanagement.dao.*;
 import com.prokopovich.projectmanagement.dao.mysql.UserMySqlDao;
 import com.prokopovich.projectmanagement.util.PropertiesUtil;
