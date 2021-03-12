@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface UserDao extends GenericDao<User> {
 
-    boolean updateUser(int userId);
+    boolean updateUser(User user);
 
     Collection<User> findAllByCurrentStatus(String currentStatus);
 }

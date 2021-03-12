@@ -19,7 +19,9 @@ import java.util.List;
 public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     private static final String SQL_SELECT_ALL = "SELECT * FROM users";
     private static final String SQL_SELECT_ONE = "SELECT * FROM users WHERE user_id = ?";
+    private static final String SQL_SELECT_BY_STATUS = "SELECT * FROM users WHERE current_status = ?";
     private static final String SQL_CREATE = "INSERT INTO users (user_id, position, current_status, phone) VALUES (?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE users SET user_id = ?, position = ?, current_status = ?, phone = ? WHERE user_id = ?";
     private static Logger logger = LogManager.getLogger(UserMySqlDao.class);
 
     @Override
@@ -30,21 +32,6 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     @Override
     public String getSqlSelectOne() {
         return SQL_SELECT_ONE;
-    }
-
-    @Override
-    public User create(User newUser){
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_CREATE)) {
-            statement.setInt(1, newUser.getUserId());
-            statement.setString(2, newUser.getPosition());
-            statement.setString(3, newUser.getCurrentStatus());
-            statement.setString(4, newUser.getPhone());
-            statement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
-        return newUser;
     }
 
     @Override
@@ -59,22 +46,70 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
                 userBean.setCurrentStatus(rs.getString(3));
                 userBean.setPhone(rs.getString(4));
                 users.add(userBean);
-                logger.debug("User.userId:" + userBean.getUserId() +
-                        " User.position:" + userBean.getPosition() +
-                        " User.currentStatus:" + userBean.getCurrentStatus() +
-                        " User.phone:" + userBean.getPhone());
+                logger.debug(userBean.toString());
             }
         } catch (SQLException ex) {
             logger.error(ex.getMessage());
+            throw new DaoException(ex);
         }
         return users;
     }
 
-    public boolean updateUser(int userId) {
-        return false;
+    @Override
+    public User create(User newUser) {
+        logger.debug("create user method is executed");
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_CREATE)) {
+            setStatement(newUser, statement);
+            statement.executeUpdate();
+            logger.debug("New added user: " + newUser.toString());
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+            throw new DaoException(ex);
+        }
+        return newUser;
     }
 
+    @Override
+    public boolean updateUser(User user) {
+        logger.debug("updateUser method is executed");
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+            setStatement(user, statement);
+            statement.setInt(5, user.getUserId());
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+            throw new DaoException(ex);
+        }
+        return true;
+    }
+
+    @Override
     public Collection<User> findAllByCurrentStatus(String currentStatus) {
-        return null;
+        logger.debug("findAllByCurrentStatus method is executed");
+        List<User> users;
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_STATUS)) {
+            statement.setString(1, currentStatus);
+            ResultSet rs = statement.executeQuery();
+            users = parseResultSet(rs);
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+            throw new DaoException(ex);
+        }
+        return users;
+    }
+
+    public void setStatement(User user, PreparedStatement statement) throws DaoException {
+        try {
+            statement.setInt(1, user.getUserId());
+            statement.setString(2, user.getPosition());
+            statement.setString(3, user.getCurrentStatus());
+            statement.setString(4, user.getPhone());
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+            throw new DaoException(ex);
+        }
     }
 }

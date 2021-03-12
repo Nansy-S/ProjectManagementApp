@@ -45,8 +45,8 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
         List<T> objects;
         String sql = getSqlSelectAll();
         try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement stm = connection.prepareStatement(sql)) {
-            ResultSet rs = stm.executeQuery();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
             objects = parseResultSet(rs);
         } catch (SQLException ex) {
             throw new DaoException(ex);
