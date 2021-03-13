@@ -8,7 +8,9 @@ public interface GenericDao<T> {
 
     T create(T newObject) throws DaoException;
 
-    T findOne(Object id) throws DaoException;
+    boolean update(T object) throws DaoException;
+
+    T findOne(int id) throws DaoException;
 
     Collection<T> findAll() throws DaoException;
 }

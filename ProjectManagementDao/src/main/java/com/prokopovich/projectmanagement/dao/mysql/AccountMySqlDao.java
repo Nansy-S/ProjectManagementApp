@@ -3,10 +3,10 @@ package com.prokopovich.projectmanagement.dao.mysql;
 import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +21,10 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
             "password, role, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static Logger logger = LogManager.getLogger(AccountMySqlDao.class);
 
+    public AccountMySqlDao(){
+        super(new Account(), new ArrayList<Account>());
+    }
+
     @Override
     public String getSqlSelectAll() {
         return SQL_SELECT_ALL;
@@ -32,30 +36,47 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     }
 
     @Override
-    protected List<Account> parseResultSet(ResultSet rs) {
+    public String getSqlCreate() {
+        return null;
+    }
+
+    @Override
+    public String getSqlUpdate() {
+        return null;
+    }
+
+    @Override
+    protected Account getStatement(ResultSet rs) throws SQLException {
         List<Account> accounts = new ArrayList<Account>();
-    //    Account accountBean;
-    //    try {
-    //        while (rs.next()) {
-    //            accountBean = new Account();
-    //            accountBean.setAccountId(rs.getInt(1));
-    //            accountBean.setName(rs.getString(2));
-    //            accountBean.setSurname(rs.getString(3));
-    //            accountBean.setPatronymic(rs.getString(4));
-    //            accountBean.setEmail(rs.getString(5));
-    //            accountBean.setPassword(rs.getString(6));
-    //            accountBean.setRole(rs.getString(7));
+        Account accountBean;
+        try {
+            while (rs.next()) {
+                accountBean = new Account();
+                accountBean.setAccountId(rs.getInt(1));
+                accountBean.setName(rs.getString(2));
+                accountBean.setSurname(rs.getString(3));
+                accountBean.setPatronymic(rs.getString(4));
+                accountBean.setEmail(rs.getString(5));
+                accountBean.setPassword(rs.getString(6));
+                accountBean.setRole(rs.getString(7));
     //            accountBean.getPhoto(rs.getBlob(8));
-    //            accounts.add(accountBean);
-    //            logger.debug("User.userId:" + userBean.getUserId() +
-    //                    " User.position:" + userBean.getPosition() +
-    //                    " User.currentStatus:" + userBean.getCurrentStatus() +
-    //                    " User.phone:" + userBean.getPhone());
-    //        }
-    //    } catch (SQLException ex) {
-    //        logger.error(ex.getMessage());
-    //    }
-        return accounts;
+                accounts.add(accountBean);
+                logger.debug(accountBean.toString());
+            }
+        } catch (SQLException ex) {
+            logger.error(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    protected void setStatement(Account object, PreparedStatement statement) throws DaoException {
+
+    }
+
+    @Override
+    protected void setStatementUpdate(Account object, PreparedStatement statement) throws SQLException {
+
     }
 
     @Override

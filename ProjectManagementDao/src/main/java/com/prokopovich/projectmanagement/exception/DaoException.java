@@ -1,6 +1,8 @@
 package com.prokopovich.projectmanagement.exception;
 
-public class DaoException extends RuntimeException {
+import java.sql.SQLException;
+
+public class DaoException extends SQLException {
 
     public DaoException() { }
 
