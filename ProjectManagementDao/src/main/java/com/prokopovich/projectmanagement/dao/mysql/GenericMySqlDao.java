@@ -99,4 +99,21 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
         }
         return objectsList;
     }
+
+    @Override
+    public Collection<T> findByParameter(String sql, int parameter) throws DaoException {
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, parameter);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                object = getStatement(rs);
+                LOGGER.debug(object.toString());
+            }
+            objectsList.add(object);
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
+        return objectsList;
+    }
 }

@@ -13,4 +13,6 @@ public interface GenericDao<T> {
     Collection<T> findAll() throws DaoException;
 
     Collection<T> findByParameter(String sql, String parameter) throws DaoException;
+
+    Collection<T> findByParameter(String sql, int parameter) throws DaoException;
 }

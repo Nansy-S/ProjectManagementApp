@@ -2,12 +2,10 @@ package com.prokopovich.projectmanagement.dao.mysql;
 
 import com.prokopovich.projectmanagement.dao.AccountActionDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,20 +59,7 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     @Override
     public Collection<AccountAction> findAllByAccountId(int accountId) throws DaoException {
         LOGGER.trace("findAllByAccountId method is executed - accountId = " + accountId);
-        List<AccountAction> accountActionList = new ArrayList<>();
-        AccountAction accountAction = new AccountAction();
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ACCOUNT)) {
-            statement.setInt(1, accountId);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                accountAction = getStatement(rs);
-                LOGGER.debug(accountAction.toString());
-            }
-            accountActionList.add(accountAction);
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
+        List<AccountAction> accountActionList = (List<AccountAction>) findByParameter(SQL_SELECT_BY_ACCOUNT, accountId);
         return accountActionList;
     }
 }
