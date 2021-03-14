@@ -7,5 +7,7 @@ import java.util.Collection;
 
 public interface UserDao extends GenericDao<User> {
 
+    boolean update(User user) throws DaoException;
+
     Collection<User> findAllByCurrentStatus(String currentStatus) throws DaoException;
 }

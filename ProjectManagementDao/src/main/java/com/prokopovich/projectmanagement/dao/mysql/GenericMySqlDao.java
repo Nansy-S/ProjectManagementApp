@@ -29,15 +29,11 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     protected abstract void setStatement(T object, PreparedStatement statement) throws SQLException;
 
-    protected abstract void setStatementUpdate(T object, PreparedStatement statement) throws SQLException;
-
     public abstract String getSqlSelectAll();
 
     public abstract String getSqlSelectOne();
 
     public abstract String getSqlCreate();
-
-    public abstract String getSqlUpdate();
 
     @Override
     public T create(T object) throws DaoException {
@@ -55,23 +51,8 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public boolean update(T object) throws DaoException {
-        LOGGER.info("update method is executed");
-        String sql = getSqlUpdate();
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            setStatementUpdate(object, statement);
-            statement.executeUpdate();
-            LOGGER.debug("Updated object: " + object.toString());
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
-        return true;
-    }
-
-    @Override
     public T findOne(int id) throws DaoException {
-        LOGGER.trace("find object method is executed");
+        LOGGER.trace("Find object method is executed");
         String sql = getSqlSelectOne();
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -86,10 +67,27 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     @Override
     public Collection<T> findAll() throws DaoException {
-        LOGGER.trace("findAll objects method is executed");
+        LOGGER.trace("Find all objects method is executed");
         String sql = getSqlSelectAll();
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                object = getStatement(rs);
+                LOGGER.debug(object.toString());
+            }
+            objectsList.add(object);
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
+        return objectsList;
+    }
+
+    @Override
+    public Collection<T> findByParameter(String sql, String parameter) throws DaoException {
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, parameter);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 object = getStatement(rs);

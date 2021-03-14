@@ -1,14 +1,15 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Account;
 
 import java.util.Collection;
 
 public interface AccountDao extends GenericDao<Account> {
 
-    boolean updateAccount(int accountId);
+    boolean update(Account account) throws DaoException;
 
-    Collection<Account> findAllByUserRole(String role);
+    Collection<Account> findAllByUserRole(String role) throws DaoException;
 
-    Collection<Account> findAllByUserFullName(String surname, String name, String patronymic);
+    Collection<Account> findAllByUserFullName(String fullName) throws DaoException;
 }
