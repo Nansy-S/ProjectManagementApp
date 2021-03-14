@@ -30,7 +30,7 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
             "(name, surname, patronymic, email, password, role, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
             "password = ?, role = ?, photo = ? WHERE account_id = ?";
-    private static Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
 
     public AccountMySqlDao(){
         super(new Account(), new ArrayList<Account>());

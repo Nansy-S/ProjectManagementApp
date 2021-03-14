@@ -22,7 +22,7 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     private static final String SQL_SELECT_BY_TYPE = "SELECT action_id, type, date_time, reporter FROM actions " +
             "WHERE type = ?";
     private static final String SQL_CREATE = "INSERT INTO actions (type, date_time, reporter) VALUES (?, ?, ?)";
-    private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(ActionMySqlDao.class);
 
     public ActionMySqlDao(){
         super(new Action(), new ArrayList<Action>());

@@ -1,14 +1,15 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Attachment;
 
 import java.util.Collection;
 
 public interface AttachmentDao extends GenericDao<Attachment> {
 
-    boolean updateAttachment(int attachmentId);
+    boolean update(Attachment attachment) throws DaoException;
 
-    boolean deleteAttachment(int attachmentId);
+    boolean delete(int attachmentId) throws DaoException;
 
-    Collection<Attachment> findAllByTaskId(int taskId);
+    Collection<Attachment> findAllByTaskId(int taskId) throws DaoException;
 }

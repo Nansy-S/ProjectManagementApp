@@ -20,7 +20,7 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE account_id = ?";
     private static final String SQL_CREATE = "INSERT INTO account_actions (account_id, reason) VALUES (?, ?)";
-    private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(AccountActionMySqlDao.class);
 
     public AccountActionMySqlDao(){
         super(new AccountAction(), new ArrayList<AccountAction>());
