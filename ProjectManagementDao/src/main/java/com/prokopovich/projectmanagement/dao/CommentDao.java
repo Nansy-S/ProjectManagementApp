@@ -1,18 +1,17 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Comment;
 
 import java.util.Collection;
 
-public interface CommentDao {
+public interface CommentDao extends GenericDao<Comment> {
 
-    int createComment(Comment comment);
+    boolean updateComment(Comment comment) throws DaoException;
 
-    boolean updateComment(int commentId);
+    boolean deleteComment(int commentId) throws DaoException;
 
-    boolean deleteComment(int commentId);
+    Collection<Comment> findAllByTaskId(int taskId) throws DaoException;
 
-    Collection<Comment> findAllByTaskId(int taskId);
-
-    Collection<Comment> findAllByAuthor(int author);
+    Collection<Comment> findAllByAuthor(int author) throws DaoException;
 }
