@@ -1,9 +1,11 @@
 package com.prokopovich.projectmanagement.dao.mysql;
 
 import com.prokopovich.projectmanagement.dao.AccountDao;
+import com.prokopovich.projectmanagement.dao.ActionDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.Action;
 import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class AccountMySqlDao extends GenericMySqlDao<Account> implements AccountDao {
 
@@ -62,6 +65,9 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         account.setPassword(rs.getString(6));
         account.setRole(rs.getString(7));
         account.setPhoto(rs.getBlob(8));
+        ActionDao actionDao = new ActionMySqlDao();
+        Set<Action> actions = (Set<Action>) actionDao.findAllByReporter(rs.getInt(1));
+        account.setActions(actions);
         return account;
     }
 

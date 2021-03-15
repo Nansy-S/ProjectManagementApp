@@ -4,13 +4,15 @@ public class AccountAction {
     private int actionId;
     private int accountId;
     private String reason;
+    private Action action;
 
     public AccountAction(){}
 
-    public AccountAction(int actionId, int accountId, String reason) {
+    public AccountAction(int actionId, int accountId, String reason, Action action) {
         this.actionId = actionId;
         this.accountId = accountId;
         this.reason = reason;
+        this.action = action;
     }
 
     public int getActionId() {
@@ -37,11 +39,20 @@ public class AccountAction {
         this.reason = reason;
     }
 
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
     @Override
     public String toString() {
         return "\nAccountAction: " +
                 "actionId = " + actionId +
                 ", accountId = " + accountId +
-                ", reason = " + reason + ";";
+                ", reason = " + reason + ", " +
+                action.toString() + ";";
     }
 }

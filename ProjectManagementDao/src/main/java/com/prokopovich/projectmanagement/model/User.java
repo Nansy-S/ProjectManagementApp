@@ -5,7 +5,6 @@ public class User {
     private String position;
     private String currentStatus;
     private String phone;
-    private Account userAccount;
 
     public User(){}
 
@@ -48,14 +47,6 @@ public class User {
         this.phone = phone;
     }
 
-    public Account getUserAccount() {
-        return userAccount;
-    }
-
-    public void setUserAccount(Account userAccount) {
-        this.userAccount = userAccount;
-    }
-
     @Override
     public String toString() {
         return "User: " +
@@ -63,6 +54,5 @@ public class User {
                 ", position = " + position +
                 ", currentStatus = " + currentStatus +
                 ", phone = " + phone + ';';
-    //            + userAccount.toString();
     }
 }

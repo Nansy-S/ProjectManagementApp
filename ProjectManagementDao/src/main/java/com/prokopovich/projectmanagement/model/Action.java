@@ -54,7 +54,6 @@ public class Action {
         return "\nAction: " +
                 "id = " + actionId +
                 ", type = " + type +
-                ", datetime = " + datetime +
-                ", reporter = " + reporter + ';';
+                ", datetime = " + datetime + ';';
     }
 }

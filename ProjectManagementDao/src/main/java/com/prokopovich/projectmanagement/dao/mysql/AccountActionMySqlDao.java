@@ -1,8 +1,10 @@
 package com.prokopovich.projectmanagement.dao.mysql;
 
 import com.prokopovich.projectmanagement.dao.AccountActionDao;
+import com.prokopovich.projectmanagement.dao.ActionDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.AccountAction;
+import com.prokopovich.projectmanagement.model.Action;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -20,7 +22,8 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
             "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE account_id = ?";
-    private static final String SQL_CREATE = "INSERT INTO account_actions (account_id, reason) VALUES (?, ?)";
+    private static final String SQL_CREATE = "INSERT INTO account_actions (action_id, account_id, reason) " +
+            "VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(AccountActionMySqlDao.class);
 
     public AccountActionMySqlDao(){
@@ -48,13 +51,17 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
         accountAction.setActionId(rs.getInt(1));
         accountAction.setAccountId(rs.getInt(2));
         accountAction.setReason(rs.getString(3));
+        ActionDao actionDao = new ActionMySqlDao();
+        Action action = actionDao.findOne(rs.getInt(1));
+        accountAction.setAction(action);
         return accountAction;
     }
 
     @Override
     public void setStatement(AccountAction accountAction, PreparedStatement statement) throws SQLException {
-        statement.setInt(1, accountAction.getAccountId());
-        statement.setString(2, accountAction.getReason());
+        statement.setInt(1, accountAction.getAction().getActionId());
+        statement.setInt(2, accountAction.getAccountId());
+        statement.setString(3, accountAction.getReason());
     }
 
     @Override
