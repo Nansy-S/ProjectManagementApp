@@ -28,7 +28,9 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     private static final String SQL_SELECT_BY_ROLE = "SELECT account_id, name, surname, patronymic, email, password, " +
             "role, photo FROM accounts WHERE current_status = ?";
     private static final String SQL_SELECT_BY_FULL_NAME = "SELECT account_id, name, surname, patronymic, email, " +
-            "password, role, photo FROM accounts WHERE CONCAT(surname, ' ', name, ' ', patronymic) LIKE '%?%';";
+            "password, role, photo FROM accounts WHERE CONCAT(surname, ' ', name, ' ', patronymic) LIKE '%?%'";
+    private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD = "SELECT account_id, name, surname, patronymic, " +
+            "email, password, role, photo FROM accounts WHERE email = ? AND password = ?";
     private static final String SQL_CREATE = "INSERT INTO accounts " +
             "(name, surname, patronymic, email, password, role, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
@@ -109,5 +111,26 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         LOGGER.trace("findAllByUserFullName method is executed - Full name = " + fullName);
         List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_FULL_NAME, fullName);
         return accounts;
+    }
+
+    @Override
+    public Collection<Account> findAllByEmailAndPassword(String email, String password) throws DaoException {
+        LOGGER.trace("findAllByEmailAndPassword method is executed - email = " + email);
+        List<Account> accountList = new ArrayList<>();
+        Account account = new Account();
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_EMAIL_AND_PASSWORD)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                account = getStatement(rs);
+                LOGGER.debug(account.toString());
+            }
+            accountList.add(account);
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
+        return accountList;
     }
 }

@@ -12,4 +12,6 @@ public interface AccountDao extends GenericDao<Account> {
     Collection<Account> findAllByUserRole(String role) throws DaoException;
 
     Collection<Account> findAllByUserFullName(String fullName) throws DaoException;
+
+    Collection<Account> findAllByEmailAndPassword(String email, String password) throws DaoException;
 }

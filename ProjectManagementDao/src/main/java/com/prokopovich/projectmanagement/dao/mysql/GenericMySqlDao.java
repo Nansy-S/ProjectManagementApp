@@ -36,7 +36,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     public abstract String getSqlCreate();
 
     @Override
-    public T create(T object) throws DaoException {
+    public T create(T object) {
         LOGGER.trace("create object method is executed");
         String sql = getSqlCreate();
         try (Connection connection = MySqlDaoFactory.getConnection();
@@ -51,7 +51,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public T findOne(int id) throws DaoException {
+    public T findOne(int id) {
         LOGGER.trace("Find object method is executed");
         String sql = getSqlSelectOne();
         try (Connection connection = MySqlDaoFactory.getConnection();
@@ -66,7 +66,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public Collection<T> findAll() throws DaoException {
+    public Collection<T> findAll() {
         LOGGER.trace("Find all objects method is executed");
         String sql = getSqlSelectAll();
         try (Connection connection = MySqlDaoFactory.getConnection();
@@ -84,7 +84,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public Collection<T> findByParameter(String sql, String parameter) throws DaoException {
+    public Collection<T> findByParameter(String sql, String parameter) {
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, parameter);
@@ -101,7 +101,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public Collection<T> findByParameter(String sql, int parameter) throws DaoException {
+    public Collection<T> findByParameter(String sql, int parameter) {
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, parameter);
