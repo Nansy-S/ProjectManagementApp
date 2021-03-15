@@ -1,12 +1,13 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Project;
 
 import java.util.Collection;
 
 public interface ProjectDao extends GenericDao<Project> {
 
-    boolean updateProject(String projectCode);
+    boolean updateProject(Project project) throws DaoException;
 
-    Collection<Project> findAllByCurrentStatus(String currentStatus);
+    Collection<Project> findAllByCurrentStatus(String currentStatus) throws DaoException;
 }

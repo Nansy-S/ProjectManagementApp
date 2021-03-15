@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implements AccountActionDao {
+
     private static final String SQL_SELECT_ALL = "SELECT action_id, account_id, reason FROM account_actions";
     private static final String SQL_SELECT_ONE = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE action_id = ?";

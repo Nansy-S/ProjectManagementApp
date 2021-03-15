@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CommentMySqlDao extends GenericMySqlDao<Comment> implements CommentDao {
+
     private static final String SQL_SELECT_ALL = "SELECT comment_id, title, text, date_time, author, task_id " +
             "FROM comments";
     private static final String SQL_SELECT_ONE = "SELECT comment_id, title, text, date_time, author, task_id " +
@@ -29,7 +30,7 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     private static final String SQL_UPDATE = "UPDATE comments SET title = ?, text = ?, date_time = ?, author = ?, " +
             "task_id = ? WHERE comment_id = ?";
     private static final String SQL_DELETE = "DELETE FROM comments WHERE comment_id = ?";
-    private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(CommentMySqlDao.class);
 
     public CommentMySqlDao(){
         super(new Comment(), new ArrayList<Comment>());

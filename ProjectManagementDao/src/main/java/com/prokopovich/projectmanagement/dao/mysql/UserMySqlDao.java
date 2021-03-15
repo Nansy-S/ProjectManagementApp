@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
+
     private static final String SQL_SELECT_ALL = "SELECT user_id, position, current_status, phone FROM users";
     private static final String SQL_SELECT_ONE = "SELECT user_id, position, current_status, phone FROM users WHERE user_id = ?";
     private static final String SQL_SELECT_BY_STATUS = "SELECT user_id, position, current_status, phone FROM users WHERE current_status = ?";
