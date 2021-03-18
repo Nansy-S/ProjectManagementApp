@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Account {
+
     private int accountId;
     private String name;
     private String surname;
@@ -13,6 +14,7 @@ public class Account {
     private String password;
     private String role;
     private Blob photo;
+
     private Set<Action> actions = new HashSet<Action>();
 
     public Account(){}

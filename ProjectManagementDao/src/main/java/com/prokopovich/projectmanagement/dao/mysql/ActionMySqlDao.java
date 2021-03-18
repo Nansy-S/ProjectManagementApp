@@ -45,6 +45,11 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected Action getStatement(ResultSet rs) throws SQLException {
         Action action = new Action();
         action.setActionId(rs.getInt(1));

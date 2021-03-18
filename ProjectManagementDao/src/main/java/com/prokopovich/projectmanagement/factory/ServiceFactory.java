@@ -1,12 +1,19 @@
 package com.prokopovich.projectmanagement.factory;
 
+import com.prokopovich.projectmanagement.service.impl.AccountActionServiceImpl;
 import com.prokopovich.projectmanagement.service.impl.AccountServiceImpl;
+import com.prokopovich.projectmanagement.service.impl.UserServiceImpl;
 
 public abstract class ServiceFactory {
 
     public static final int MYSQL = 1;
 
+    public abstract AccountActionServiceImpl getAccountActionServiceImpl();
+
     public abstract AccountServiceImpl getAccountServiceImpl();
+
+    public abstract UserServiceImpl getUserServiceImpl();
+
 
     public static ServiceFactory getServiceFactory(int whichFactory) {
 

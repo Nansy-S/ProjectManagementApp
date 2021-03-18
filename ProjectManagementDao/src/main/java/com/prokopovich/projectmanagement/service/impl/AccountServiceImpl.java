@@ -1,15 +1,18 @@
 package com.prokopovich.projectmanagement.service.impl;
 
 import com.prokopovich.projectmanagement.dao.mysql.AccountMySqlDao;
+import com.prokopovich.projectmanagement.dao.mysql.UserMySqlDao;
 import com.prokopovich.projectmanagement.factory.DaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.AccountService;
 
 import java.util.List;
 
 public class AccountServiceImpl implements AccountService {
 
-    private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactory.getDAOFactory(1).getAccountDAO();
+    private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactory.getDAOFactory(1).getAccountDao();
+    private static final UserMySqlDao USER_DAO = (UserMySqlDao) DaoFactory.getDAOFactory(1).getUserDao();
 
     @Override
     public Account authorization(String login, String password) {
@@ -18,8 +21,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void addNewAccount(Account account) {
-        ACCOUNT_DAO.create(account);
+    public Account addNewAccount(Account account, User user) {
+        Account newAccount = ACCOUNT_DAO.create(account);
+        user.setUserId(newAccount.getAccountId());
+        USER_DAO.create(user);
+        return newAccount;
     }
 
     @Override

@@ -49,6 +49,11 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected Project getStatement(ResultSet rs) throws SQLException {
         Project project = new Project();
         project.setProjectId(rs.getInt(1));

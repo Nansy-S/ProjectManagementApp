@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.dao.mysql;
 
 import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.dao.ActionDao;
+import com.prokopovich.projectmanagement.dao.UserDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
@@ -32,7 +33,9 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD = "SELECT account_id, name, surname, patronymic, " +
             "email, password, role, photo FROM accounts WHERE email = ? AND password = ?";
     private static final String SQL_CREATE = "INSERT INTO accounts " +
-            "(name, surname, patronymic, email, password, role, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            "(name, surname, patronymic, email, password, role , photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_LAST_INSERT = "SELECT account_id, name, surname, patronymic, email, password, " +
+            "role, photo FROM accounts WHERE account_id = last_insert_id()";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
             "password = ?, role = ?, photo = ? WHERE account_id = ?";
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
@@ -57,6 +60,11 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected Account getStatement(ResultSet rs) throws SQLException {
         Account account = new Account();
         account.setAccountId(rs.getInt(1));
@@ -66,10 +74,10 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         account.setEmail(rs.getString(5));
         account.setPassword(rs.getString(6));
         account.setRole(rs.getString(7));
-        account.setPhoto(rs.getBlob(8));
-        ActionDao actionDao = new ActionMySqlDao();
-        Set<Action> actions = (Set<Action>) actionDao.findAllByReporter(rs.getInt(1));
-        account.setActions(actions);
+        //account.setPhoto(rs.getBlob(8));
+        //ActionDao actionDao = new ActionMySqlDao();
+        //Set<Action> actions = (Set<Action>) actionDao.findAllByReporter(rs.getInt(1));
+        //account.setActions(actions);
         return account;
     }
 

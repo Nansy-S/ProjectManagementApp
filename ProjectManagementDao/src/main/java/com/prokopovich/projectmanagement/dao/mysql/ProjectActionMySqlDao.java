@@ -43,6 +43,11 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected ProjectAction getStatement(ResultSet rs) throws SQLException {
         ProjectAction projectAction = new ProjectAction();
         projectAction.setActionId(rs.getInt(1));

@@ -1,6 +1,7 @@
 package com.prokopovich.projectmanagement.service;
 
 import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.User;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface AccountService {
 
     Account authorization(String login, String password);
 
-    void addNewAccount(Account account);
+    Account addNewAccount(Account account, User user);
 
     void editAccount(Account account);
 

@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao.mysql;
 
+import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.dao.UserDao;
@@ -23,10 +24,14 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     private static final String SQL_SELECT_BY_STATUS = "SELECT user_id, position, current_status, phone FROM users WHERE current_status = ?";
     private static final String SQL_CREATE = "INSERT INTO users (user_id, position, current_status, phone) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE users SET user_id = ?, position = ?, current_status = ?, phone = ? WHERE user_id = ?";
+    private static final String SQL_LAST_INSERT = "SELECT user_id, position, current_status, phone FROM users WHERE user_id = last_insert_id()";
     private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
+
+    private final AccountDao accountDao;
 
     public UserMySqlDao(){
         super(new User(), new ArrayList<User>());
+        accountDao = new AccountMySqlDao();
     }
 
     @Override
@@ -45,12 +50,18 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_LAST_INSERT;
+    }
+
+    @Override
     protected User getStatement(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt(1));
         user.setPosition(rs.getString(2));
         user.setCurrentStatus(rs.getString(3));
         user.setPhone(rs.getString(4));
+        user.setAccountInfo(accountDao.findOne(user.getUserId()));
         return user;
     }
 

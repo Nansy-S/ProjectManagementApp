@@ -47,6 +47,11 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected Attachment getStatement(ResultSet rs) throws SQLException {
         Attachment attachment = new Attachment();
         attachment.setAttachmentId(rs.getInt(1));

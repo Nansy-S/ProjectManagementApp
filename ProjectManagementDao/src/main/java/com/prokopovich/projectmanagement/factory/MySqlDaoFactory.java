@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import com.prokopovich.projectmanagement.dao.*;
+import com.prokopovich.projectmanagement.dao.mysql.AccountMySqlDao;
 import com.prokopovich.projectmanagement.dao.mysql.UserMySqlDao;
 import com.prokopovich.projectmanagement.util.PropertiesUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -30,35 +31,35 @@ public class MySqlDaoFactory extends DaoFactory {
         return dataSource.getConnection();
     }
 
-    public AccountActionDao getAccountActionDAO() {
+    public AccountActionDao getAccountActionDao() {
         return null;
     }
 
-    public AccountDao getAccountDAO() {
+    public AccountDao getAccountDao() {
+        return new AccountMySqlDao();
+    }
+
+    public ActionDao getActionDao() {
         return null;
     }
 
-    public ActionDao getActionDAO() {
+    public AttachmentDao getAttachmentDao() {
         return null;
     }
 
-    public AttachmentDao getAttachmentDAO() {
+    public CommentDao getCommentDao() {
         return null;
     }
 
-    public CommentDao getCommentDAO() {
+    public ProjectDao getProjectDao() {
         return null;
     }
 
-    public ProjectDao getProjectDAO() {
+    public TaskDao getTaskDao() {
         return null;
     }
 
-    public TaskDao getTaskDAO() {
-        return null;
-    }
-
-    public UserDao getUserDAO() {
+    public UserDao getUserDao() {
         return new UserMySqlDao();
     }
 }

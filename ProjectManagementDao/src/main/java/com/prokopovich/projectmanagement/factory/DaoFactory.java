@@ -6,21 +6,21 @@ public abstract class DaoFactory {
 
     public static final int MYSQL = 1;
 
-    public abstract AccountActionDao getAccountActionDAO();
+    public abstract AccountActionDao getAccountActionDao();
 
-    public abstract AccountDao getAccountDAO();
+    public abstract AccountDao getAccountDao();
 
-    public abstract ActionDao getActionDAO();
+    public abstract ActionDao getActionDao();
 
-    public abstract AttachmentDao getAttachmentDAO();
+    public abstract AttachmentDao getAttachmentDao();
 
-    public abstract CommentDao getCommentDAO();
+    public abstract CommentDao getCommentDao();
 
-    public abstract ProjectDao getProjectDAO();
+    public abstract ProjectDao getProjectDao();
 
-    public abstract TaskDao getTaskDAO();
+    public abstract TaskDao getTaskDao();
 
-    public abstract UserDao getUserDAO();
+    public abstract UserDao getUserDao();
 
 
     public static DaoFactory getDAOFactory(

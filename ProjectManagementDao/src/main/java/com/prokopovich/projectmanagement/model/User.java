@@ -5,14 +5,18 @@ public class User {
     private String position;
     private String currentStatus;
     private String phone;
+    private Account accountInfo;
 
-    public User(){}
+    public User(){
+        accountInfo = new Account();
+    }
 
-    public User(int userId, String position, String currentStatus, String phone) {
+    public User(int userId, String position, String currentStatus, String phone, Account accountInfo) {
         this.userId = userId;
         this.position = position;
         this.currentStatus = currentStatus;
         this.phone = phone;
+        this.accountInfo = accountInfo;
     }
 
     public int getUserId() {
@@ -45,6 +49,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Account getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(Account accountInfo) {
+        this.accountInfo = accountInfo;
     }
 
     @Override

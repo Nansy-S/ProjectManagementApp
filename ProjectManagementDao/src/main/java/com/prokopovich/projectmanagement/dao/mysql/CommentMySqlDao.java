@@ -52,6 +52,11 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected Comment getStatement(ResultSet rs) throws SQLException {
         Comment comment = new Comment();
         comment.setCommentId(rs.getInt(1));

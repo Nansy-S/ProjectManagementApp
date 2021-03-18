@@ -46,6 +46,11 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     }
 
     @Override
+    public String getSqlLastInsert() {
+        return SQL_CREATE;
+    }
+
+    @Override
     protected AccountAction getStatement(ResultSet rs) throws SQLException {
         AccountAction accountAction = new AccountAction();
         accountAction.setActionId(rs.getInt(1));

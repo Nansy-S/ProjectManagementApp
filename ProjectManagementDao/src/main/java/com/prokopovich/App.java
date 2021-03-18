@@ -1,21 +1,11 @@
 package com.prokopovich;
 
-import com.prokopovich.projectmanagement.dao.UserDao;
-import com.prokopovich.projectmanagement.factory.DaoFactory;
-import com.prokopovich.projectmanagement.model.User;
+import com.prokopovich.projectmanagement.controller.AdminController;
 
 public class App {
     public static void main( String[] args ) {
-        DaoFactory mySQLDAOFactory = DaoFactory.getDAOFactory(DaoFactory.MYSQL);
-        UserDao userDAO = mySQLDAOFactory.getUserDAO();
-
-        if (userDAO != null) {
-            userDAO.findAll();
-        }
-        userDAO.findOne(2);
-
-        User newUser = new User(3, "Developer", "Locked", "777");
-
-
+        AdminController controller = new AdminController();
+        controller.addUser();
+        //controller.findAccount();
     }
 }
