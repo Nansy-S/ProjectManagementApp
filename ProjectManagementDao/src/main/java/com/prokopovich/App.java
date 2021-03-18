@@ -6,6 +6,6 @@ public class App {
     public static void main( String[] args ) {
         AdminController controller = new AdminController();
         controller.addUser();
-        //controller.findAccount();
+        controller.findAccount();
     }
 }
