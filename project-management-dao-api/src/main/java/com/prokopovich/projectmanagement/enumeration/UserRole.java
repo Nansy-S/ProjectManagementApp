@@ -16,4 +16,13 @@ public enum UserRole {
     public String getTitle() {
         return title;
     }
+
+    public static UserRole fromString(String text) {
+        for (UserRole b : UserRole.values()) {
+            if (b.title.equals(text)) {
+                return b;
+            }
+        }
+        return null;
+    }
 }

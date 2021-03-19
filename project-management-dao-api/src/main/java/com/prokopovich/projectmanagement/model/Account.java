@@ -93,7 +93,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "\nAccount: " +
+        return "Account: " +
                 "id = " + accountId +
                 ", name = " + name +
                 ", surname = " + surname +
@@ -101,6 +101,6 @@ public class Account {
                 ", email = " + email +
                 ", password = " + password +
                 ", role = " + role +
-                ", photo = " + photo + ';';
+                ", photo = " + photo + ";\n";
     }
 }

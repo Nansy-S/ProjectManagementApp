@@ -25,11 +25,7 @@ public class AccountServiceImpl implements AccountService {
             ServiceFactory.getServiceFactory(1).getAccountActionServiceImpl();
 
     @Override
-    public Account authorization() {
-        System.out.println("Enter your email: ");
-        String login = INPUT.nextLine();
-        System.out.println("Enter your password: ");
-        String password = INPUT.nextLine();
+    public Account authorization(String login, String password) {
         Account account = (Account) ACCOUNT_DAO.findAllByEmail(login);
         if (account != null) {
             if (account.getPassword().equals(password)) {
