@@ -1,13 +1,8 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.AccountDao;
-import com.prokopovich.projectmanagement.dao.ActionDao;
-import com.prokopovich.projectmanagement.dao.UserDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.model.Action;
-import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -29,12 +24,10 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
             "role, photo FROM accounts WHERE current_status = ?";
     private static final String SQL_SELECT_BY_FULL_NAME = "SELECT account_id, name, surname, patronymic, email, " +
             "password, role, photo FROM accounts WHERE CONCAT(surname, ' ', name, ' ', patronymic) LIKE '%?%'";
-    private static final String SQL_SELECT_BY_EMAIL_AND_PASSWORD = "SELECT account_id, name, surname, patronymic, " +
-            "email, password, role, photo FROM accounts WHERE email = ? AND password = ?";
+    private static final String SQL_SELECT_BY_EMAIL = "SELECT account_id, name, surname, patronymic, " +
+            "email, password, role, photo FROM accounts WHERE email = ?";
     private static final String SQL_CREATE = "INSERT INTO accounts " +
             "(name, surname, patronymic, email, password, role , photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_LAST_INSERT = "SELECT account_id, name, surname, patronymic, email, password, " +
-            "role, photo FROM accounts WHERE account_id = last_insert_id()";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
             "password = ?, role = ?, photo = ? WHERE account_id = ?";
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
@@ -121,23 +114,9 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     }
 
     @Override
-    public Collection<Account> findAllByEmailAndPassword(String email, String password) throws DaoException {
-        LOGGER.trace("findAllByEmailAndPassword method is executed - email = " + email);
-        List<Account> accountList = new ArrayList<>();
-        Account account = new Account();
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_EMAIL_AND_PASSWORD)) {
-            statement.setString(1, email);
-            statement.setString(2, password);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                account = getStatement(rs);
-                LOGGER.debug(account.toString());
-            }
-            accountList.add(account);
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
-        return accountList;
+    public Account findAllByEmail(String email) throws DaoException {
+        LOGGER.trace("findAllByEmail method is executed - email = " + email);
+        List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_EMAIL, email);
+        return accounts.iterator().next();
     }
 }

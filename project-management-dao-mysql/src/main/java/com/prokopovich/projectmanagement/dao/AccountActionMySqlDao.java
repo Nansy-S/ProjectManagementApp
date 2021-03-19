@@ -2,7 +2,6 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.AccountAction;
-import com.prokopovich.projectmanagement.model.Action;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -24,8 +23,11 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
             "VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(AccountActionMySqlDao.class);
 
+    private final ActionDao actionDao;
+
     public AccountActionMySqlDao(){
         super(new AccountAction(), new ArrayList<AccountAction>());
+        actionDao = new ActionMySqlDao();
     }
 
     @Override
@@ -54,9 +56,7 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
         accountAction.setActionId(rs.getInt(1));
         accountAction.setAccountId(rs.getInt(2));
         accountAction.setReason(rs.getString(3));
-        ActionDao actionDao = new ActionMySqlDao();
-        Action action = actionDao.findOne(rs.getInt(1));
-        accountAction.setAction(action);
+        accountAction.setAction(actionDao.findOne(accountAction.getActionId()));
         return accountAction;
     }
 

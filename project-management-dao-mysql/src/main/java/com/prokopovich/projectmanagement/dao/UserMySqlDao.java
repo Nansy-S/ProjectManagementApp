@@ -1,10 +1,8 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
-import com.prokopovich.projectmanagement.dao.UserDao;
-import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -16,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
 
@@ -28,10 +27,12 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
 
     private final AccountDao accountDao;
+    private final AccountActionDao accountActionDao;
 
     public UserMySqlDao(){
         super(new User(), new ArrayList<User>());
         accountDao = new AccountMySqlDao();
+        accountActionDao = new AccountActionMySqlDao();
     }
 
     @Override
@@ -62,6 +63,7 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
         user.setCurrentStatus(rs.getString(3));
         user.setPhone(rs.getString(4));
         user.setAccountInfo(accountDao.findOne(user.getUserId()));
+        user.setAccountActions((Set<AccountAction>) accountActionDao.findAllByAccountId(user.getUserId()));
         return user;
     }
 

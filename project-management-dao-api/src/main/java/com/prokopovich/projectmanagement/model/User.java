@@ -1,14 +1,21 @@
 package com.prokopovich.projectmanagement.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
+
     private int userId;
     private String position;
     private String currentStatus;
     private String phone;
+
     private Account accountInfo;
+    Set<AccountAction> accountActions;
 
     public User(){
         accountInfo = new Account();
+        accountActions = new HashSet<>();
     }
 
     public User(int userId, String position, String currentStatus, String phone, Account accountInfo) {
@@ -57,6 +64,14 @@ public class User {
 
     public void setAccountInfo(Account accountInfo) {
         this.accountInfo = accountInfo;
+    }
+
+    public Set<AccountAction> getAccountActions() {
+        return accountActions;
+    }
+
+    public void setAccountActions(Set<AccountAction> accountActions) {
+        this.accountActions = accountActions;
     }
 
     @Override

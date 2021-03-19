@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.GenericDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import org.apache.log4j.LogManager;

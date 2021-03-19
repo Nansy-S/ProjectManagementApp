@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.ActionDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Action;
 import org.apache.log4j.LogManager;
@@ -25,8 +24,11 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     private static final String SQL_CREATE = "INSERT INTO actions (type, date_time, reporter) VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(ActionMySqlDao.class);
 
+    private final AccountDao accountDao;
+
     public ActionMySqlDao(){
         super(new Action(), new ArrayList<Action>());
+        accountDao = new AccountMySqlDao();
     }
 
     @Override
@@ -56,6 +58,7 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
         action.setType(rs.getString(2));
         action.setDatetime(rs.getTimestamp(3));
         action.setReporter(rs.getInt(4));
+        action.setReporterInfo(accountDao.findOne(action.getReporter()));
         return action;
     }
 

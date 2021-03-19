@@ -3,12 +3,17 @@ package com.prokopovich.projectmanagement.model;
 import java.sql.Timestamp;
 
 public class Action {
+
     private int actionId;
     private String type;
     private Timestamp datetime;
     private int reporter;
 
-    public Action() {}
+    private Account reporterInfo;
+
+    public Action() {
+        reporterInfo = new Account();
+    }
 
     public Action(int actionId, String type, Timestamp datetime, int reporter) {
         this.actionId = actionId;
@@ -47,6 +52,14 @@ public class Action {
 
     public void setReporter(int reporter) {
         this.reporter = reporter;
+    }
+
+    public Account getReporterInfo() {
+        return reporterInfo;
+    }
+
+    public void setReporterInfo(Account reporterInfo) {
+        this.reporterInfo = reporterInfo;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.prokopovich.projectmanagement.model;
 
 import java.sql.Blob;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Account {
 
@@ -14,8 +12,6 @@ public class Account {
     private String password;
     private String role;
     private Blob photo;
-
-    private Set<Action> actions = new HashSet<Action>();
 
     public Account(){}
 
@@ -93,17 +89,6 @@ public class Account {
 
     public void setPhoto(Blob photo) {
         this.photo = photo;
-    }
-
-    public Set<Action> getActions() {
-        if (actions == null) {
-            actions = new HashSet<>();
-        }
-        return actions;
-    }
-
-    public void setActions(Set<Action> actions) {
-        this.actions = actions;
     }
 
     @Override
