@@ -12,7 +12,6 @@ import com.prokopovich.projectmanagement.service.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class App {
@@ -28,7 +27,9 @@ public class App {
 
 
     public static void main( String[] args ) {
+
         authorization();
+
     }
 
     public static Account getCurrentUser(){
