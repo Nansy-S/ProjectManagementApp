@@ -1,6 +1,8 @@
 package com.prokopovich.projectmanagement.service.impl;
 
+import com.prokopovich.App;
 import com.prokopovich.projectmanagement.dao.AccountMySqlDao;
+import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.factory.DaoFactory;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
@@ -44,15 +46,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account addNewAccount(Account newAccount, User newUser, Action newAction, AccountAction newAccountAction) {
+    public Account addNewAccount(Account newAccount, User newUser, AccountAction newAccountAction) {
         newAccount = ACCOUNT_DAO.create(newAccount);
         newUser.setUserId(newAccount.getAccountId());
+        newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         USER_SERVICE.addNewUser(newUser);
+
+        Action newAction = new Action();
+        newAction.setType(AccountActionType.CREATE.getTitle());
+
+
+
         newAction = ACTION_SERVICE.addNewAction(newAction);
         newAccountAction.setActionId(newAction.getActionId());
         newAccountAction.setAccountId(newAccount.getAccountId());
         newAccountAction.setAction(newAction);
         ACCOUNT_ACTION_SERVICE.addNewAccountAction(newAccountAction);
+        App.getCurrentUser();
         return newAccount;
     }
 

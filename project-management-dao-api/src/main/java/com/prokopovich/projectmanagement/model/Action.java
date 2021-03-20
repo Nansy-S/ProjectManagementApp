@@ -1,12 +1,13 @@
 package com.prokopovich.projectmanagement.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Action {
 
     private int actionId;
     private String type;
-    private Timestamp datetime;
+    private LocalDateTime datetime;
     private int reporter;
 
     private Account reporterInfo;
@@ -15,7 +16,7 @@ public class Action {
         reporterInfo = new Account();
     }
 
-    public Action(int actionId, String type, Timestamp datetime, int reporter) {
+    public Action(int actionId, String type, LocalDateTime datetime, int reporter) {
         this.actionId = actionId;
         this.type = type;
         this.datetime = datetime;
@@ -38,11 +39,11 @@ public class Action {
         this.type = type;
     }
 
-    public Timestamp getDatetime() {
+    public LocalDateTime getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
+    public void setDatetime(LocalDateTime datetime) {
         this.datetime = datetime;
     }
 

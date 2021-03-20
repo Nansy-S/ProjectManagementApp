@@ -22,10 +22,7 @@ public abstract class DaoFactory {
 
     public abstract UserDao getUserDao();
 
-
-    public static DaoFactory getDAOFactory(
-            int whichFactory) {
-
+    public static DaoFactory getDAOFactory(int whichFactory) {
         switch (whichFactory) {
             case MYSQL:
                 return new MySqlDaoFactory();

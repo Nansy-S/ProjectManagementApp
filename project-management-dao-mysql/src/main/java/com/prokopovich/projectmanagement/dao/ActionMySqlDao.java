@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Action;
+import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -23,6 +24,8 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
             "WHERE type = ?";
     private static final String SQL_CREATE = "INSERT INTO actions (type, date_time, reporter) VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(ActionMySqlDao.class);
+
+    private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final AccountDao accountDao;
 
@@ -56,7 +59,8 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
         Action action = new Action();
         action.setActionId(rs.getInt(1));
         action.setType(rs.getString(2));
-        action.setDatetime(rs.getTimestamp(3));
+
+        action.setDatetime(CONVERTER.convertToEntityAttribute(rs.getTimestamp(3)));
         action.setReporter(rs.getInt(4));
         action.setReporterInfo(accountDao.findOne(action.getReporter()));
         return action;
@@ -65,7 +69,7 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     @Override
     public void setStatement(Action action, PreparedStatement statement) throws SQLException {
         statement.setString(1, action.getType());
-        statement.setTimestamp(2, action.getDatetime());
+        statement.setTimestamp(2, CONVERTER.convertToDatabaseColumn(action.getDatetime()));
         statement.setInt(3, action.getReporter());
     }
 
