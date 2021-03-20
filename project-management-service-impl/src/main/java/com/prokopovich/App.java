@@ -12,6 +12,8 @@ import com.prokopovich.projectmanagement.service.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class App {
@@ -29,7 +31,6 @@ public class App {
     public static void main( String[] args ) {
 
         authorization();
-
     }
 
     public static Account getCurrentUser(){
@@ -56,10 +57,10 @@ public class App {
     public static void addUser() {
         Account newAccount = new Account();
         User newUser = new User();
-        Action newAction = new Action();
         AccountAction newAccountAction = new AccountAction();
         System.out.println("Enter new user: ");
         System.out.print("\tsurname: ");
+        newAccount.setSurname(INPUT.nextLine());
         newAccount.setSurname(INPUT.nextLine());
         System.out.print("\tname: ");
         newAccount.setName(INPUT.nextLine());
@@ -69,42 +70,43 @@ public class App {
         newAccount.setEmail(INPUT.nextLine());
         System.out.print("\tpassword: ");
         newAccount.setPassword(INPUT.nextLine());
-        System.out.print("choose role: \n\t\t1) " + UserRole.MANAGER.getTitle() +
-                "\n\t\t2) " + UserRole.DEVELOPER.getTitle() +
-                "\n\t\t3) " + UserRole.TESTER.getTitle());
-        while (!INPUT.hasNextInt()) {
-            System.out.println("Re-enter without letters. Your choice: ");
-            INPUT.next();
-        }
-        int chosenRole = INPUT.nextInt();
-        switch (chosenRole) {
-            case 1:
-                newAccount.setRole(UserRole.MANAGER.getTitle());
-                break;
-            case 2:
-                newAccount.setRole(UserRole.DEVELOPER.getTitle());
-                break;
-            case 3:
-                newAccount.setRole(UserRole.TESTER.getTitle());
-                break;
-            default:
-                System.out.println("Invalid character! Try again.");
-                break;
-        }
+        newAccount.setRole(enterUserRole());
         System.out.print("\tposition: ");
+        newUser.setPosition(INPUT.nextLine());
         newUser.setPosition(INPUT.nextLine());
         System.out.print("\tphone: ");
         newUser.setPhone(INPUT.nextLine());
         System.out.print("\treason: ");
         newAccountAction.setReason(INPUT.nextLine());
+        Account addedAccount = accountService.addNewAccount(newAccount, newUser, newAccountAction);
+        LOGGER.debug(addedAccount.toString());
+    }
 
-
-
-
-        //Account newAccount = new Account(0, "Ivan", "Ivanov", "Ivanovich", "i@mail.ru", "1111", "Manager", null);
-        //User newUser = new User(0, "Manager", "Active", "12345", newAccount);
-        //Account addedAccount = accountService.addNewAccount(newAccount, newUser);
-        //LOGGER.debug(addedAccount.toString());
+    public static String enterUserRole() {
+        String role = "role";
+        System.out.print("choose role: \n\t\t1) " + UserRole.MANAGER.getTitle() +
+                "\n\t\t2) " + UserRole.DEVELOPER.getTitle() +
+                "\n\t\t3) " + UserRole.TESTER.getTitle() + "\n");
+        //while (!INPUT.hasNextInt()) {
+        //    System.out.println("Re-enter without letters. Your choice: ");
+        //    INPUT.next();
+        //}
+        int chosenRole = INPUT.nextInt();
+        switch (chosenRole) {
+            case 1:
+                role = UserRole.MANAGER.getTitle();
+                break;
+            case 2:
+                role = UserRole.DEVELOPER.getTitle();
+                break;
+            case 3:
+                role = UserRole.TESTER.getTitle();
+                break;
+            default:
+                System.out.println("Invalid character! Try again.");
+                break;
+        }
+        return role;
     }
 
     public static void findAccount() {

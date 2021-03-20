@@ -14,6 +14,7 @@ import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -48,21 +49,22 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account addNewAccount(Account newAccount, User newUser, AccountAction newAccountAction) {
         newAccount = ACCOUNT_DAO.create(newAccount);
+
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         USER_SERVICE.addNewUser(newUser);
 
         Action newAction = new Action();
         newAction.setType(AccountActionType.CREATE.getTitle());
-
-
-
+        newAction.setDatetime(LocalDateTime.now());
+        newAction.setReporter(App.getCurrentUser().getAccountId());
+        newAction.setReporterInfo(App.getCurrentUser());
         newAction = ACTION_SERVICE.addNewAction(newAction);
+
         newAccountAction.setActionId(newAction.getActionId());
         newAccountAction.setAccountId(newAccount.getAccountId());
         newAccountAction.setAction(newAction);
         ACCOUNT_ACTION_SERVICE.addNewAccountAction(newAccountAction);
-        App.getCurrentUser();
         return newAccount;
     }
 

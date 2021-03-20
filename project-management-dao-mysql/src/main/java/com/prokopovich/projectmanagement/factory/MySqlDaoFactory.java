@@ -30,7 +30,7 @@ public class MySqlDaoFactory extends DaoFactory {
     }
 
     public AccountActionDao getAccountActionDao() {
-        return null;
+        return new AccountActionMySqlDao();
     }
 
     public AccountDao getAccountDao() {
@@ -38,23 +38,23 @@ public class MySqlDaoFactory extends DaoFactory {
     }
 
     public ActionDao getActionDao() {
-        return null;
+        return new ActionMySqlDao();
     }
 
     public AttachmentDao getAttachmentDao() {
-        return null;
+        return new AttachmentMySqlDao();
     }
 
     public CommentDao getCommentDao() {
-        return null;
+        return new CommentMySqlDao();
     }
 
     public ProjectDao getProjectDao() {
-        return null;
+        return new ProjectMySqlDao();
     }
 
     public TaskDao getTaskDao() {
-        return null;
+        return new TaskMySqlDao();
     }
 
     public UserDao getUserDao() {
