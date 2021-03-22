@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.model;
 import java.sql.Timestamp;
 
 public class Comment {
+
     private int commentId;
     private String title;
     private String text;
@@ -71,12 +72,12 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "\nComment: " +
+        return "Comment: " +
                 "id =" + commentId +
                 ", title = " + title +
                 ", text = " + text +
                 ", datetime = " + datetime +
                 ", author = " + author +
-                ", taskId = " + taskId + ';';
+                ", taskId = " + taskId + ";\n";
     }
 }

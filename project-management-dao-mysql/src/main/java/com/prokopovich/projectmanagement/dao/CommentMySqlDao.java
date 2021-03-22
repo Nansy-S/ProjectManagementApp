@@ -59,6 +59,7 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     @Override
     protected Comment getStatement(ResultSet rs) throws SQLException {
         Comment comment = new Comment();
+
         comment.setCommentId(rs.getInt(1));
         comment.setTitle(rs.getString(2));
         comment.setText(rs.getString(3));

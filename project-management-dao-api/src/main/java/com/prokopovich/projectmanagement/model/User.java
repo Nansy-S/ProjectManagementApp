@@ -9,11 +9,10 @@ public class User {
     private String position;
     private String currentStatus;
     private String phone;
-
     private Account accountInfo;
     Set<AccountAction> accountActions;
 
-    public User(){
+    public User() {
         accountInfo = new Account();
         accountActions = new HashSet<>();
     }
@@ -80,6 +79,6 @@ public class User {
                 "userId = " + userId +
                 ", position = " + position +
                 ", currentStatus = " + currentStatus +
-                ", phone = " + phone + ';';
+                ", phone = " + phone + ";\n";
     }
 }

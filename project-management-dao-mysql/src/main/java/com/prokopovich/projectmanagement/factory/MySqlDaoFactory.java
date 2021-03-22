@@ -9,6 +9,7 @@ import com.prokopovich.projectmanagement.util.PropertiesUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class MySqlDaoFactory extends DaoFactory {
+
     private static final String MYSQL_CONFIG_PROPERTIES = "mysql.properties";
     private static final String DRIVER_CLASS_NAME = "driverClassName";
     private static final String CONNECTION_URL = "connectionUrl";

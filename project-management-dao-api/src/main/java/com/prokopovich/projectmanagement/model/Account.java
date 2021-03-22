@@ -13,7 +13,7 @@ public class Account {
     private String role;
     private Blob photo;
 
-    public Account(){}
+    public Account() { }
 
     public Account(int accountId, String name, String surname, String patronymic, String email, String password,
                    String role, Blob photo) {

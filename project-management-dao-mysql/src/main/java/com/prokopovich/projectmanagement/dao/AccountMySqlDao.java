@@ -59,6 +59,7 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     @Override
     protected Account getStatement(ResultSet rs) throws SQLException {
         Account account = new Account();
+
         account.setAccountId(rs.getInt(1));
         account.setName(rs.getString(2));
         account.setSurname(rs.getString(3));
@@ -67,9 +68,6 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         account.setPassword(rs.getString(6));
         account.setRole(rs.getString(7));
         //account.setPhoto(rs.getBlob(8));
-        //ActionDao actionDao = new ActionMySqlDao();
-        //Set<Action> actions = (Set<Action>) actionDao.findAllByReporter(rs.getInt(1));
-        //account.setActions(actions);
         return account;
     }
 

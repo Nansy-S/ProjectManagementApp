@@ -3,13 +3,14 @@ package com.prokopovich.projectmanagement.model;
 import java.sql.Timestamp;
 
 public class Project {
+
     private int projectId;
     private String projectCode;
     private String summary;
     private Timestamp dueDate;
     private String currentStatus;
 
-    public Project() {}
+    public Project() { }
 
     public Project(int projectId, String projectCode, String summary, Timestamp dueDate, String currentStatus) {
         this.projectId = projectId;
@@ -61,11 +62,11 @@ public class Project {
 
     @Override
     public String toString() {
-        return "\nProject: " +
+        return "Project: " +
                 "projectId = " + projectId +
                 ", projectCode = " + projectCode +
                 ", summary = " + summary +
                 ", dueDate = " + dueDate +
-                ", currentStatus = " + currentStatus + ';';
+                ", currentStatus = " + currentStatus + ";\n";
     }
 }

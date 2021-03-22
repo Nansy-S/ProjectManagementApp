@@ -54,6 +54,7 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     @Override
     protected Attachment getStatement(ResultSet rs) throws SQLException {
         Attachment attachment = new Attachment();
+
         attachment.setAttachmentId(rs.getInt(1));
         attachment.setFile(rs.getBlob(2));
         attachment.setTaskId(rs.getInt(3));
@@ -82,7 +83,7 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     }
 
     @Override
-    public boolean delete(int attachmentId) throws DaoException{
+    public boolean delete(int attachmentId) throws DaoException {
         LOGGER.trace("Delete attachment method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
@@ -96,7 +97,7 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     }
 
     @Override
-    public Collection<Attachment> findAllByTaskId(int taskId) throws DaoException{
+    public Collection<Attachment> findAllByTaskId(int taskId) throws DaoException {
         LOGGER.trace("findAllByTaskId method is executed - taskId = " + taskId);
         List<Attachment> attachments = (List<Attachment>) findByParameter(SQL_SELECT_BY_TASK, taskId);
         return attachments;

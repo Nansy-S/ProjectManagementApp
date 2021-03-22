@@ -3,11 +3,12 @@ package com.prokopovich.projectmanagement.model;
 import java.sql.Blob;
 
 public class Attachment {
+
     private int attachmentId;
     private Blob file;
     private int taskId;
 
-    public Attachment() {}
+    public Attachment() { }
 
     public Attachment(int attachmentId, Blob file, int taskId) {
         this.attachmentId = attachmentId;
@@ -44,6 +45,6 @@ public class Attachment {
         return "Attachment: " +
                 "id = " + attachmentId +
                 ", file = " + file +
-                ", taskId = " + taskId + ';';
+                ", taskId = " + taskId + ";\n";
     }
 }

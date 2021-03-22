@@ -20,19 +20,21 @@ public enum AccountActionType {
     }
 
     public String getAccountStatus(){
-        switch (this){
-            case CREATE:
-            case UPDATE:
-            case UNLOCKING:
-                accountStatus = AccountStatus.ACTIVE.getTitle();
-                break;
-            case LOCKING:
-                accountStatus = AccountStatus.LOCKED.getTitle();
-                break;
-            case DEACTIVATION:
-                accountStatus = AccountStatus.DEACTIVATED.getTitle();
-                break;
-            }
+        switch (this) {
+        case CREATE:
+        case UPDATE:
+        case UNLOCKING:
+            accountStatus = AccountStatus.ACTIVE.getTitle();
+            break;
+        case LOCKING:
+            accountStatus = AccountStatus.LOCKED.getTitle();
+            break;
+        case DEACTIVATION:
+            accountStatus = AccountStatus.DEACTIVATED.getTitle();
+            break;
+        default:
+            accountStatus = "Not determined";
+        }
         return accountStatus;
     }
 }

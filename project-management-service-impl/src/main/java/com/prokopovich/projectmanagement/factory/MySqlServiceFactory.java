@@ -5,7 +5,7 @@ import com.prokopovich.projectmanagement.service.impl.AccountServiceImpl;
 import com.prokopovich.projectmanagement.service.impl.ActionServiceImpl;
 import com.prokopovich.projectmanagement.service.impl.UserServiceImpl;
 
-public class MySqlServiceFactory extends ServiceFactory{
+public class MySqlServiceFactory extends ServiceFactory {
 
     @Override
     public AccountActionServiceImpl getAccountActionServiceImpl() {

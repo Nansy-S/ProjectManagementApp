@@ -29,7 +29,7 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
 
     private final AccountDao accountDao;
 
-    public ActionMySqlDao(){
+    public ActionMySqlDao() {
         super(new Action(), new ArrayList<Action>());
         accountDao = new AccountMySqlDao();
     }
@@ -57,9 +57,9 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     @Override
     protected Action getStatement(ResultSet rs) throws SQLException {
         Action action = new Action();
+
         action.setActionId(rs.getInt(1));
         action.setType(rs.getString(2));
-
         action.setDatetime(CONVERTER.convertToEntityAttribute(rs.getTimestamp(3)));
         action.setReporter(rs.getInt(4));
         action.setReporterInfo(accountDao.findOne(action.getReporter()));

@@ -5,5 +5,4 @@ import com.prokopovich.projectmanagement.model.AccountAction;
 public interface AccountActionService {
 
     void addNewAccountAction(AccountAction accountAction);
-
 }

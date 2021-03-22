@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.model;
 import java.sql.Timestamp;
 
 public class Task {
+
     private int taskId;
     private String taskCode;
     private int projectId;
@@ -14,7 +15,7 @@ public class Task {
     private int assignee;
     private String description;
 
-    public Task() {}
+    public Task() { }
 
     public Task(int taskId, String taskCode, int projectId, String priority, String currentStatus, Timestamp dueDate,
                 int estimationTime, int reporter, int assignee, String description) {
@@ -112,7 +113,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "\nTask: " +
+        return "Task: " +
                 "taskId = " + taskId +
                 ", taskCode = " + taskCode +
                 ", projectId = " + projectId +
@@ -122,6 +123,6 @@ public class Task {
                 ", estimationTime = " + estimationTime +
                 ", reporter = " + reporter +
                 ", assignee = " + assignee +
-                ", description = " + description + ';';
+                ", description = " + description + ";\n";
     }
 }

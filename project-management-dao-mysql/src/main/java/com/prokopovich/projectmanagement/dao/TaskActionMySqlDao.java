@@ -48,6 +48,7 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     @Override
     protected TaskAction getStatement(ResultSet rs) throws SQLException {
         TaskAction taskAction = new TaskAction();
+
         taskAction.setActionId(rs.getInt(1));
         taskAction.setTaskId(rs.getInt(2));
         return taskAction;

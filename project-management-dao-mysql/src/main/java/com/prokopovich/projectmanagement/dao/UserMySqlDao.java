@@ -29,7 +29,7 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     private final AccountDao accountDao;
     private final AccountActionDao accountActionDao;
 
-    public UserMySqlDao(){
+    public UserMySqlDao() {
         super(new User(), new ArrayList<User>());
         accountDao = new AccountMySqlDao();
         accountActionDao = new AccountActionMySqlDao();
@@ -58,6 +58,7 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     @Override
     protected User getStatement(ResultSet rs) throws SQLException {
         User user = new User();
+
         user.setUserId(rs.getInt(1));
         user.setPosition(rs.getString(2));
         user.setCurrentStatus(rs.getString(3));

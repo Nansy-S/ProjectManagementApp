@@ -24,10 +24,10 @@ public abstract class DaoFactory {
 
     public static DaoFactory getDAOFactory(int whichFactory) {
         switch (whichFactory) {
-            case MYSQL:
-                return new MySqlDaoFactory();
-            default:
-                return null;
+        case MYSQL:
+            return new MySqlDaoFactory();
+        default:
+            return null;
         }
     }
 }

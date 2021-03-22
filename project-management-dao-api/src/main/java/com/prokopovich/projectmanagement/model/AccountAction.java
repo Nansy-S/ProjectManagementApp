@@ -1,6 +1,7 @@
 package com.prokopovich.projectmanagement.model;
 
 public class AccountAction {
+
     private int actionId;
     private int accountId;
     private String reason;
@@ -51,10 +52,10 @@ public class AccountAction {
 
     @Override
     public String toString() {
-        return "\nAccountAction: " +
+        return "AccountAction: " +
                 "actionId = " + actionId +
                 ", accountId = " + accountId +
                 ", reason = " + reason + ", " +
-                action.toString() + ";";
+                action.toString() + ";\n";
     }
 }

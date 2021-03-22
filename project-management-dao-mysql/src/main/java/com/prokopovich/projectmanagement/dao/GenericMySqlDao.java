@@ -16,7 +16,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     T object;
     List<T> objectsList;
 
-    GenericMySqlDao(T object, List<T> objectsList){
+    GenericMySqlDao(T object, List<T> objectsList) {
         this.object = object;
         this.objectsList = objectsList;
     }
@@ -33,38 +33,12 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     public abstract String getSqlLastInsert();
 
-    //@Override
-    //public T create(T object) {
-    //    LOGGER.trace("create object method is executed");
-    //    String sql = getSqlCreate();
-    //    try (Connection connection = MySqlDaoFactory.getConnection();
-    //         PreparedStatement statement = connection.prepareStatement(sql)) {
-    //        setStatement(object, statement);
-    //        statement.executeUpdate();
-//
-    //    } catch (SQLException ex) {
-    //        throw new DaoException(ex);
-    //    }
-//
-    //    sql = getSqlLastInsert();
-    //    try (Connection connection = MySqlDaoFactory.getConnection();
-    //         PreparedStatement statement = connection.prepareStatement(sql)) {
-    //        ResultSet rs = statement.executeQuery();
-    //        object = getStatement(rs);
-    //        LOGGER.debug("New added object: " + object.toString());
-//
-    //    } catch (SQLException ex) {
-    //        throw new DaoException(ex);
-    //    }
-    //    return object;
-    //}
-
-
     @Override
     public T create(T object) {
-        LOGGER.trace("create object method is executed");
-        String sql = getSqlCreate();
         int id = 0;
+
+        String sql = getSqlCreate();
+        LOGGER.trace("create object method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             setStatement(object, statement);

@@ -56,6 +56,7 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
     @Override
     protected Project getStatement(ResultSet rs) throws SQLException {
         Project project = new Project();
+
         project.setProjectId(rs.getInt(1));
         project.setProjectCode(rs.getString(2));
         project.setSummary(rs.getString(3));

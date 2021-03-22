@@ -65,9 +65,9 @@ public class Action {
 
     @Override
     public String toString() {
-        return "\nAction: " +
+        return "Action: " +
                 "id = " + actionId +
                 ", type = " + type +
-                ", datetime = " + datetime + ';';
+                ", datetime = " + datetime + ";\n";
     }
 }

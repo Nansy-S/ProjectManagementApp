@@ -50,6 +50,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     @Override
     protected ProjectAction getStatement(ResultSet rs) throws SQLException {
         ProjectAction projectAction = new ProjectAction();
+
         projectAction.setActionId(rs.getInt(1));
         projectAction.setProjectId(rs.getInt(2));
         return projectAction;

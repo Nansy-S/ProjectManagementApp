@@ -5,15 +5,12 @@ import com.prokopovich.projectmanagement.factory.MySqlServiceFactory;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
-import com.prokopovich.projectmanagement.model.Action;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class App {
@@ -27,9 +24,7 @@ public class App {
     private static UserService userService = service.getUserServiceImpl();
     private static AccountService accountService = service.getAccountServiceImpl();
 
-
     public static void main( String[] args ) {
-
         authorization();
     }
 
@@ -47,9 +42,9 @@ public class App {
             System.out.println("You entered as " + currentUser.getRole());
             currentUserRole = UserRole.fromString(currentUser.getRole());
             switch (currentUserRole) {
-                case ADMIN:
-                    menuAdmin();
-                    break;
+            case ADMIN:
+                menuAdmin();
+                break;
             }
         }
     }
@@ -58,6 +53,7 @@ public class App {
         Account newAccount = new Account();
         User newUser = new User();
         AccountAction newAccountAction = new AccountAction();
+
         System.out.println("Enter new user: ");
         System.out.print("\tsurname: ");
         newAccount.setSurname(INPUT.nextLine());
@@ -84,27 +80,24 @@ public class App {
 
     public static String enterUserRole() {
         String role = "role";
+
         System.out.print("choose role: \n\t\t1) " + UserRole.MANAGER.getTitle() +
                 "\n\t\t2) " + UserRole.DEVELOPER.getTitle() +
                 "\n\t\t3) " + UserRole.TESTER.getTitle() + "\n");
-        //while (!INPUT.hasNextInt()) {
-        //    System.out.println("Re-enter without letters. Your choice: ");
-        //    INPUT.next();
-        //}
         int chosenRole = INPUT.nextInt();
         switch (chosenRole) {
-            case 1:
-                role = UserRole.MANAGER.getTitle();
-                break;
-            case 2:
-                role = UserRole.DEVELOPER.getTitle();
-                break;
-            case 3:
-                role = UserRole.TESTER.getTitle();
-                break;
-            default:
-                System.out.println("Invalid character! Try again.");
-                break;
+        case 1:
+            role = UserRole.MANAGER.getTitle();
+            break;
+        case 2:
+            role = UserRole.DEVELOPER.getTitle();
+            break;
+        case 3:
+            role = UserRole.TESTER.getTitle();
+            break;
+        default:
+            System.out.println("Invalid character! Try again.");
+            break;
         }
         return role;
     }
@@ -114,9 +107,10 @@ public class App {
         LOGGER.debug(account.toString());
     }
 
-    public static void menuAdmin(){
+    public static void menuAdmin() {
         int choice;
         boolean menuFlag = true;
+
         while (menuFlag) {
             System.out.println();
             System.out.println("Menu for Administrator:");
@@ -131,19 +125,19 @@ public class App {
             }
             choice = INPUT.nextInt();
             switch(choice) {
-                case 1:
-                    addUser();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 0:
-                    menuFlag = false;
-                    break;
-                default:
-                    System.out.println("Invalid character! Try again.");
-                    break;
+            case 1:
+                addUser();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 0:
+                menuFlag = false;
+                break;
+            default:
+                System.out.println("Invalid character! Try again.");
+                break;
             }
         }
     }

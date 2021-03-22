@@ -61,6 +61,7 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
     @Override
     protected Task getStatement(ResultSet rs) throws SQLException {
         Task task = new Task();
+
         task.setTaskId(rs.getInt(1));
         task.setTaskCode(rs.getString(2));
         task.setProjectId(rs.getInt(3));

@@ -19,12 +19,11 @@ public abstract class ServiceFactory {
 
 
     public static ServiceFactory getServiceFactory(int whichFactory) {
-
         switch (whichFactory) {
-            case MYSQL:
-                return new MySqlServiceFactory();
-            default:
-                return null;
+        case MYSQL:
+            return new MySqlServiceFactory();
+        default:
+            return null;
         }
     }
 }
