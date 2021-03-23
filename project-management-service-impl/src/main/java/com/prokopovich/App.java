@@ -7,6 +7,7 @@ import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.AccountService;
+import com.prokopovich.projectmanagement.service.AuthenticationService;
 import com.prokopovich.projectmanagement.service.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -21,6 +22,7 @@ public class App {
     private static Account currentUser = new Account();
     private static UserRole currentUserRole;
     private static ServiceFactory service = new MySqlServiceFactory();
+    private static AuthenticationService authenticationService = service.getAuthenticationServiceImpl();
     private static UserService userService = service.getUserServiceImpl();
     private static AccountService accountService = service.getAccountServiceImpl();
 
@@ -37,7 +39,7 @@ public class App {
         String login = INPUT.nextLine();
         System.out.print("Enter your password: ");
         String password = INPUT.nextLine();
-        currentUser = accountService.authorization(login, password);
+        currentUser = authenticationService.userAuthorization(login, password);
         if (currentUser != null) {
             System.out.println("You entered as " + currentUser.getRole());
             currentUserRole = UserRole.fromString(currentUser.getRole());

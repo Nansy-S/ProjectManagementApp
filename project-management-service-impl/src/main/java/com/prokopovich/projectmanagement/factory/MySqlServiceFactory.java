@@ -1,11 +1,13 @@
 package com.prokopovich.projectmanagement.factory;
 
-import com.prokopovich.projectmanagement.service.impl.AccountActionServiceImpl;
-import com.prokopovich.projectmanagement.service.impl.AccountServiceImpl;
-import com.prokopovich.projectmanagement.service.impl.ActionServiceImpl;
-import com.prokopovich.projectmanagement.service.impl.UserServiceImpl;
+import com.prokopovich.projectmanagement.service.impl.*;
 
 public class MySqlServiceFactory extends ServiceFactory {
+
+    @Override
+    public AuthenticationServiceImpl getAuthenticationServiceImpl() {
+        return new AuthenticationServiceImpl();
+    }
 
     @Override
     public AccountActionServiceImpl getAccountActionServiceImpl() {

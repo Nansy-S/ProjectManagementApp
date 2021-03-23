@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface AccountService {
 
-    Account authorization(String login, String password);
-
     Account addNewAccount(Account newAccount, User newUser, AccountAction newAccountAction);
 
     void editAccount(Account account);
