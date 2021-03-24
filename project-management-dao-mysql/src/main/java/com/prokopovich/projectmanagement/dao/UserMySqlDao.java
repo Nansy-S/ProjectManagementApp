@@ -19,11 +19,16 @@ import java.util.Set;
 public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
 
     private static final String SQL_SELECT_ALL = "SELECT user_id, position, current_status, phone FROM users";
-    private static final String SQL_SELECT_ONE = "SELECT user_id, position, current_status, phone FROM users WHERE user_id = ?";
-    private static final String SQL_SELECT_BY_STATUS = "SELECT user_id, position, current_status, phone FROM users WHERE current_status = ?";
-    private static final String SQL_CREATE = "INSERT INTO users (user_id, position, current_status, phone) VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE users SET user_id = ?, position = ?, current_status = ?, phone = ? WHERE user_id = ?";
-    private static final String SQL_LAST_INSERT = "SELECT user_id, position, current_status, phone FROM users WHERE user_id = last_insert_id()";
+    private static final String SQL_SELECT_ONE = "SELECT user_id, position, current_status, phone FROM users " +
+            "WHERE user_id = ?";
+    private static final String SQL_SELECT_BY_STATUS = "SELECT user_id, position, current_status, phone FROM users " +
+            "WHERE current_status = ?";
+    private static final String SQL_CREATE = "INSERT INTO users (user_id, position, current_status, phone) " +
+            "VALUES (?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE users SET user_id = ?, position = ?, current_status = ?, " +
+            "phone = ? WHERE user_id = ?";
+    private static final String SQL_LAST_INSERT = "SELECT user_id, position, current_status, phone FROM users " +
+            "WHERE user_id = last_insert_id()";
     private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
 
     private final AccountDao accountDao;

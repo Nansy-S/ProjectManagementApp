@@ -17,8 +17,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editAccount(User user) {
-        USER_DAO.update(user);
+    public boolean editUser(User user) {
+        if (USER_DAO.update(user)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

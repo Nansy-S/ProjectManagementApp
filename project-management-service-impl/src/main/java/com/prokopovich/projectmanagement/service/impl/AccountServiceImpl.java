@@ -35,23 +35,38 @@ public class AccountServiceImpl implements AccountService {
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         USER_SERVICE.addNewUser(newUser);
 
+        setAccountAction(newAccount, newAccountAction, AccountActionType.CREATE.getTitle());
+
+        return newAccount;
+    }
+
+    @Override
+    public boolean editAccount(Account account, User user, AccountAction newAccountAction) {
+        if (ACCOUNT_DAO.update(account)) {
+            if (USER_SERVICE.editUser(user)) {
+                setAccountAction(account, newAccountAction, AccountActionType.UPDATE.getTitle());
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private void setAccountAction(Account account, AccountAction newAccountAction, String actionType) {
         Action newAction = new Action();
-        newAction.setType(AccountActionType.CREATE.getTitle());
+
+        newAction.setType(actionType);
         newAction.setDatetime(LocalDateTime.now());
         newAction.setReporter(App.getCurrentUser().getAccountId());
         newAction.setReporterInfo(App.getCurrentUser());
         newAction = ACTION_SERVICE.addNewAction(newAction);
 
         newAccountAction.setActionId(newAction.getActionId());
-        newAccountAction.setAccountId(newAccount.getAccountId());
+        newAccountAction.setAccountId(account.getAccountId());
         newAccountAction.setAction(newAction);
         ACCOUNT_ACTION_SERVICE.addNewAccountAction(newAccountAction);
-        return newAccount;
-    }
-
-    @Override
-    public void editAccount(Account account) {
-        ACCOUNT_DAO.update(account);
     }
 
     @Override
@@ -72,5 +87,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> getAllByUserFullName(String fullName) {
         return (List<Account>) ACCOUNT_DAO.findAllByUserFullName(fullName);
+    }
+
+    @Override
+    public List<Account> getAllByReporterAndAction(int reporterId, String action) {
+        return (List<Account>) ACCOUNT_DAO.findAllByReporterAndAction(reporterId, action);
     }
 }

@@ -8,7 +8,7 @@ public interface UserService {
 
     void addNewUser(User user);
 
-    void editAccount(User user);
+    boolean editUser(User user);
 
     User getByUserId(int id);
 

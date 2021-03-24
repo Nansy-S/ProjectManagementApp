@@ -11,7 +11,7 @@ public interface AccountService {
 
     Account addNewAccount(Account newAccount, User newUser, AccountAction newAccountAction);
 
-    void editAccount(Account account);
+    boolean editAccount(Account account, User user, AccountAction newAccountAction);
 
     Account getByAccountId(int id);
 
@@ -20,4 +20,6 @@ public interface AccountService {
     List<Account> getAllByUserRole(String role);
 
     List<Account> getAllByUserFullName(String fullName);
+
+    List<Account> getAllByReporterAndAction(int reporterId, String action);
 }

@@ -1,10 +1,13 @@
 package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
+import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.AccountAction;
+import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +22,8 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
             "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE account_id = ?";
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT account_id FROM account_actions " +
+            "INNER JOIN actions ON actions.action_id = account_actions.action_id WHERE reporter = ? AND type = ?";
     private static final String SQL_CREATE = "INSERT INTO account_actions (action_id, account_id, reason) " +
             "VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(AccountActionMySqlDao.class);
@@ -73,5 +78,26 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
         LOGGER.trace("findAllByAccountId method is executed - accountId = " + accountId);
         List<AccountAction> accountActionList = (List<AccountAction>) findByParameter(SQL_SELECT_BY_ACCOUNT, accountId);
         return accountActionList;
+    }
+
+    @Override
+    public List<Integer> findAllByReporterAndAction(int reporterId, String action) throws DaoException {
+        List<Integer> usersId = new ArrayList<>();
+
+        LOGGER.trace("findAllReporterAndAction method from AccountActionMySqlDao is executed - " +
+                "reporterID = " + reporterId + "action = " + action);
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
+            statement.setInt(1, reporterId);
+            statement.setString(2, action);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                usersId.add(rs.getInt(1));
+            }
+            LOGGER.debug("usersId: " + usersId);
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
+        return usersId;
     }
 }

@@ -1,6 +1,7 @@
 package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
+import com.prokopovich.projectmanagement.factory.DaoFactory;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import org.apache.log4j.LogManager;
@@ -30,7 +31,10 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
             "(name, surname, patronymic, email, password, role , photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
             "password = ?, role = ?, photo = ? WHERE account_id = ?";
+
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
+    private static final AccountActionMySqlDao ACCOUNT_ACTION_DAO =
+            (AccountActionMySqlDao) DaoFactory.getDAOFactory(1).getAccountActionDao();
 
     public AccountMySqlDao(){
         super(new Account(), new ArrayList<Account>());
@@ -116,5 +120,20 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         LOGGER.trace("findAllByEmail method is executed - email = " + email);
         List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_EMAIL, email);
         return accounts.iterator().next();
+    }
+
+    @Override
+    public Collection<Account> findAllByReporterAndAction(int reporterId, String action) {
+        List<Account> accountList = new ArrayList<>();
+        Account account;
+
+        LOGGER.trace("findAllReporterAndAction method from AccountMySqlDao is executed - " +
+                "reporterID = " + reporterId + "action = " + action);
+        List<Integer> usersId = ACCOUNT_ACTION_DAO.findAllByReporterAndAction(reporterId, action);
+        for(int id : usersId) {
+            account = findOne(id);
+            accountList.add(account);
+        }
+        return accountList;
     }
 }
