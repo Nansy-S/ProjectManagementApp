@@ -16,11 +16,9 @@ import com.prokopovich.projectmanagement.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Scanner;
 
 public class AccountServiceImpl implements AccountService {
 
-    private static final Scanner INPUT = new Scanner(System.in);
     private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactory.getDAOFactory(1).getAccountDao();
     private static final UserService USER_SERVICE = ServiceFactory.getServiceFactory(1).getUserServiceImpl();
     private static final ActionService ACTION_SERVICE = ServiceFactory.getServiceFactory(1).getActionServiceImpl();
@@ -28,23 +26,21 @@ public class AccountServiceImpl implements AccountService {
             ServiceFactory.getServiceFactory(1).getAccountActionServiceImpl();
 
     @Override
-    public Account addNewAccount(Account newAccount, User newUser, AccountAction newAccountAction) {
+    public Account addNewAccount(Account newAccount, User newUser, String reason) {
         newAccount = ACCOUNT_DAO.create(newAccount);
 
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         USER_SERVICE.addNewUser(newUser);
-
-        setAccountAction(newAccount, newAccountAction, AccountActionType.CREATE.getTitle());
-
+        setAccountAction(newAccount, reason, AccountActionType.CREATE.getTitle());
         return newAccount;
     }
 
     @Override
-    public boolean editAccount(Account account, User user, AccountAction newAccountAction) {
+    public boolean editAccount(Account account, User user, String reason) {
         if (ACCOUNT_DAO.update(account)) {
             if (USER_SERVICE.editUser(user)) {
-                setAccountAction(account, newAccountAction, AccountActionType.UPDATE.getTitle());
+                setAccountAction(account, reason, AccountActionType.UPDATE.getTitle());
                 return true;
             } else {
                 return false;
@@ -54,8 +50,9 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    private void setAccountAction(Account account, AccountAction newAccountAction, String actionType) {
+    private void setAccountAction(Account account, String reason, String actionType) {
         Action newAction = new Action();
+        AccountAction newAccountAction = new AccountAction();
 
         newAction.setType(actionType);
         newAction.setDatetime(LocalDateTime.now());
@@ -65,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
 
         newAccountAction.setActionId(newAction.getActionId());
         newAccountAction.setAccountId(account.getAccountId());
+        newAccountAction.setReason(reason);
         newAccountAction.setAction(newAction);
         ACCOUNT_ACTION_SERVICE.addNewAccountAction(newAccountAction);
     }

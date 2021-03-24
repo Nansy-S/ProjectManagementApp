@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface AccountService {
 
-    Account addNewAccount(Account newAccount, User newUser, AccountAction newAccountAction);
+    Account addNewAccount(Account newAccount, User newUser, String reason);
 
-    boolean editAccount(Account account, User user, AccountAction newAccountAction);
+    boolean editAccount(Account account, User user, String reason);
 
     Account getByAccountId(int id);
 

@@ -6,7 +6,6 @@ import com.prokopovich.projectmanagement.enumeration.UserRole;
 import com.prokopovich.projectmanagement.factory.MySqlServiceFactory;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.UserService;
@@ -25,7 +24,7 @@ public class AccountController {
     private static UserService userService = service.getUserServiceImpl();
     private static AccountService accountService = service.getAccountServiceImpl();
 
-    public static void displayUsersByReporter() {
+    public List<Account> displayUsersByReporter() {
         List<Account> userAccounts;
         int number = 0;
 
@@ -38,12 +37,12 @@ public class AccountController {
                     userAccount.getEmail() + " - " +
                     userAccount.getRole());
         }
+        return userAccounts;
     }
 
-    public static void addUser() {
+    public void addUser() {
         Account newAccount = new Account();
         User newUser = new User();
-        AccountAction newAccountAction = new AccountAction();
 
         System.out.println("Enter new user: ");
         System.out.print("\tsurname: ");
@@ -63,13 +62,13 @@ public class AccountController {
         newUser.setPosition(INPUT.nextLine());
         System.out.print("\tphone: ");
         newUser.setPhone(INPUT.nextLine());
-        System.out.print("\treason: ");
-        newAccountAction.setReason(INPUT.nextLine());
-        Account addedAccount = accountService.addNewAccount(newAccount, newUser, newAccountAction);
+        System.out.print("Enter a reason to add new account: ");
+        String reason = INPUT.nextLine();
+        Account addedAccount = accountService.addNewAccount(newAccount, newUser, reason);
         LOGGER.debug(addedAccount.toString());
     }
 
-    public static String enterUserRole() {
+    public String enterUserRole() {
         String role = "role";
 
         System.out.print("choose role: \n\t\t1) " + UserRole.MANAGER.getTitle() +
@@ -93,12 +92,60 @@ public class AccountController {
         return role;
     }
 
-    public static void editUser() {
+    public void editUser() {
+        List<Account> userAccounts = displayUsersByReporter();
         System.out.println("Select a user to edit:");
-
+        int chosenUserAccount = INPUT.nextInt() - 1;
+        Account account = userAccounts.get(chosenUserAccount);
+        User user = userService.getByUserId(account.getAccountId());
+        System.out.println("User info:" +
+                "\n\tuserId: " + user.getUserId() +
+                "\n\temail: " + user.getAccountInfo().getEmail() +
+                "\n\tsurname: " + user.getAccountInfo().getSurname() +
+                "\n\tname: " + user.getAccountInfo().getName() +
+                "\n\tpatronymic: " + user.getAccountInfo().getPatronymic() +
+                "\n\trole: " + user.getAccountInfo().getRole() +
+                "\n\tposition: " + user.getPosition() +
+                "\n\tphone: " + user.getPhone());
+        System.out.println("Do you want to edit information about this user? (1 - Yes, 2 - No)");
+        int choice = INPUT.nextInt();
+        if (choice == 1) {
+            System.out.println("Select a field to edit:");
+            System.out.println("1) email \n2) surname \n3) name \n4) patronymic "+
+                    "\n5) position \n6) phone \nYour choice: ");
+            int chosenField = INPUT.nextInt();
+            String newFieldValue = INPUT.nextLine();
+            newFieldValue = INPUT.nextLine();
+            switch (chosenField) {
+                case 1:
+                    account.setEmail(newFieldValue);
+                    break;
+                case 2:
+                    account.setSurname(newFieldValue);
+                    break;
+                case 3:
+                    account.setName(newFieldValue);
+                    break;
+                case 4:
+                    account.setPatronymic(newFieldValue);
+                    break;
+                case 5:
+                    user.setPosition(newFieldValue);
+                    break;
+                case 6:
+                    user.setPhone(newFieldValue);
+                    break;
+                default:
+                    System.out.println("Invalid character! Try again.");
+                    break;
+            }
+            System.out.print("Enter a reason to edit: ");
+            String reason = INPUT.nextLine();
+            accountService.editAccount(account, user, reason);
+        }
     }
 
-    public static void findAccount() {
+    public void findAccount() {
         Account account = accountService.getByAccountId(26);
         LOGGER.debug(account.toString());
     }

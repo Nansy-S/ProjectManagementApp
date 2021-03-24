@@ -1,6 +1,7 @@
 package com.prokopovich.projectmanagement.model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -10,11 +11,11 @@ public class User {
     private String currentStatus;
     private String phone;
     private Account accountInfo;
-    Set<AccountAction> accountActions;
+    List<AccountAction> accountActions;
 
     public User() {
         accountInfo = new Account();
-        accountActions = new HashSet<>();
+        accountActions = new ArrayList<>();
     }
 
     public User(int userId, String position, String currentStatus, String phone, Account accountInfo) {
@@ -65,11 +66,11 @@ public class User {
         this.accountInfo = accountInfo;
     }
 
-    public Set<AccountAction> getAccountActions() {
+    public List<AccountAction> getAccountActions() {
         return accountActions;
     }
 
-    public void setAccountActions(Set<AccountAction> accountActions) {
+    public void setAccountActions(List<AccountAction> accountActions) {
         this.accountActions = accountActions;
     }
 

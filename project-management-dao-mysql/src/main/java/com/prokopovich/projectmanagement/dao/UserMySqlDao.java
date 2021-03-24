@@ -69,7 +69,7 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
         user.setCurrentStatus(rs.getString(3));
         user.setPhone(rs.getString(4));
         user.setAccountInfo(accountDao.findOne(user.getUserId()));
-        user.setAccountActions((Set<AccountAction>) accountActionDao.findAllByAccountId(user.getUserId()));
+        user.setAccountActions((List<AccountAction>) accountActionDao.findAllByAccountId(user.getUserId()));
         return user;
     }
 
