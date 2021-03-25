@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.ProjectActionDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.ProjectAction;
 import org.apache.log4j.LogManager;

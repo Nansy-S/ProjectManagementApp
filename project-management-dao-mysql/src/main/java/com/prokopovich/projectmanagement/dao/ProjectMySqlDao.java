@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.ProjectDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Project;
@@ -75,13 +74,12 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
 
     @Override
     public boolean updateProject(Project project) throws DaoException {
-        LOGGER.trace("Update project method is executed");
+        LOGGER.trace("update project method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(project, statement);
             statement.setInt(5, project.getProjectId());
             statement.executeUpdate();
-            LOGGER.debug("Updated project: " + project.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }

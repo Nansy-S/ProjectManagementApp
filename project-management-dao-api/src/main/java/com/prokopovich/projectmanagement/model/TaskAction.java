@@ -32,6 +32,6 @@ public class TaskAction {
     public String toString() {
         return "TaskAction: " +
                 "actionId = " + actionId +
-                ", taskId = " + taskId + ";\n";
+                ", taskId = " + taskId + ";";
     }
 }

@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.AttachmentDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Attachment;
@@ -69,13 +68,12 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
 
     @Override
     public boolean update(Attachment attachment) throws DaoException {
-        LOGGER.trace("Update attachment method is executed");
+        LOGGER.trace("update attachment method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(attachment, statement);
             statement.setInt(3, attachment.getAttachmentId());
             statement.executeUpdate();
-            LOGGER.debug("Updated attachment: " + attachment.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -84,12 +82,12 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
 
     @Override
     public boolean delete(int attachmentId) throws DaoException {
-        LOGGER.trace("Delete attachment method is executed");
+        LOGGER.trace("delete attachment method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
             statement.setInt(1, attachmentId);
             statement.executeUpdate();
-            LOGGER.debug("Attachment deleted");
+            LOGGER.debug("attachment deleted");
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }

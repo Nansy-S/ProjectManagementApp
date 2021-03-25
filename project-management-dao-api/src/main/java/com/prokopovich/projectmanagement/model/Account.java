@@ -99,8 +99,7 @@ public class Account {
                 ", surname = " + surname +
                 ", patronymic = " + patronymic +
                 ", email = " + email +
-                ", password = " + password +
                 ", role = " + role +
-                ", photo = " + photo + ";\n";
+                ", photo = " + photo + ";";
     }
 }

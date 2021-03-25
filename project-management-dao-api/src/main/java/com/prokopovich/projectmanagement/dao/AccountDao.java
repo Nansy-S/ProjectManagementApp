@@ -13,7 +13,7 @@ public interface AccountDao extends GenericDao<Account> {
 
     Collection<Account> findAllByUserFullName(String fullName) throws DaoException;
 
-    Account findAllByEmail(String email) throws DaoException;
+    Account findByEmail(String email) throws DaoException;
 
     Collection<Account> findAllByReporterAndAction(int reporterId, String action);
 }

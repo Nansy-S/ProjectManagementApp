@@ -83,13 +83,12 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
 
     @Override
     public boolean update(User user) throws DaoException {
-        LOGGER.trace("Update user method is executed");
+        LOGGER.trace("update user method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(user, statement);
             statement.setInt(5, user.getUserId());
             statement.executeUpdate();
-            LOGGER.debug("Updated user: " + user.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }

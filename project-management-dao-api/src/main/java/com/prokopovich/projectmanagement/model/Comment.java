@@ -78,6 +78,6 @@ public class Comment {
                 ", text = " + text +
                 ", datetime = " + datetime +
                 ", author = " + author +
-                ", taskId = " + taskId + ";\n";
+                ", taskId = " + taskId + ";";
     }
 }

@@ -56,6 +56,6 @@ public class AccountAction {
                 "actionId = " + actionId +
                 ", accountId = " + accountId +
                 ", reason = " + reason + ", " +
-                action.toString() + ";\n";
+                action.toString() + ";";
     }
 }

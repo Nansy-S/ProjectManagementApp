@@ -32,6 +32,6 @@ public class ProjectAction {
     public String toString() {
         return "ProjectAction: " +
                 "actionId = " + actionId +
-                ", projectId = " + projectId + ";\n";
+                ", projectId = " + projectId + ";";
     }
 }

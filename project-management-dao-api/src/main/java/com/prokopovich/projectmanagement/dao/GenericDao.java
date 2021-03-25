@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface GenericDao<T> {
 
-    T create(T newObject);
+    T create(T newObject, int id);
 
     T findOne(int id);
 

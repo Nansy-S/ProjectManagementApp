@@ -28,6 +28,7 @@ public class AccountController {
         List<Account> userAccounts;
         int number = 0;
 
+        LOGGER.trace("displayUsersByReporter method is executed");
         userAccounts = accountService.getAllByReporterAndAction(
                 App.getCurrentUser().getAccountId(), AccountActionType.CREATE.getTitle());
         System.out.println(" #) email - role ");
@@ -44,9 +45,9 @@ public class AccountController {
         Account newAccount = new Account();
         User newUser = new User();
 
+        LOGGER.trace("addUser method is executed");
         System.out.println("Enter new user: ");
         System.out.print("\tsurname: ");
-        newAccount.setSurname(INPUT.nextLine());
         newAccount.setSurname(INPUT.nextLine());
         System.out.print("\tname: ");
         newAccount.setName(INPUT.nextLine());
@@ -65,7 +66,7 @@ public class AccountController {
         System.out.print("Enter a reason to add new account: ");
         String reason = INPUT.nextLine();
         Account addedAccount = accountService.addNewAccount(newAccount, newUser, reason);
-        LOGGER.debug(addedAccount.toString());
+        LOGGER.trace("new user added");
     }
 
     public String enterUserRole() {
@@ -93,8 +94,9 @@ public class AccountController {
     }
 
     public void editUser() {
+        LOGGER.trace("editUser method is executed");
         List<Account> userAccounts = displayUsersByReporter();
-        System.out.println("Select a user to edit:");
+        System.out.print("Select a user to edit: ");
         int chosenUserAccount = INPUT.nextInt() - 1;
         Account account = userAccounts.get(chosenUserAccount);
         User user = userService.getByUserId(account.getAccountId());
@@ -110,6 +112,7 @@ public class AccountController {
         System.out.println("Do you want to edit information about this user? (1 - Yes, 2 - No)");
         int choice = INPUT.nextInt();
         if (choice == 1) {
+            LOGGER.trace("old user information - " + user.toString());
             System.out.println("Select a field to edit:");
             System.out.println("1) email \n2) surname \n3) name \n4) patronymic "+
                     "\n5) position \n6) phone \nYour choice: ");
@@ -141,7 +144,12 @@ public class AccountController {
             }
             System.out.print("Enter a reason to edit: ");
             String reason = INPUT.nextLine();
-            accountService.editAccount(account, user, reason);
+            if(accountService.editAccount(account, user, reason)) {
+                LOGGER.trace("new user information - " + user.toString());
+                LOGGER.trace("user information successfully edited");
+            }
+        } else {
+            LOGGER.trace("cancel editing");
         }
     }
 

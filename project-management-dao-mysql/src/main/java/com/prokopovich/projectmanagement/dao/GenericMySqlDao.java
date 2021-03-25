@@ -34,30 +34,30 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     public abstract String getSqlLastInsert();
 
     @Override
-    public T create(T object) {
-        int id = 0;
-
+    public T create(T object, int id) {
         String sql = getSqlCreate();
+
         LOGGER.trace("create object method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             setStatement(object, statement);
             statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs != null && rs.next()) {
-                id = rs.getInt(1);
+            if (id == 0) {
+                ResultSet rs = statement.getGeneratedKeys();
+                if (rs != null && rs.next()) {
+                    id = rs.getInt(1);
+                }
             }
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
         T ob = findOne(id);
-        LOGGER.debug("New added object: " + ob.toString());
+        LOGGER.debug("new added object - " + ob.toString());
         return ob;
     }
 
     @Override
     public T findOne(int id) {
-        LOGGER.trace("Find object method is executed");
         String sql = getSqlSelectOne();
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -74,7 +74,6 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     @Override
     public Collection<T> findAll() {
-        LOGGER.trace("Find all objects method is executed");
         String sql = getSqlSelectAll();
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -98,7 +97,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 object = getStatement(rs);
-                LOGGER.debug(object.toString());
+                LOGGER.debug("found objects - " + object.toString());
             }
             objectsList.add(object);
         } catch (SQLException ex) {
@@ -115,7 +114,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 object = getStatement(rs);
-                LOGGER.debug(object.toString());
+                LOGGER.debug("found objects - " + object.toString());
             }
             objectsList.add(object);
         } catch (SQLException ex) {

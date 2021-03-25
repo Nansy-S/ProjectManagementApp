@@ -3,7 +3,6 @@ package com.prokopovich.projectmanagement.dao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.AccountAction;
-import com.prokopovich.projectmanagement.model.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -84,8 +83,8 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     public List<Integer> findAllByReporterAndAction(int reporterId, String action) throws DaoException {
         List<Integer> usersId = new ArrayList<>();
 
-        LOGGER.trace("findAllReporterAndAction method from AccountActionMySqlDao is executed - " +
-                "reporterID = " + reporterId + "action = " + action);
+        LOGGER.trace("findAllByReporterAndAction method from AccountActionMySqlDao is executed - " +
+                "reporterID = " + reporterId + ", action = " + action);
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
             statement.setInt(1, reporterId);

@@ -4,8 +4,9 @@ public enum AccountActionType {
 
     CREATE("Create"),
     UPDATE("Update"),
-    LOCKING("Locking"),
-    UNLOCKING("Unlocking"),
+    BLOCK("Block"),
+    UNBLOCK("Unblock"),
+    CHANGE_ROLE("Change role"),
     DEACTIVATION("Deactivation");
 
     private String title;
@@ -19,14 +20,14 @@ public enum AccountActionType {
         return title;
     }
 
-    public String getAccountStatus(){
+    public String getAccountStatus() {
         switch (this) {
         case CREATE:
         case UPDATE:
-        case UNLOCKING:
+        case UNBLOCK:
             accountStatus = AccountStatus.ACTIVE.getTitle();
             break;
-        case LOCKING:
+        case BLOCK:
             accountStatus = AccountStatus.LOCKED.getTitle();
             break;
         case DEACTIVATION:

@@ -12,7 +12,7 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action addNewAction(Action action) {
-        action = ACTION_DAO.create(action);
+        action = ACTION_DAO.create(action, action.getActionId());
         return action;
     }
 }

@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account addNewAccount(Account newAccount, User newUser, String reason) {
-        newAccount = ACCOUNT_DAO.create(newAccount);
+        newAccount = ACCOUNT_DAO.create(newAccount, newAccount.getAccountId());
 
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());

@@ -45,6 +45,6 @@ public class Attachment {
         return "Attachment: " +
                 "id = " + attachmentId +
                 ", file = " + file +
-                ", taskId = " + taskId + ";\n";
+                ", taskId = " + taskId + ";";
     }
 }

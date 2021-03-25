@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addNewUser(User user) {
-        USER_DAO.create(user);
+        USER_DAO.create(user, user.getUserId());
     }
 
     @Override

@@ -12,6 +12,6 @@ public class AccountActionServiceImpl implements AccountActionService {
 
     @Override
     public void addNewAccountAction(AccountAction accountAction) {
-        ACCOUNT_ACTION_DAO.create(accountAction);
+        ACCOUNT_ACTION_DAO.create(accountAction, accountAction.getActionId());
     }
 }

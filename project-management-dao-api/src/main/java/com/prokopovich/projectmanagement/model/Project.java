@@ -67,6 +67,6 @@ public class Project {
                 ", projectCode = " + projectCode +
                 ", summary = " + summary +
                 ", dueDate = " + dueDate +
-                ", currentStatus = " + currentStatus + ";\n";
+                ", currentStatus = " + currentStatus + ";";
     }
 }

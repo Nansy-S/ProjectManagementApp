@@ -2,7 +2,6 @@ package com.prokopovich.projectmanagement.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class User {
 
@@ -80,6 +79,7 @@ public class User {
                 "userId = " + userId +
                 ", position = " + position +
                 ", currentStatus = " + currentStatus +
-                ", phone = " + phone + ";\n";
+                ", phone = " + phone +
+                accountInfo.toString();
     }
 }

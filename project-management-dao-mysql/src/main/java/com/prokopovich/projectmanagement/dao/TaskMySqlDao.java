@@ -1,11 +1,7 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.ProjectActionDao;
-import com.prokopovich.projectmanagement.dao.TaskDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
-import com.prokopovich.projectmanagement.model.Project;
-import com.prokopovich.projectmanagement.model.ProjectAction;
 import com.prokopovich.projectmanagement.model.Task;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -90,13 +86,12 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
 
     @Override
     public boolean updateTask(Task task) throws DaoException {
-        LOGGER.trace("Update task method is executed");
+        LOGGER.trace("updateTask method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(task, statement);
             statement.setInt(10, task.getTaskId());
             statement.executeUpdate();
-            LOGGER.debug("Updated task: " + task.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }

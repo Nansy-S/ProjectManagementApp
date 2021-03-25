@@ -23,7 +23,7 @@ public class App {
     private static AuthenticationService authenticationService = service.getAuthenticationServiceImpl();
 
     public static void main( String[] args ) {
-
+        LOGGER.debug("Application is running.");
         authorization();
     }
 
@@ -32,13 +32,14 @@ public class App {
     }
 
     private static void authorization() {
+        LOGGER.trace("Authorization is running.");
         System.out.print("Enter your email: ");
         String login = INPUT.nextLine();
         System.out.print("Enter your password: ");
         String password = INPUT.nextLine();
         currentUser = authenticationService.userAuthorization(login, password);
         if (currentUser != null) {
-            LOGGER.debug("User entered as " + currentUser.getRole());
+            LOGGER.debug("Current user - " + currentUser.toString());
             currentUserRole = UserRole.fromString(currentUser.getRole());
             switch (currentUserRole) {
                 case ADMIN:
@@ -52,9 +53,9 @@ public class App {
         int choice;
         boolean menuFlag = true;
 
+        LOGGER.trace("Menu for Administrator shown.");
         while (menuFlag) {
-            System.out.println();
-            System.out.println("Menu for Administrator:");
+            System.out.println("\nMenu for Administrator:");
             System.out.println("1) Add new User");
             System.out.println("2) Edit User");
             System.out.println("3) Display User");
@@ -76,6 +77,7 @@ public class App {
                     ACCOUNT_CONTROLLER.displayUsersByReporter();
                     break;
                 case 0:
+                    LOGGER.trace("Application execution completed.");
                     menuFlag = false;
                     break;
                 default:

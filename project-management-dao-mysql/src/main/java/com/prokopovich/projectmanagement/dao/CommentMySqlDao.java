@@ -80,13 +80,12 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
 
     @Override
     public boolean updateComment(Comment comment) throws DaoException {
-        LOGGER.trace("Update comment method is executed");
+        LOGGER.trace("updateComment method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(comment, statement);
             statement.setInt(6, comment.getCommentId());
             statement.executeUpdate();
-            LOGGER.debug("Updated comment: " + comment.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -95,12 +94,12 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
 
     @Override
     public boolean deleteComment(int commentId) throws DaoException {
-        LOGGER.trace("Delete comment method is executed");
+        LOGGER.trace("deleteComment method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
             statement.setInt(1, commentId);
             statement.executeUpdate();
-            LOGGER.debug("Comment deleted");
+            LOGGER.debug("comment deleted");
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }

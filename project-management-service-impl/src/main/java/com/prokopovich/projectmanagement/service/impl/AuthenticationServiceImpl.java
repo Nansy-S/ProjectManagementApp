@@ -1,29 +1,33 @@
 package com.prokopovich.projectmanagement.service.impl;
 
+import com.prokopovich.App;
 import com.prokopovich.projectmanagement.dao.AccountMySqlDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.DaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AuthenticationService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    private static final Logger LOGGER = LogManager.getLogger(App.class);
     private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactory.getDAOFactory(1).getAccountDao();
 
     @Override
     public Account userAuthorization(String login, String password) {
         try {
-            Account account = ACCOUNT_DAO.findAllByEmail(login);
-            if (account != null) {
+            Account account = ACCOUNT_DAO.findByEmail(login);
+            if (account.getEmail() != null) {
                 if (account.getPassword().equals(password)) {
-                    System.out.println("Authorization was successful!");
+                    LOGGER.debug("User entered as " + account.getRole());
                     return account;
                 } else {
-                    System.out.println("Invalid password.");
+                    LOGGER.debug("Authorization unsuccessful. Invalid password.");
                     return null;
                 }
             } else {
-                System.out.println("Invalid email.");
+                LOGGER.debug("Authorization unsuccessful. User with this email does not exist.");
                 return null;
             }
         } catch (Exception ex) {

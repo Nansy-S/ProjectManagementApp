@@ -88,13 +88,12 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
 
     @Override
     public boolean update(Account account) throws DaoException {
-        LOGGER.trace("Update account method is executed");
+        LOGGER.trace("update account method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(account, statement);
             statement.setInt(8, account.getAccountId());
             statement.executeUpdate();
-            LOGGER.debug("Updated account: " + account.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -116,7 +115,7 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     }
 
     @Override
-    public Account findAllByEmail(String email) throws DaoException {
+    public Account findByEmail(String email) throws DaoException {
         LOGGER.trace("findAllByEmail method is executed - email = " + email);
         List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_EMAIL, email);
         return accounts.iterator().next();
@@ -127,13 +126,14 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         List<Account> accountList = new ArrayList<>();
         Account account;
 
-        LOGGER.trace("findAllReporterAndAction method from AccountMySqlDao is executed - " +
-                "reporterID = " + reporterId + "action = " + action);
+        LOGGER.trace("findAllByReporterAndAction method from AccountMySqlDao is executed - " +
+                "reporterID = " + reporterId + ", action = " + action);
         List<Integer> usersId = ACCOUNT_ACTION_DAO.findAllByReporterAndAction(reporterId, action);
         for(int id : usersId) {
             account = findOne(id);
             accountList.add(account);
         }
+        LOGGER.trace("users by reporter - " + accountList.toString());
         return accountList;
     }
 }

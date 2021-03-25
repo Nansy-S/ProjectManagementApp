@@ -68,6 +68,6 @@ public class Action {
         return "Action: " +
                 "id = " + actionId +
                 ", type = " + type +
-                ", datetime = " + datetime + ";\n";
+                ", datetime = " + datetime + ";";
     }
 }

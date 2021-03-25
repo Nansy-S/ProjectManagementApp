@@ -123,6 +123,6 @@ public class Task {
                 ", estimationTime = " + estimationTime +
                 ", reporter = " + reporter +
                 ", assignee = " + assignee +
-                ", description = " + description + ";\n";
+                ", description = " + description + ";";
     }
 }
