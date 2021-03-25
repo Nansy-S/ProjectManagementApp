@@ -3,7 +3,7 @@ package com.prokopovich.projectmanagement.enumeration;
 public enum AccountStatus {
 
     ACTIVE("Active"),
-    LOCKED("Locked"),
+    LOCKED("Blocked"),
     DEACTIVATED("Not active");
 
     private String title;

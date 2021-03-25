@@ -9,13 +9,15 @@ import java.util.List;
 
 public interface AccountService {
 
-    Account addNewAccount(Account newAccount, User newUser, String reason);
+    void addNewAccount(Account newAccount, User newUser, String reason);
 
     boolean editAccount(Account account, User user, String reason);
 
-    Account getByAccountId(int id);
+    boolean changeRole(Account account, String reason);
 
-    List<Account> getAll();
+    boolean changeStatus(User user, String reason, String typeAction);
+
+    Account getByAccountId(int id);
 
     List<Account> getAllByUserRole(String role);
 

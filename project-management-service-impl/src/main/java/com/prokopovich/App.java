@@ -56,9 +56,11 @@ public class App {
         LOGGER.trace("Menu for Administrator shown.");
         while (menuFlag) {
             System.out.println("\nMenu for Administrator:");
-            System.out.println("1) Add new User");
-            System.out.println("2) Edit User");
-            System.out.println("3) Display User");
+            System.out.println("1) Display User");
+            System.out.println("2) Add new User");
+            System.out.println("3) Edit User");
+            System.out.println("4) Change User role");
+            System.out.println("5) Change User status");
             System.out.println("0) Exit");
             System.out.print("Your choice: ");
             while (!INPUT.hasNextInt()) {
@@ -68,13 +70,19 @@ public class App {
             choice = INPUT.nextInt();
             switch(choice) {
                 case 1:
-                    ACCOUNT_CONTROLLER.addUser();
+                    ACCOUNT_CONTROLLER.displayUsersByReporter();
                     break;
                 case 2:
-                    ACCOUNT_CONTROLLER.editUser();
+                    ACCOUNT_CONTROLLER.addUser();
                     break;
                 case 3:
-                    ACCOUNT_CONTROLLER.displayUsersByReporter();
+                    ACCOUNT_CONTROLLER.editUser();
+                    break;
+                case 4:
+                    ACCOUNT_CONTROLLER.changeUserRole();
+                    break;
+                case 5:
+                    ACCOUNT_CONTROLLER.changeUserStatus();
                     break;
                 case 0:
                     LOGGER.trace("Application execution completed.");

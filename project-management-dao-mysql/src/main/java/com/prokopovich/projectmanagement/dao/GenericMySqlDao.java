@@ -81,8 +81,8 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             while (rs.next()) {
                 object = getStatement(rs);
                 LOGGER.debug(object.toString());
+                objectsList.add(object);
             }
-            objectsList.add(object);
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -98,8 +98,8 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             while (rs.next()) {
                 object = getStatement(rs);
                 LOGGER.debug("found objects - " + object.toString());
+                objectsList.add(object);
             }
-            objectsList.add(object);
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
@@ -115,8 +115,8 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             while (rs.next()) {
                 object = getStatement(rs);
                 LOGGER.debug("found objects - " + object.toString());
+                objectsList.add(object);
             }
-            objectsList.add(object);
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }

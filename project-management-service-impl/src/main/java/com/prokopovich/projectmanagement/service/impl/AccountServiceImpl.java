@@ -26,21 +26,20 @@ public class AccountServiceImpl implements AccountService {
             ServiceFactory.getServiceFactory(1).getAccountActionServiceImpl();
 
     @Override
-    public Account addNewAccount(Account newAccount, User newUser, String reason) {
+    public void addNewAccount(Account newAccount, User newUser, String reason) {
         newAccount = ACCOUNT_DAO.create(newAccount, newAccount.getAccountId());
 
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         USER_SERVICE.addNewUser(newUser);
-        setAccountAction(newAccount, reason, AccountActionType.CREATE.getTitle());
-        return newAccount;
+        setAccountAction(newAccount.getAccountId(), reason, AccountActionType.CREATE.getTitle());
     }
 
     @Override
     public boolean editAccount(Account account, User user, String reason) {
         if (ACCOUNT_DAO.update(account)) {
             if (USER_SERVICE.editUser(user)) {
-                setAccountAction(account, reason, AccountActionType.UPDATE.getTitle());
+                setAccountAction(account.getAccountId(), reason, AccountActionType.UPDATE.getTitle());
                 return true;
             } else {
                 return false;
@@ -50,7 +49,27 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    private void setAccountAction(Account account, String reason, String actionType) {
+    @Override
+    public boolean changeRole(Account account, String reason) {
+        if (ACCOUNT_DAO.update(account)) {
+            setAccountAction(account.getAccountId(), reason, AccountActionType.CHANGE_ROLE.getTitle());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean changeStatus(User user, String reason, String typeAction) {
+        if (USER_SERVICE.editUser(user)) {
+            setAccountAction(user.getUserId(), reason, AccountActionType.UPDATE.getTitle());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void setAccountAction(int userId, String reason, String actionType) {
         Action newAction = new Action();
         AccountAction newAccountAction = new AccountAction();
 
@@ -61,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
         newAction = ACTION_SERVICE.addNewAction(newAction);
 
         newAccountAction.setActionId(newAction.getActionId());
-        newAccountAction.setAccountId(account.getAccountId());
+        newAccountAction.setAccountId(userId);
         newAccountAction.setReason(reason);
         newAccountAction.setAction(newAction);
         ACCOUNT_ACTION_SERVICE.addNewAccountAction(newAccountAction);
@@ -70,11 +89,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getByAccountId(int id) {
         return ACCOUNT_DAO.findOne(id);
-    }
-
-    @Override
-    public List<Account> getAll() {
-        return (List<Account>) ACCOUNT_DAO.findAll();
     }
 
     @Override

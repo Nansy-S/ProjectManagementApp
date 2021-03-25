@@ -80,6 +80,6 @@ public class User {
                 ", position = " + position +
                 ", currentStatus = " + currentStatus +
                 ", phone = " + phone +
-                accountInfo.toString();
+                "; " + accountInfo.toString();
     }
 }
