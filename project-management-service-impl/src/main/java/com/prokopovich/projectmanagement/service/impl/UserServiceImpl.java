@@ -1,7 +1,7 @@
 package com.prokopovich.projectmanagement.service.impl;
 
 import com.prokopovich.projectmanagement.dao.UserMySqlDao;
-import com.prokopovich.projectmanagement.factory.DaoFactory;
+import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.UserService;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private static final UserMySqlDao USER_DAO = (UserMySqlDao) DaoFactory.getDAOFactory(1).getUserDao();
+    private static final UserMySqlDao USER_DAO = (UserMySqlDao) DaoFactoryProvider.getDAOFactory(1).getUserDao();
 
     @Override
     public void addNewUser(User user) {

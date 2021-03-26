@@ -1,7 +1,7 @@
 package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.DaoFactory;
+import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import org.apache.log4j.LogManager;
@@ -34,7 +34,7 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
 
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
     private static final AccountActionMySqlDao ACCOUNT_ACTION_DAO =
-            (AccountActionMySqlDao) DaoFactory.getDAOFactory(1).getAccountActionDao();
+            (AccountActionMySqlDao) DaoFactoryProvider.getDAOFactory(1).getAccountActionDao();
 
     public AccountMySqlDao(){
         super(new Account(), new ArrayList<Account>());

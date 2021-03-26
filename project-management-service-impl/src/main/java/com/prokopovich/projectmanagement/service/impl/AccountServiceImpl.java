@@ -3,8 +3,8 @@ package com.prokopovich.projectmanagement.service.impl;
 import com.prokopovich.App;
 import com.prokopovich.projectmanagement.dao.AccountMySqlDao;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
-import com.prokopovich.projectmanagement.factory.DaoFactory;
-import com.prokopovich.projectmanagement.factory.ServiceFactory;
+import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
+import com.prokopovich.projectmanagement.factory.ServiceFactoryProvider;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.model.Action;
@@ -19,11 +19,11 @@ import java.util.List;
 
 public class AccountServiceImpl implements AccountService {
 
-    private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactory.getDAOFactory(1).getAccountDao();
-    private static final UserService USER_SERVICE = ServiceFactory.getServiceFactory(1).getUserServiceImpl();
-    private static final ActionService ACTION_SERVICE = ServiceFactory.getServiceFactory(1).getActionServiceImpl();
+    private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactoryProvider.getDAOFactory(1).getAccountDao();
+    private static final UserService USER_SERVICE = ServiceFactoryProvider.getServiceFactory(1).getUserServiceImpl();
+    private static final ActionService ACTION_SERVICE = ServiceFactoryProvider.getServiceFactory(1).getActionServiceImpl();
     private static final AccountActionService ACCOUNT_ACTION_SERVICE =
-            ServiceFactory.getServiceFactory(1).getAccountActionServiceImpl();
+            ServiceFactoryProvider.getServiceFactory(1).getAccountActionServiceImpl();
 
     @Override
     public void addNewAccount(Account newAccount, User newUser, String reason) {

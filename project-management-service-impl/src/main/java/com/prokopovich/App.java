@@ -2,7 +2,7 @@ package com.prokopovich;
 
 import com.prokopovich.projectmanagement.controller.AccountController;
 import com.prokopovich.projectmanagement.enumeration.UserRole;
-import com.prokopovich.projectmanagement.factory.MySqlServiceFactory;
+import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AuthenticationService;
@@ -19,7 +19,7 @@ public class App {
 
     private static Account currentUser = new Account();
     private static UserRole currentUserRole;
-    private static ServiceFactory service = new MySqlServiceFactory();
+    private static ServiceFactory service = new ServiceFactoryImpl();
     private static AuthenticationService authenticationService = service.getAuthenticationServiceImpl();
 
     public static void main( String[] args ) {

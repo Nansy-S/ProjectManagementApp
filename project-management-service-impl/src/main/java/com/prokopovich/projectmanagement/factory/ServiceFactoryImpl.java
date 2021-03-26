@@ -2,7 +2,7 @@ package com.prokopovich.projectmanagement.factory;
 
 import com.prokopovich.projectmanagement.service.impl.*;
 
-public class MySqlServiceFactory extends ServiceFactory {
+public class ServiceFactoryImpl extends ServiceFactoryProvider {
 
     @Override
     public AuthenticationServiceImpl getAuthenticationServiceImpl() {

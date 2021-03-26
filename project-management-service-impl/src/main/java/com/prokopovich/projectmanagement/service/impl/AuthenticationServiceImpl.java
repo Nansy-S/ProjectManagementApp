@@ -3,7 +3,7 @@ package com.prokopovich.projectmanagement.service.impl;
 import com.prokopovich.App;
 import com.prokopovich.projectmanagement.dao.AccountMySqlDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.DaoFactory;
+import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AuthenticationService;
 import org.apache.log4j.LogManager;
@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
-    private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactory.getDAOFactory(1).getAccountDao();
+    private static final AccountMySqlDao ACCOUNT_DAO = (AccountMySqlDao) DaoFactoryProvider.getDAOFactory(1).getAccountDao();
 
     @Override
     public Account userAuthorization(String login, String password) {

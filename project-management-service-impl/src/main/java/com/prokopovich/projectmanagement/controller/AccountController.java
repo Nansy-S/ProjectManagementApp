@@ -4,7 +4,7 @@ import com.prokopovich.App;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.AccountStatus;
 import com.prokopovich.projectmanagement.enumeration.UserRole;
-import com.prokopovich.projectmanagement.factory.MySqlServiceFactory;
+import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
@@ -23,7 +23,7 @@ public class AccountController {
     private static final Logger LOGGER = LogManager.getLogger(App.class);
     private static final Scanner INPUT = new Scanner(System.in);
 
-    private static ServiceFactory service = new MySqlServiceFactory();
+    private static ServiceFactory service = new ServiceFactoryImpl();
     private static UserService userService = service.getUserServiceImpl();
     private static AccountService accountService = service.getAccountServiceImpl();
 
