@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.factory;
 import com.prokopovich.projectmanagement.dao.*;
 
 public interface DaoFactory {
+
     AccountActionDao getAccountActionDao();
 
     AccountDao getAccountDao();

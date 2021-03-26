@@ -1,6 +1,7 @@
 package com.prokopovich;
 
 import com.prokopovich.projectmanagement.controller.AccountController;
+import com.prokopovich.projectmanagement.controller.ActionController;
 import com.prokopovich.projectmanagement.enumeration.UserRole;
 import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
@@ -16,6 +17,7 @@ public class App {
     private static final Logger LOGGER = LogManager.getLogger(App.class);
     private static final Scanner INPUT = new Scanner(System.in);
     private static final AccountController ACCOUNT_CONTROLLER = new AccountController();
+    private static final ActionController ACTION_CONTROLLER = new ActionController();
 
     private static Account currentUser = new Account();
     private static UserRole currentUserRole;
@@ -61,6 +63,7 @@ public class App {
             System.out.println("3) Edit User");
             System.out.println("4) Change User role");
             System.out.println("5) Change User status");
+            System.out.println("6) Display history action");
             System.out.println("0) Exit");
             System.out.print("Your choice: ");
             while (!INPUT.hasNextInt()) {
@@ -83,6 +86,9 @@ public class App {
                     break;
                 case 5:
                     ACCOUNT_CONTROLLER.changeUserStatus();
+                    break;
+                case 6:
+                    ACTION_CONTROLLER.displayAccountActionByReporter();
                     break;
                 case 0:
                     LOGGER.trace("Application execution completed.");

@@ -2,7 +2,9 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
+import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
+import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -21,11 +23,16 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
             "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE account_id = ?";
+    private static final String SQL_SELECT_BY_REPORTER = "SELECT aa.action_id, aa.account_id, aa.reason, a.type, " +
+            "a.date_time FROM account_actions aa INNER JOIN actions a ON a.action_id = aa.action_id " +
+            "WHERE a.reporter = ?";
     private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT account_id FROM account_actions " +
             "INNER JOIN actions ON actions.action_id = account_actions.action_id WHERE reporter = ? AND type = ?";
     private static final String SQL_CREATE = "INSERT INTO account_actions (action_id, account_id, reason) " +
             "VALUES (?, ?, ?)";
+
     private static final Logger LOGGER = LogManager.getLogger(AccountActionMySqlDao.class);
+    private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final ActionDao actionDao;
 
@@ -80,10 +87,36 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     }
 
     @Override
-    public List<Integer> findAllByReporterAndAction(int reporterId, String action) throws DaoException {
+    public Collection<AccountAction> findAllByReporter(Account reporter) throws DaoException {
+        List<AccountAction> accountActionList = new ArrayList<>();
+        AccountAction accountAction;
+
+        LOGGER.trace("findAllByReporter method is executed - reporterID = " + reporter.getAccountId());
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER)) {
+            statement.setInt(1, reporter.getAccountId());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                accountAction = getStatement(rs);
+                accountAction.getAction().setActionId(accountAction.getActionId());
+                accountAction.getAction().setType(rs.getString(4));
+                accountAction.getAction().setDatetime(CONVERTER.convertToEntityAttribute(rs.getTimestamp(5)));
+                accountAction.getAction().setReporter(reporter.getAccountId());
+                accountAction.getAction().setReporterInfo(reporter);
+                accountActionList.add(accountAction);
+                LOGGER.debug("found action: " + accountAction.toString());
+            }
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
+        return accountActionList;
+    }
+
+    @Override
+    public List<Integer> findUserIdByReporterAndAction(int reporterId, String action) throws DaoException {
         List<Integer> usersId = new ArrayList<>();
 
-        LOGGER.trace("findAllByReporterAndAction method from AccountActionMySqlDao is executed - " +
+        LOGGER.trace("findUserIdByReporterAndAction method is executed - " +
                 "reporterID = " + reporterId + ", action = " + action);
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {

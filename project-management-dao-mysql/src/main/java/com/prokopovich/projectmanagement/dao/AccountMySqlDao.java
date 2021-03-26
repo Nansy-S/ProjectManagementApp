@@ -126,9 +126,9 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         List<Account> accountList = new ArrayList<>();
         Account account;
 
-        LOGGER.trace("findAllByReporterAndAction method from AccountMySqlDao is executed - " +
+        LOGGER.trace("findAllByReporterAndAction method is executed - " +
                 "reporterID = " + reporterId + ", action = " + action);
-        List<Integer> usersId = ACCOUNT_ACTION_DAO.findAllByReporterAndAction(reporterId, action);
+        List<Integer> usersId = ACCOUNT_ACTION_DAO.findUserIdByReporterAndAction(reporterId, action);
         for(int id : usersId) {
             account = findOne(id);
             accountList.add(account);
