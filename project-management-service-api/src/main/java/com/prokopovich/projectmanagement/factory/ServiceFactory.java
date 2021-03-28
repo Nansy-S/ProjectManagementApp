@@ -13,4 +13,16 @@ public interface ServiceFactory {
     AccountService getAccountServiceImpl();
 
     UserService getUserServiceImpl();
+
+    AttachmentService getAttachmentService();
+
+    CommentService getCommentService();
+
+    ProjectService getProjectService();
+
+    ProjectActionService getProjectActionService();
+
+    TaskService getTaskService();
+
+    TaskActionService getTaskActionService();
 }
