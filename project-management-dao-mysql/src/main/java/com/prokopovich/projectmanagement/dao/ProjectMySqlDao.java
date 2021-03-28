@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.dao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Project;
+import com.prokopovich.projectmanagement.model.ProjectAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -28,8 +29,11 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
             "current_status = ? WHERE project_id = ?";
     private static final Logger LOGGER = LogManager.getLogger(ProjectMySqlDao.class);
 
+    private final ProjectActionDao projectActionDao;
+
     public ProjectMySqlDao(){
         super(new Project(), new ArrayList<Project>());
+        projectActionDao = new ProjectActionMySqlDao();
     }
 
     @Override
@@ -61,6 +65,7 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
         project.setSummary(rs.getString(3));
         project.setDueDate(rs.getTimestamp(4));
         project.setCurrentStatus(rs.getString(5));
+        project.setProjectActions((List<ProjectAction>) projectActionDao.findAllByProjectId(project.getProjectId()));
         return project;
     }
 

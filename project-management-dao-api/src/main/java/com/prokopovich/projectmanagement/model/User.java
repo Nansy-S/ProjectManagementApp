@@ -10,7 +10,7 @@ public class User {
     private String currentStatus;
     private String phone;
     private Account accountInfo;
-    List<AccountAction> accountActions;
+    private List<AccountAction> accountActions;
 
     public User() {
         accountInfo = new Account();

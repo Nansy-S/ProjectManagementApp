@@ -2,7 +2,7 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
-import com.prokopovich.projectmanagement.model.Task;
+import com.prokopovich.projectmanagement.model.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -30,8 +30,17 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
             "WHERE project_id = ?";
     private static final Logger LOGGER = LogManager.getLogger(TaskMySqlDao.class);
 
+    private final ProjectDao projectDao;
+    private final AttachmentDao attachmentDao;
+    private final CommentDao commentDao;
+    private final TaskActionDao taskActionDao;
+
     public TaskMySqlDao(){
         super(new Task(), new ArrayList<Task>());
+        projectDao = new ProjectMySqlDao();
+        attachmentDao = new AttachmentMySqlDao();
+        commentDao = new CommentMySqlDao();
+        taskActionDao = new TaskActionMySqlDao();
     }
 
     @Override
@@ -68,6 +77,10 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
         task.setReporter(rs.getInt(8));
         task.setAssignee(rs.getInt(9));
         task.setDescription(rs.getString(10));
+        task.setProjectInfo(projectDao.findOne(task.getProjectId()));
+        task.setAttachmentList((List<Attachment>) attachmentDao.findAllByTaskId(task.getTaskId()));
+        task.setCommentList((List<Comment>) commentDao.findAllByTaskId(task.getTaskId()));
+        task.setTaskActions((List<TaskAction>) taskActionDao.findAllByTaskId(task.getTaskId()));
         return task;
     }
 

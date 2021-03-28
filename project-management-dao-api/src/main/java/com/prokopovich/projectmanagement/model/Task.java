@@ -1,6 +1,8 @@
 package com.prokopovich.projectmanagement.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Task {
 
@@ -15,10 +17,21 @@ public class Task {
     private int assignee;
     private String description;
 
-    public Task() { }
+    private Project projectInfo;
+    private List<Attachment> attachmentList;
+    private List<Comment> commentList;
+    private List<TaskAction> taskActions;
+
+    public Task() {
+        projectInfo = new Project();
+        attachmentList = new ArrayList<>();
+        commentList = new ArrayList<>();
+        taskActions = new ArrayList<>();
+    }
 
     public Task(int taskId, String taskCode, int projectId, String priority, String currentStatus, Timestamp dueDate,
-                int estimationTime, int reporter, int assignee, String description) {
+                int estimationTime, int reporter, int assignee, String description, Project projectInfo,
+                List<Attachment> attachmentList, List<Comment> commentList, List<TaskAction> taskActions) {
         this.taskId = taskId;
         this.taskCode = taskCode;
         this.projectId = projectId;
@@ -29,6 +42,10 @@ public class Task {
         this.reporter = reporter;
         this.assignee = assignee;
         this.description = description;
+        this.projectInfo = projectInfo;
+        this.attachmentList = attachmentList;
+        this.commentList = commentList;
+        this.taskActions = taskActions;
     }
 
     public int getTaskId() {
@@ -111,6 +128,38 @@ public class Task {
         this.description = description;
     }
 
+    public Project getProjectInfo() {
+        return projectInfo;
+    }
+
+    public void setProjectInfo(Project projectInfo) {
+        this.projectInfo = projectInfo;
+    }
+
+    public List<Attachment> getAttachmentList() {
+        return attachmentList;
+    }
+
+    public void setAttachmentList(List<Attachment> attachmentList) {
+        this.attachmentList = attachmentList;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public List<TaskAction> getTaskActions() {
+        return taskActions;
+    }
+
+    public void setTaskActions(List<TaskAction> taskActions) {
+        this.taskActions = taskActions;
+    }
+
     @Override
     public String toString() {
         return "Task: " +
@@ -123,6 +172,8 @@ public class Task {
                 ", estimationTime = " + estimationTime +
                 ", reporter = " + reporter +
                 ", assignee = " + assignee +
-                ", description = " + description + ";";
+                ", description = " + description +
+                "; " + attachmentList.toString() +
+                "; " + commentList.toString();
     }
 }

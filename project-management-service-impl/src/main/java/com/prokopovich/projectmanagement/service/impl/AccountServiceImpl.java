@@ -62,7 +62,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean changeStatus(User user, String reason, String typeAction) {
         if (USER_SERVICE.editUser(user)) {
-            setAccountAction(user.getUserId(), reason, AccountActionType.UPDATE.getTitle());
+            setAccountAction(user.getUserId(), reason, typeAction);
             return true;
         } else {
             return false;
