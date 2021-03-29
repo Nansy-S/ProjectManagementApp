@@ -1,6 +1,6 @@
 package com.prokopovich.projectmanagement.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +9,7 @@ public class Project {
     private int projectId;
     private String projectCode;
     private String summary;
-    private Timestamp dueDate;
+    private LocalDateTime dueDate;
     private String currentStatus;
     private List<ProjectAction> projectActions;
 
@@ -17,7 +17,7 @@ public class Project {
         projectActions = new ArrayList<>();
     }
 
-    public Project(int projectId, String projectCode, String summary, Timestamp dueDate, String currentStatus,
+    public Project(int projectId, String projectCode, String summary, LocalDateTime dueDate, String currentStatus,
                    List<ProjectAction> projectActions) {
         this.projectId = projectId;
         this.projectCode = projectCode;
@@ -51,11 +51,11 @@ public class Project {
         this.summary = summary;
     }
 
-    public Timestamp getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Timestamp dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 

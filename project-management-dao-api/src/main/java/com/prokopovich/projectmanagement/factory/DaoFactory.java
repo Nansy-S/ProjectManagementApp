@@ -16,7 +16,11 @@ public interface DaoFactory {
 
     ProjectDao getProjectDao();
 
+    ProjectActionDao getProjectActionDao();
+
     TaskDao getTaskDao();
+
+    TaskActionDao getTaskActionDao();
 
     UserDao getUserDao();
 }

@@ -4,10 +4,10 @@ public enum ProjectActionType {
 
     CREATE("Create"),
     UPDATE("Update"),
-    CHANGE_STATUS("Change status");
+    DELETE("Delete"),
+    CLOSED("Closed");
 
     private String title;
-    private String accountStatus;
 
     ProjectActionType(String title) {
         this.title = title;

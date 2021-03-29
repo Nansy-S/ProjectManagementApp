@@ -15,5 +15,5 @@ public interface AccountDao extends GenericDao<Account> {
 
     Account findByEmail(String email) throws DaoException;
 
-    Collection<Account> findAllByReporterAndAction(int reporterId, String action);
+    Collection<Account> findAllByReporterAndAction(Account reporter, String actionType);
 }

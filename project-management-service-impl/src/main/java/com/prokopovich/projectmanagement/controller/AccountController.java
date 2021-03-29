@@ -34,7 +34,7 @@ public class AccountController {
 
         LOGGER.trace("displayUsersByReporter method is executed");
         userAccounts = accountService.getAllByReporterAndAction(
-                App.getCurrentUser().getAccountId(), AccountActionType.CREATE.getTitle());
+                App.getCurrentUser(), AccountActionType.CREATE.getTitle());
         System.out.println(" #) email - role ");
         for(Account userAccount: userAccounts) {
             number++;
@@ -73,7 +73,11 @@ public class AccountController {
             System.out.println("\t" + numberAction +
                     ") " + action.getAction().getType() +
                     " - " + ObjectFormat.formattingDateTime(action.getAction().getDatetime()) +
-                    " - " + action.getReason());
+                    " - " + action.getReason() +
+                    " - " + action.getAction().getReporterInfo().getName() +
+                    " " + action.getAction().getReporterInfo().getPatronymic() +
+                    " " + action.getAction().getReporterInfo().getSurname()
+            );
         }
     }
 
@@ -101,7 +105,7 @@ public class AccountController {
         newUser.setPhone(INPUT.nextLine());
         System.out.print("Enter a reason to add new account: ");
         String reason = INPUT.nextLine();
-        accountService.addNewAccount(newAccount, newUser, reason);
+        accountService.addNewAccount(newAccount, App.getCurrentUser(), newUser, reason);
         LOGGER.trace("new user added");
     }
 
@@ -145,7 +149,7 @@ public class AccountController {
             }
             System.out.print("Enter a reason to edit: ");
             String reason = INPUT.nextLine();
-            if(accountService.editAccount(account, user, reason)) {
+            if(accountService.editAccount(account, App.getCurrentUser(), user, reason)) {
                 LOGGER.trace("new user information - " + user.toString());
                 LOGGER.trace("user information successfully edited");
             }
@@ -187,7 +191,7 @@ public class AccountController {
             System.out.print("Enter a reason to change user status: ");
             String reason = INPUT.nextLine();
             reason = INPUT.nextLine();
-            if(accountService.changeStatus(user, reason, typeAction)) {
+            if(accountService.changeStatus(user, App.getCurrentUser(), reason, typeAction)) {
                 LOGGER.trace("new user status - " + user.getCurrentStatus());
                 LOGGER.trace("user status successfully edited");
             }
@@ -207,7 +211,7 @@ public class AccountController {
             System.out.print("Enter a reason to change role: ");
             String reason = INPUT.nextLine();
             reason = INPUT.nextLine();
-            if(accountService.changeRole(account, reason)) {
+            if(accountService.changeRole(account, App.getCurrentUser(), reason)) {
                 LOGGER.trace("new user role - " + account.getRole());
                 LOGGER.trace("user role successfully edited");
             } else {

@@ -30,34 +30,52 @@ public class MySqlDaoFactory extends DaoFactoryProvider {
         return dataSource.getConnection();
     }
 
+    @Override
     public AccountActionDao getAccountActionDao() {
         return new AccountActionMySqlDao();
     }
 
+    @Override
     public AccountDao getAccountDao() {
         return new AccountMySqlDao();
     }
 
+    @Override
     public ActionDao getActionDao() {
         return new ActionMySqlDao();
     }
 
+    @Override
     public AttachmentDao getAttachmentDao() {
         return new AttachmentMySqlDao();
     }
 
+    @Override
     public CommentDao getCommentDao() {
         return new CommentMySqlDao();
     }
 
+    @Override
     public ProjectDao getProjectDao() {
         return new ProjectMySqlDao();
     }
 
+    @Override
+    public ProjectActionDao getProjectActionDao() {
+        return new ProjectActionMySqlDao();
+    }
+
+    @Override
     public TaskDao getTaskDao() {
         return new TaskMySqlDao();
     }
 
+    @Override
+    public TaskActionDao getTaskActionDao() {
+        return new TaskActionMySqlDao();
+    }
+
+    @Override
     public UserDao getUserDao() {
         return new UserMySqlDao();
     }

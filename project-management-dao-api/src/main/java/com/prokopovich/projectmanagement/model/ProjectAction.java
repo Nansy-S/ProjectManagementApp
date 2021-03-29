@@ -4,12 +4,14 @@ public class ProjectAction {
 
     private int actionId;
     private int projectId;
+    private Action action;
 
     public ProjectAction() { }
 
-    public ProjectAction(int actionId, int projectId) {
+    public ProjectAction(int actionId, int projectId, Action action) {
         this.actionId = actionId;
         this.projectId = projectId;
+        this.action = action;
     }
 
     public int getActionId() {
@@ -26,6 +28,14 @@ public class ProjectAction {
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
     }
 
     @Override

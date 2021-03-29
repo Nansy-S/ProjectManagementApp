@@ -23,11 +23,9 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
             "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE account_id = ?";
-    private static final String SQL_SELECT_BY_REPORTER = "SELECT aa.action_id, aa.account_id, aa.reason, a.type, " +
-            "a.date_time FROM account_actions aa INNER JOIN actions a ON a.action_id = aa.action_id " +
-            "WHERE a.reporter = ?";
-    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT account_id FROM account_actions " +
-            "INNER JOIN actions ON actions.action_id = account_actions.action_id WHERE reporter = ? AND type = ?";
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT aa.action_id, aa.account_id, aa.reason, " +
+            "a.type, a.date_time FROM account_actions aa INNER JOIN actions a ON a.action_id = aa.action_id " +
+            "WHERE a.reporter = ? AND a.type LIKE ?";
     private static final String SQL_CREATE = "INSERT INTO account_actions (action_id, account_id, reason) " +
             "VALUES (?, ?, ?)";
 
@@ -87,49 +85,32 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     }
 
     @Override
-    public Collection<AccountAction> findAllByReporter(Account reporter) throws DaoException {
-        List<AccountAction> accountActionList = new ArrayList<>();
+    public Collection<AccountAction> findAllByReporterAndAction(Account reporter, String actionType)
+                throws DaoException {
         AccountAction accountAction;
+        List<AccountAction> accountActionList = new ArrayList<>();
 
-        LOGGER.trace("findAllByReporter method is executed - reporterID = " + reporter.getAccountId());
+        LOGGER.trace("findUserIdByReporterAndAction method is executed - " +
+                "reporterID = " + reporter.getAccountId() + ", action = " + actionType);
         try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER)) {
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
             statement.setInt(1, reporter.getAccountId());
+            statement.setString(2, "%" + actionType);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 accountAction = getStatement(rs);
                 accountAction.getAction().setActionId(accountAction.getActionId());
                 accountAction.getAction().setType(rs.getString(4));
-                accountAction.getAction().setDatetime(CONVERTER.convertToEntityAttribute(rs.getTimestamp(5)));
+                accountAction.getAction().setDatetime(
+                        CONVERTER.convertToEntityAttribute(rs.getTimestamp(5)));
                 accountAction.getAction().setReporter(reporter.getAccountId());
                 accountAction.getAction().setReporterInfo(reporter);
                 accountActionList.add(accountAction);
-                LOGGER.debug("found action: " + accountAction.toString());
             }
+            LOGGER.debug("found actions: " + accountActionList.toString());
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
         return accountActionList;
-    }
-
-    @Override
-    public List<Integer> findUserIdByReporterAndAction(int reporterId, String action) throws DaoException {
-        List<Integer> usersId = new ArrayList<>();
-
-        LOGGER.trace("findUserIdByReporterAndAction method is executed - " +
-                "reporterID = " + reporterId + ", action = " + action);
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
-            statement.setInt(1, reporterId);
-            statement.setString(2, action);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                usersId.add(rs.getInt(1));
-            }
-            LOGGER.debug("usersId: " + usersId);
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
-        return usersId;
     }
 }

@@ -5,13 +5,10 @@ import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface AccountActionDao extends GenericDao<AccountAction> {
 
     Collection<AccountAction> findAllByAccountId(int accountId) throws DaoException;
 
-    Collection<AccountAction> findAllByReporter(Account reporter) throws DaoException;
-
-    List<Integer> findUserIdByReporterAndAction(int reporterId, String action) throws DaoException;
+    Collection<AccountAction> findAllByReporterAndAction(Account reporter, String action) throws DaoException;
 }

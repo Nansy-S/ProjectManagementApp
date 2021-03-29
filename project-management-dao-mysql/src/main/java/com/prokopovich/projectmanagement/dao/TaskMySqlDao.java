@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.dao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.*;
+import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -28,7 +29,9 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
     private static final String SQL_UPDATE = "UPDATE tasks SET task_code = ?, project_id = ?, priority = ?, " +
             "current_status = ?, due_date = ?, estimation_time = ?, reporter = ?, assignee = ?, description = ? " +
             "WHERE project_id = ?";
+
     private static final Logger LOGGER = LogManager.getLogger(TaskMySqlDao.class);
+    private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final ProjectDao projectDao;
     private final AttachmentDao attachmentDao;
@@ -72,7 +75,7 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
         task.setProjectId(rs.getInt(3));
         task.setPriority(rs.getString(4));
         task.setCurrentStatus(rs.getString(5));
-        task.setDueDate(rs.getTimestamp(6));
+        task.setDueDate(CONVERTER.convertToEntityAttribute(rs.getTimestamp(3)));
         task.setEstimationTime(rs.getInt(7));
         task.setReporter(rs.getInt(8));
         task.setAssignee(rs.getInt(9));
@@ -90,7 +93,7 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
         statement.setInt(2, task.getProjectId());
         statement.setString(3, task.getPriority());
         statement.setString(4, task.getCurrentStatus());
-        statement.setTimestamp(5, task.getDueDate());
+        statement.setTimestamp(5, CONVERTER.convertToDatabaseColumn(task.getDueDate()));
         statement.setInt(6, task.getEstimationTime());
         statement.setInt(7, task.getReporter());
         statement.setInt(8, task.getAssignee());

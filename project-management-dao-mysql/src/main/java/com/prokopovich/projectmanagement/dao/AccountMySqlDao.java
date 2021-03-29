@@ -4,6 +4,7 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.AccountAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -122,18 +123,20 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     }
 
     @Override
-    public Collection<Account> findAllByReporterAndAction(int reporterId, String action) {
-        List<Account> accountList = new ArrayList<>();
+    public Collection<Account> findAllByReporterAndAction(Account reporter, String actionType) {
         Account account;
+        List<Account> accountList = new ArrayList<>();
+        List<AccountAction> accountActionList;
 
         LOGGER.trace("findAllByReporterAndAction method is executed - " +
-                "reporterID = " + reporterId + ", action = " + action);
-        List<Integer> usersId = ACCOUNT_ACTION_DAO.findUserIdByReporterAndAction(reporterId, action);
-        for(int id : usersId) {
-            account = findOne(id);
+                "reporterID = " + reporter.getAccountId() + ", actionType = " + actionType);
+        accountActionList = (List<AccountAction>) ACCOUNT_ACTION_DAO.findAllByReporterAndAction(
+                reporter, actionType);
+        for(AccountAction action : accountActionList) {
+            account = findOne(action.getAccountId());
             accountList.add(account);
         }
-        LOGGER.trace("users by reporter - " + accountList.toString());
+        LOGGER.trace("found users by reporter - " + accountList.toString());
         return accountList;
     }
 }

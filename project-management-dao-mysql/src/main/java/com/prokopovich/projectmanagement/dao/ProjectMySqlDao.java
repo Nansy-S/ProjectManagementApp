@@ -2,8 +2,8 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
-import com.prokopovich.projectmanagement.model.Project;
-import com.prokopovich.projectmanagement.model.ProjectAction;
+import com.prokopovich.projectmanagement.model.*;
+import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -27,7 +27,9 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE projects SET project_code = ?, summary = ?, due_date = ?, "+
             "current_status = ? WHERE project_id = ?";
+
     private static final Logger LOGGER = LogManager.getLogger(ProjectMySqlDao.class);
+    private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final ProjectActionDao projectActionDao;
 
@@ -63,7 +65,7 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
         project.setProjectId(rs.getInt(1));
         project.setProjectCode(rs.getString(2));
         project.setSummary(rs.getString(3));
-        project.setDueDate(rs.getTimestamp(4));
+        project.setDueDate(CONVERTER.convertToEntityAttribute(rs.getTimestamp(4)));
         project.setCurrentStatus(rs.getString(5));
         project.setProjectActions((List<ProjectAction>) projectActionDao.findAllByProjectId(project.getProjectId()));
         return project;
@@ -73,12 +75,12 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
     public void setStatement(Project project, PreparedStatement statement) throws SQLException {
         statement.setString(1, project.getProjectCode());
         statement.setString(2, project.getSummary());
-        statement.setTimestamp(3, project.getDueDate());
+        statement.setTimestamp(3, CONVERTER.convertToDatabaseColumn(project.getDueDate()));
         statement.setString(4, project.getCurrentStatus());
     }
 
     @Override
-    public boolean updateProject(Project project) throws DaoException {
+    public boolean update(Project project) throws DaoException {
         LOGGER.trace("update project method is executed");
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
@@ -96,5 +98,44 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
         List<Project> projects = (List<Project>) findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
         return projects;
+    }
+
+    @Override
+    public Collection<Project> findAllByReporterAndAction(Account reporter, String actionType) {
+        Project project;
+        List<Project> projectList = new ArrayList<>();
+        List<ProjectAction> projectActionList;
+
+        LOGGER.trace("findAllByReporterAndAction method is executed - " +
+                "reporterID = " + reporter.getAccountId() + ", actionType = " + actionType);
+        projectActionList = (List<ProjectAction>) projectActionDao.findAllByReporterAndAction(
+                reporter, actionType);
+        for (ProjectAction action : projectActionList) {
+            project = findOne(action.getProjectId());
+            projectList.add(project);
+        }
+        LOGGER.trace("found projects by reporter - " + projectList.toString());
+        return projectList;
+    }
+
+    @Override
+    public Collection<Project> findAllByReporterAndStatus(Account reporter, String ... statuses) throws DaoException {
+        Project project;
+        List<Project> projectList = new ArrayList<>();
+        List<ProjectAction> projectActionList;
+
+        LOGGER.trace("findAllByReporterAndAction method is executed - " +
+                "reporterID = " + reporter.getAccountId() + ", project status = " + statuses.toString());
+        projectActionList = (List<ProjectAction>) projectActionDao.findAllByReporterAndAction(
+                reporter, "Create");
+        for (ProjectAction action : projectActionList) {
+            project = findOne(action.getProjectId());
+            for (String status : statuses) {
+                if (project.getCurrentStatus().equals(status)) {
+                    projectList.add(project);
+                }
+            }
+        }
+        return projectList;
     }
 }
