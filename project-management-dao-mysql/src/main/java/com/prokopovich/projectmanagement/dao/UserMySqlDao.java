@@ -35,7 +35,7 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     private final AccountActionDao accountActionDao;
 
     public UserMySqlDao() {
-        super(new User(), new ArrayList<User>());
+        super();
         accountDao = new AccountMySqlDao();
         accountActionDao = new AccountActionMySqlDao();
     }

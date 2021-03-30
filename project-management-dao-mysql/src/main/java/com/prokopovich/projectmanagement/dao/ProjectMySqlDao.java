@@ -34,7 +34,7 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
     private final ProjectActionDao projectActionDao;
 
     public ProjectMySqlDao(){
-        super(new Project(), new ArrayList<Project>());
+        super();
         projectActionDao = new ProjectActionMySqlDao();
     }
 

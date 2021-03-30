@@ -33,7 +33,7 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     private static final Logger LOGGER = LogManager.getLogger(CommentMySqlDao.class);
 
     public CommentMySqlDao(){
-        super(new Comment(), new ArrayList<Comment>());
+        super();
     }
 
     @Override

@@ -38,7 +38,7 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
             (AccountActionMySqlDao) DaoFactoryProvider.getDAOFactory(1).getAccountActionDao();
 
     public AccountMySqlDao(){
-        super(new Account(), new ArrayList<Account>());
+        super();
     }
 
     @Override

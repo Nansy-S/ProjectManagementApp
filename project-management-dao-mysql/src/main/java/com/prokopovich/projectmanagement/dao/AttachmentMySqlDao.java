@@ -27,7 +27,7 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     private static final Logger LOGGER = LogManager.getLogger(AttachmentMySqlDao.class);
 
     public AttachmentMySqlDao(){
-        super(new Attachment(), new ArrayList<Attachment>());
+        super();
     }
 
     @Override

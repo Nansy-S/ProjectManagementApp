@@ -6,6 +6,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,13 +14,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(GenericMySqlDao.class);
 
-    T object;
-    List<T> objectsList;
-
-    GenericMySqlDao(T object, List<T> objectsList) {
-        this.object = object;
-        this.objectsList = objectsList;
-    }
+    GenericMySqlDao() { }
 
     protected abstract T getStatement(ResultSet rs) throws SQLException;
 
@@ -51,13 +46,15 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
-        T ob = findOne(id);
-        LOGGER.debug("new added object - " + ob.toString());
-        return ob;
+        T newObject = findOne(id);
+        LOGGER.debug("new added object - " + newObject.toString());
+        return newObject;
     }
 
     @Override
     public T findOne(int id) {
+        T object = null;
+
         String sql = getSqlSelectOne();
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -74,6 +71,9 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     @Override
     public Collection<T> findAll() {
+        T object;
+        List<T> objectsList = new ArrayList<>();
+
         String sql = getSqlSelectAll();
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -91,6 +91,9 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     @Override
     public Collection<T> findByParameter(String sql, String parameter) {
+        T object;
+        List<T> objectsList = new ArrayList<>();
+
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, parameter);
@@ -108,6 +111,9 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     @Override
     public Collection<T> findByParameter(String sql, int parameter) {
+        T object;
+        List<T> objectsList = new ArrayList<>();
+
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, parameter);

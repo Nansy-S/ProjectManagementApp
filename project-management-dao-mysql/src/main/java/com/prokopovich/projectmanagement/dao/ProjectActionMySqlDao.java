@@ -22,8 +22,8 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
             "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_PROJECT = "SELECT action_id, project_id FROM project_actions " +
             "WHERE project_id = ?";
-    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT a.action_id, a.type, a.date_time, a.reporter, " +
-            "pa.project_id FROM project_actions pa INNER JOIN actions a ON a.action_id = pa.action_id " +
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT pa.action_id, pa.project_id " +
+            "FROM project_actions pa INNER JOIN actions a ON a.action_id = pa.action_id " +
             "WHERE a.reporter = ? AND a.type LIKE ?";
     private static final String SQL_CREATE = "INSERT INTO project_actions (action_id, project_id) VALUES (?, ?)";
 
@@ -33,7 +33,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     private final ActionMySqlDao actionDao;
 
     public ProjectActionMySqlDao() {
-        super(new ProjectAction(), new ArrayList<ProjectAction>());
+        super();
         actionDao = new ActionMySqlDao();
     }
 
@@ -82,7 +82,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
 
     @Override
     public Collection<ProjectAction> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException {
-        ProjectAction projectAction = new ProjectAction();
+        ProjectAction projectAction;
         Collection<ProjectAction> projectActionList = new ArrayList<>();
 
         LOGGER.trace("findAllByReporterAndAction method is executed - " +
@@ -93,9 +93,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
             statement.setString(2, "%" + actionType);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                projectAction.setAction(actionDao.getStatement(rs));
-                projectAction.setActionId(rs.getInt(1));
-                projectAction.setProjectId(rs.getInt(5));
+                projectAction = getStatement(rs);
                 projectActionList.add(projectAction);
                 LOGGER.debug("found actions: " + projectAction.toString());
             }

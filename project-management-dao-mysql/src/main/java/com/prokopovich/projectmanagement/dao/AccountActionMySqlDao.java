@@ -35,7 +35,7 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     private final ActionDao actionDao;
 
     public AccountActionMySqlDao() {
-        super(new AccountAction(), new ArrayList<AccountAction>());
+        super();
         actionDao = new ActionMySqlDao();
     }
 

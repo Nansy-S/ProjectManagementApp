@@ -21,7 +21,7 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     private static final Logger LOGGER = LogManager.getLogger(TaskActionMySqlDao.class);
 
     public TaskActionMySqlDao(){
-        super(new TaskAction(), new ArrayList<TaskAction>());
+        super();
     }
 
     @Override

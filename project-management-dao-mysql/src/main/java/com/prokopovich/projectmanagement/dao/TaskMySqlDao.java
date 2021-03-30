@@ -39,7 +39,7 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
     private final TaskActionDao taskActionDao;
 
     public TaskMySqlDao(){
-        super(new Task(), new ArrayList<Task>());
+        super();
         projectDao = new ProjectMySqlDao();
         attachmentDao = new AttachmentMySqlDao();
         commentDao = new CommentMySqlDao();

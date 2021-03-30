@@ -1,6 +1,6 @@
 package com.prokopovich.projectmanagement.controller;
 
-import com.prokopovich.App; 
+import com.prokopovich.App;
 import com.prokopovich.projectmanagement.enumeration.ProjectActionType;
 import com.prokopovich.projectmanagement.enumeration.ProjectStatus;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
@@ -53,15 +53,15 @@ public class ProjectController {
         return chosenProject;
     }
 
-    public void displayProjectInfo(int id) {
+    public void displayProjectInfo(int projectId) {
         int numberAction = 0;
 
         LOGGER.trace("displayProjectInfo method is executed");
-        Project project = projectService.getByProjectId(id);
+        Project project = projectService.getByProjectId(projectId);
         System.out.println("Project info:" +
                 "\n\tproject code: " + project.getProjectCode() +
                 "\n\tstatus: " + project.getCurrentStatus() +
-                "\n\tdue date: " + project.getDueDate() +
+                "\n\tdue date: " + ObjectFormat.formattingDateTime(project.getDueDate()) +
                 "\n\tsummary: " + project.getSummary());
         System.out.println("Actions: ");
         for (ProjectAction action : project.getProjectActions()) {

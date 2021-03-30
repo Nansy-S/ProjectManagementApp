@@ -117,7 +117,7 @@ public class App {
             System.out.println("1) Display Project");
             System.out.println("2) Add new Project");
             System.out.println("3) Edit Project");
-            System.out.println("4) Change Project Status");
+            System.out.println("4) Delete Project");
             System.out.println("0) Exit");
             System.out.print("Your choice: ");
             while (!INPUT.hasNextInt()) {
@@ -136,7 +136,7 @@ public class App {
                     PROJECT_CONTROLLER.editProject();
                     break;
                 case 4:
-                    PROJECT_CONTROLLER.editProject();
+                    PROJECT_CONTROLLER.deleteProject();
                     break;
                 case 0:
                     LOGGER.trace("Application execution completed.");
