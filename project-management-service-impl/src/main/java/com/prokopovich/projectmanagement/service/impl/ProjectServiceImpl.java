@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.service.impl;
 
-import com.prokopovich.App;
 import com.prokopovich.projectmanagement.dao.ProjectDao;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.ProjectActionType;

@@ -5,6 +5,7 @@ import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
+import com.prokopovich.projectmanagement.model.Attachment;
 import com.prokopovich.projectmanagement.service.AccountActionService;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.impl.AccountActionServiceImpl;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class ActionController {
 
-    private static final Logger LOGGER = LogManager.getLogger(App.class);
+    private static final Logger LOGGER = LogManager.getLogger(ActionController.class);
 
     private static ServiceFactory service = new ServiceFactoryImpl();
     private static AccountActionService accountActionService = new AccountActionServiceImpl();

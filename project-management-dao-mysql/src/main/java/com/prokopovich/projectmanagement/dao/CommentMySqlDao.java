@@ -117,6 +117,10 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     public Collection<Comment> findAllByAuthor(int author) throws DaoException {
         LOGGER.trace("findAllByAuthor method is executed - authorId = " + author);
         List<Comment> comments = (List<Comment>) findByParameter(SQL_SELECT_BY_AUTHOR, author);
-        return comments;
+        if (comments.isEmpty()) {
+            return null;
+        } else {
+            return comments;
+        }
     }
 }

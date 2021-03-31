@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class ProjectController {
 
-    private static final Logger LOGGER = LogManager.getLogger(App.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProjectController.class);
     private static final Scanner INPUT = new Scanner(System.in);
 
     private static ServiceFactory service = new ServiceFactoryImpl();
@@ -36,43 +36,58 @@ public class ProjectController {
         }
     }
 
-    public Project displayProjectsByReporter() {
-        List<Project> projectList;
-        Project chosenProject = new Project();
-
+    public List<Project> displayProjectsByReporter() {
         LOGGER.trace("displayProjectsByReporter method is executed");
-        projectList = projectService.getAllByReporterAndAction(App.getCurrentUser(), "Create");
+        List<Project> projectList = projectService.getAllByReporterAndAction(App.getCurrentUser(),
+                ProjectActionType.CREATE.getTitle());
         displayProjects(projectList);
+
+        return projectList;
+    }
+
+    public List<Project> displayActiveProjects() {
+        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser(),
+                ProjectStatus.OPEN.getTitle(), ProjectStatus.IN_PROGRESS.getTitle());
+        displayProjects(projectList);
+        return projectList;
+    }
+
+    public Project chooseProject(List<Project> projectList) {
+        Project project;
+
         System.out.print("Enter record number to view (edit) detailed information or 0 to exit: ");
         int chosenProjectNumber = INPUT.nextInt();
         if (chosenProjectNumber != 0) {
             chosenProjectNumber--;
-            chosenProject = projectList.get(chosenProjectNumber);
-            displayProjectInfo(chosenProject.getProjectId());
+            project = projectList.get(chosenProjectNumber);
+            return project;
         }
-        return chosenProject;
+        else {
+            return null;
+        }
     }
 
-    public void displayProjectInfo(int projectId) {
+    public void displayProjectInfo(Project project) {
         int numberAction = 0;
 
         LOGGER.trace("displayProjectInfo method is executed");
-        Project project = projectService.getByProjectId(projectId);
-        System.out.println("Project info:" +
-                "\n\tproject code: " + project.getProjectCode() +
-                "\n\tstatus: " + project.getCurrentStatus() +
-                "\n\tdue date: " + ObjectFormat.formattingDateTime(project.getDueDate()) +
-                "\n\tsummary: " + project.getSummary());
-        System.out.println("Actions: ");
-        for (ProjectAction action : project.getProjectActions()) {
-            numberAction++;
-            System.out.println("\t" + numberAction +
-                    ") " + action.getAction().getType() +
-                    " - " + ObjectFormat.formattingDateTime(action.getAction().getDatetime()) +
-                    " - " + action.getAction().getReporterInfo().getName() +
-                    " " + action.getAction().getReporterInfo().getPatronymic() +
-                    " " + action.getAction().getReporterInfo().getSurname()
-            );
+        if (project != null) {
+            System.out.println("Project info:" +
+                    "\n\tproject code: " + project.getProjectCode() +
+                    "\n\tstatus: " + project.getCurrentStatus() +
+                    "\n\tdue date: " + ObjectFormat.formattingDateTime(project.getDueDate()) +
+                    "\n\tsummary: " + project.getSummary());
+            System.out.println("Actions: ");
+            for (ProjectAction action : project.getProjectActions()) {
+                numberAction++;
+                System.out.println("\t" + numberAction +
+                        ") " + action.getAction().getType() +
+                        " - " + ObjectFormat.formattingDateTime(action.getAction().getDatetime()) +
+                        " - " + action.getAction().getReporterInfo().getName() +
+                        " " + action.getAction().getReporterInfo().getPatronymic() +
+                        " " + action.getAction().getReporterInfo().getSurname()
+                );
+            }
         }
     }
 
@@ -96,34 +111,38 @@ public class ProjectController {
 
     public void editProject() {
         LOGGER.trace("editProject method is executed");
-        Project project = displayProjectsByReporter();
-        System.out.println("Do you want to edit information about this project? (1 - Yes, 2 - No)");
-        int choice = INPUT.nextInt();
-        if (choice == 1) {
-            LOGGER.trace("old project information - " + project.toString());
-            System.out.println("Select a field to edit:");
-            System.out.println("1) due date \n2) summary \nYour choice: ");
-            int chosenField = INPUT.nextInt();
-            System.out.print("Enter a new value: ");
-            INPUT.nextLine();
-            switch (chosenField) {
-                case 1:
-                    String dateTime = INPUT.nextLine();
-                    project.setDueDate(ObjectFormat.formattingInputDateTime(dateTime));
-                    break;
-                case 2:
-                    project.setSummary(INPUT.nextLine());
-                    break;
-                default:
-                    System.out.println("Invalid character! Try again.");
-                    break;
+        List<Project> projectList = displayProjectsByReporter();
+        Project project = chooseProject(projectList);
+        if (project != null) {
+            displayProjectInfo(project);
+            System.out.println("Do you want to edit information about this project? (1 - Yes, 2 - No)");
+            int choice = INPUT.nextInt();
+            if (choice == 1) {
+                LOGGER.trace("old project information - " + project.toString());
+                System.out.println("Select a field to edit:");
+                System.out.println("1) due date \n2) summary \nYour choice: ");
+                int chosenField = INPUT.nextInt();
+                System.out.print("Enter a new value: ");
+                INPUT.nextLine();
+                switch (chosenField) {
+                    case 1:
+                        String dateTime = INPUT.nextLine();
+                        project.setDueDate(ObjectFormat.formattingInputDateTime(dateTime));
+                        break;
+                    case 2:
+                        project.setSummary(INPUT.nextLine());
+                        break;
+                    default:
+                        System.out.println("Invalid character! Try again.");
+                        break;
+                }
+                if (projectService.editProject(project, App.getCurrentUser())) {
+                    LOGGER.trace("new project information - " + project.toString());
+                    LOGGER.trace("project information successfully edited");
+                }
+            } else {
+                LOGGER.trace("cancel editing");
             }
-            if(projectService.editProject(project, App.getCurrentUser())) {
-                LOGGER.trace("new project information - " + project.toString());
-                LOGGER.trace("project information successfully edited");
-            }
-        } else {
-            LOGGER.trace("cancel editing");
         }
     }
 

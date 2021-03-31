@@ -26,9 +26,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
             "FROM project_actions pa INNER JOIN actions a ON a.action_id = pa.action_id " +
             "WHERE a.reporter = ? AND a.type LIKE ?";
     private static final String SQL_CREATE = "INSERT INTO project_actions (action_id, project_id) VALUES (?, ?)";
-
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionMySqlDao.class);
-    private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final ActionMySqlDao actionDao;
 

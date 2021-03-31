@@ -20,7 +20,7 @@ import java.util.Scanner;
 
 public class AccountController {
 
-    private static final Logger LOGGER = LogManager.getLogger(App.class);
+    private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
     private static final Scanner INPUT = new Scanner(System.in);
 
     private static ServiceFactory service = new ServiceFactoryImpl();
@@ -223,9 +223,9 @@ public class AccountController {
     public String enterUserRole() {
         String role = "role";
 
-        System.out.print("choose role: \n\t\t1) " + UserRole.MANAGER.getTitle() +
+        System.out.println("choose role: \n\t\t1) " + UserRole.MANAGER.getTitle() +
                 "\n\t\t2) " + UserRole.DEVELOPER.getTitle() +
-                "\n\t\t3) " + UserRole.TESTER.getTitle() + "\n");
+                "\n\t\t3) " + UserRole.TESTER.getTitle());
         int chosenRole = INPUT.nextInt();
         switch (chosenRole) {
             case 1:

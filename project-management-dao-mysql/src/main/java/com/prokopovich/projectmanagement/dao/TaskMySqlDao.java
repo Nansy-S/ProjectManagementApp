@@ -11,23 +11,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
 
     private static final String SQL_SELECT_ALL = "SELECT task_id, task_code, project_id, priority, current_status, " +
-            "due_date, estimation_time, reporter, assignee, description FROM tasks";
-    private static final String SQL_SELECT_ONE = SQL_SELECT_ALL + " WHERE task_id = ?";
-    private static final String SQL_SELECT_BY_PROJECT = SQL_SELECT_ALL + " WHERE project_id = ?";
-    private static final String SQL_SELECT_BY_ASSIGNEE = SQL_SELECT_ALL + " WHERE assignee = ?";
-    private static final String SQL_SELECT_BY_REPORTER = SQL_SELECT_ALL + " WHERE reporter = ?";
-    private static final String SQL_SELECT_BY_STATUS = SQL_SELECT_ALL + " WHERE current_status = ?";
+            "due_date, estimation_time, assignee, description FROM tasks";
+    private static final String SQL_SELECT_ONE = "SELECT task_id, task_code, project_id, priority, current_status, " +
+            "due_date, estimation_time, assignee, description FROM tasks WHERE task_id = ?";
+    private static final String SQL_SELECT_BY_PROJECT = "SELECT task_id, task_code, project_id, priority, " +
+            "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE project_id = ?";
+    private static final String SQL_SELECT_BY_ASSIGNEE = "SELECT task_id, task_code, project_id, priority, " +
+            "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE assignee = ?";
+    private static final String SQL_SELECT_BY_REPORTER = "SELECT task_id, task_code, project_id, priority, " +
+            "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE reporter = ?";
+    private static final String SQL_SELECT_BY_STATUS = "SELECT task_id, task_code, project_id, priority, " +
+            "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE current_status = ?";
     private static final String SQL_CREATE = "INSERT INTO tasks (task_code, project_id, priority, current_status, " +
-            "due_date, estimation_time, reporter, assignee, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "due_date, estimation_time, assignee, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE tasks SET task_code = ?, project_id = ?, priority = ?, " +
-            "current_status = ?, due_date = ?, estimation_time = ?, reporter = ?, assignee = ?, description = ? " +
+            "current_status = ?, due_date = ?, estimation_time = ?, assignee = ?, description = ? " +
             "WHERE project_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(TaskMySqlDao.class);
@@ -75,11 +79,10 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
         task.setProjectId(rs.getInt(3));
         task.setPriority(rs.getString(4));
         task.setCurrentStatus(rs.getString(5));
-        task.setDueDate(CONVERTER.convertToEntityAttribute(rs.getTimestamp(3)));
+        task.setDueDate(CONVERTER.convertToEntityAttribute(rs.getTimestamp(6)));
         task.setEstimationTime(rs.getInt(7));
-        task.setReporter(rs.getInt(8));
-        task.setAssignee(rs.getInt(9));
-        task.setDescription(rs.getString(10));
+        task.setAssignee(rs.getInt(8));
+        task.setDescription(rs.getString(9));
         task.setProjectInfo(projectDao.findOne(task.getProjectId()));
         task.setAttachmentList((List<Attachment>) attachmentDao.findAllByTaskId(task.getTaskId()));
         task.setCommentList((List<Comment>) commentDao.findAllByTaskId(task.getTaskId()));
@@ -95,9 +98,8 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
         statement.setString(4, task.getCurrentStatus());
         statement.setTimestamp(5, CONVERTER.convertToDatabaseColumn(task.getDueDate()));
         statement.setInt(6, task.getEstimationTime());
-        statement.setInt(7, task.getReporter());
-        statement.setInt(8, task.getAssignee());
-        statement.setString(9, task.getDescription());
+        statement.setInt(7, task.getAssignee());
+        statement.setString(8, task.getDescription());
     }
 
     @Override
@@ -106,7 +108,7 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             setStatement(task, statement);
-            statement.setInt(10, task.getTaskId());
+            statement.setInt(9, task.getTaskId());
             statement.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException(ex);

@@ -3,14 +3,18 @@ package com.prokopovich;
 import com.prokopovich.projectmanagement.controller.AccountController;
 import com.prokopovich.projectmanagement.controller.ActionController;
 import com.prokopovich.projectmanagement.controller.ProjectController;
+import com.prokopovich.projectmanagement.controller.TaskController;
 import com.prokopovich.projectmanagement.enumeration.UserRole;
 import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.Project;
+import com.prokopovich.projectmanagement.model.Task;
 import com.prokopovich.projectmanagement.service.AuthenticationService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -20,6 +24,7 @@ public class App {
     private static final AccountController ACCOUNT_CONTROLLER = new AccountController();
     private static final ProjectController PROJECT_CONTROLLER = new ProjectController();
     private static final ActionController ACTION_CONTROLLER = new ActionController();
+    private static final TaskController TASK_CONTROLLER = new TaskController();
 
     private static Account currentUser = new Account();
     private static UserRole currentUserRole;
@@ -27,7 +32,6 @@ public class App {
     private static AuthenticationService authenticationService = service.getAuthenticationServiceImpl();
 
     public static void main( String[] args ) {
-
         LOGGER.debug("Application is running.");
         authorization();
     }
@@ -114,10 +118,45 @@ public class App {
         LOGGER.trace("Menu for Project manager shown.");
         while (menuFlag) {
             System.out.println("\nMenu for Project manager:");
-            System.out.println("1) Display Project");
-            System.out.println("2) Add new Project");
-            System.out.println("3) Edit Project");
-            System.out.println("4) Delete Project");
+            System.out.println("1) Project Management Menu");
+            System.out.println("2) Task Management Menu");
+            System.out.println("0) Exit");
+            System.out.print("Your choice: ");
+            while (!INPUT.hasNextInt()) {
+                System.out.println("Re-enter without letters. Your choice: ");
+                INPUT.next();
+            }
+            choice = INPUT.nextInt();
+            switch(choice) {
+                case 1:
+                    projectManagementMenu();
+                    break;
+                case 2:
+                    taskManagementMenu();
+                    break;
+                case 0:
+                    LOGGER.trace("Application execution completed.");
+                    menuFlag = false;
+                    break;
+                default:
+                    System.out.println("Invalid character! Try again.");
+                    break;
+            }
+        }
+    }
+
+    public static void projectManagementMenu() {
+        int choice;
+        boolean menuFlag = true;
+
+        LOGGER.trace("Project Management Menu for Project manager shown.");
+        while (menuFlag) {
+            System.out.println("\nProject Management Menu:");
+            System.out.println("1) Display Projects");
+            System.out.println("2) Display Project Info");
+            System.out.println("3) Add new Project");
+            System.out.println("4) Edit Project");
+            System.out.println("5) Delete Project");
             System.out.println("0) Exit");
             System.out.print("Your choice: ");
             while (!INPUT.hasNextInt()) {
@@ -130,14 +169,65 @@ public class App {
                     PROJECT_CONTROLLER.displayProjectsByReporter();
                     break;
                 case 2:
-                    PROJECT_CONTROLLER.addProject();
+                    List<Project> projectList = PROJECT_CONTROLLER.displayProjectsByReporter();
+                    Project project = PROJECT_CONTROLLER.chooseProject(projectList);
+                    PROJECT_CONTROLLER.displayProjectInfo(project);
                     break;
                 case 3:
-                    PROJECT_CONTROLLER.editProject();
+                    PROJECT_CONTROLLER.addProject();
                     break;
                 case 4:
+                    PROJECT_CONTROLLER.editProject();
+                    break;
+                case 5:
                     PROJECT_CONTROLLER.deleteProject();
                     break;
+                case 0:
+                    LOGGER.trace("Application execution completed.");
+                    menuFlag = false;
+                    break;
+                default:
+                    System.out.println("Invalid character! Try again.");
+                    break;
+            }
+        }
+    }
+
+    public static void taskManagementMenu() {
+        int choice;
+        boolean menuFlag = true;
+
+        LOGGER.trace("Task Management Menu for Project manager shown.");
+        while (menuFlag) {
+            System.out.println("\nTask Management Menu:");
+            System.out.println("1) Display Tasks");
+            System.out.println("2) Display Task Info");
+            System.out.println("3) Add new Task");
+            System.out.println("4) Edit Task");
+
+            System.out.println("0) Exit");
+            System.out.print("Your choice: ");
+            while (!INPUT.hasNextInt()) {
+                System.out.println("Re-enter without letters. Your choice: ");
+                INPUT.next();
+            }
+            choice = INPUT.nextInt();
+            switch (choice) {
+                case 1:
+                    TASK_CONTROLLER.displayTasksByProject();
+                    break;
+                case 2:
+                    List<Task> taskList = TASK_CONTROLLER.displayTasksByProject();
+                    Task task = TASK_CONTROLLER.chooseTask(taskList);
+                    TASK_CONTROLLER.displayTaskInfo(task);
+                    break;
+                case 3:
+                    TASK_CONTROLLER.addTask();
+                    break;
+                case 4:
+                    TASK_CONTROLLER.editTask();
+                    break;
+
                 case 0:
                     LOGGER.trace("Application execution completed.");
                     menuFlag = false;

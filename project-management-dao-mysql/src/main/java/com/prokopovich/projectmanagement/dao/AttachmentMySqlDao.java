@@ -17,9 +17,9 @@ import java.util.List;
 public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements AttachmentDao {
 
     private static final String SQL_SELECT_ALL = "SELECT attachment_id, file, task_id FROM attachments";
-    private static final String SQL_SELECT_ONE = "SELECT attachment_id, file, task_id FROM attachments " +
+    private static final String SQL_SELECT_ONE = "SELECT attachment_id, task_id FROM attachments " +
             "WHERE attachment_id = ?";
-    private static final String SQL_SELECT_BY_TASK = "SELECT attachment_id, file, task_id FROM attachments" +
+    private static final String SQL_SELECT_BY_TASK = "SELECT attachment_id, task_id FROM attachments " +
             "WHERE task_id = ?";
     private static final String SQL_CREATE = "INSERT INTO attachments (file, task_id) VALUES (?, ?)";
     private static final String SQL_UPDATE = "UPDATE attachments SET file = ?, task_id = ? WHERE attachment_id = ?";
@@ -55,8 +55,8 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
         Attachment attachment = new Attachment();
 
         attachment.setAttachmentId(rs.getInt(1));
-        attachment.setFile(rs.getBlob(2));
-        attachment.setTaskId(rs.getInt(3));
+      //  attachment.setFile(rs.getBlob(2));
+        attachment.setTaskId(rs.getInt(2));
         return attachment;
     }
 
@@ -98,6 +98,10 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     public Collection<Attachment> findAllByTaskId(int taskId) throws DaoException {
         LOGGER.trace("findAllByTaskId method is executed - taskId = " + taskId);
         List<Attachment> attachments = (List<Attachment>) findByParameter(SQL_SELECT_BY_TASK, taskId);
-        return attachments;
+        if (attachments.isEmpty()) {
+            return null;
+        } else {
+            return attachments;
+        }
     }
 }

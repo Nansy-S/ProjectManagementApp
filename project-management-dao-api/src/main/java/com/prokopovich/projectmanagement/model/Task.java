@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ public class Task {
     private String currentStatus;
     private LocalDateTime dueDate;
     private int estimationTime;
-    private int reporter;
     private int assignee;
     private String description;
 
@@ -31,7 +29,7 @@ public class Task {
     }
 
     public Task(int taskId, String taskCode, int projectId, String priority, String currentStatus, LocalDateTime dueDate,
-                int estimationTime, int reporter, int assignee, String description, Project projectInfo,
+                int estimationTime, int assignee, String description, Project projectInfo,
                 List<Attachment> attachmentList, List<Comment> commentList, List<TaskAction> taskActions) {
         this.taskId = taskId;
         this.taskCode = taskCode;
@@ -40,7 +38,6 @@ public class Task {
         this.currentStatus = currentStatus;
         this.dueDate = dueDate;
         this.estimationTime = estimationTime;
-        this.reporter = reporter;
         this.assignee = assignee;
         this.description = description;
         this.projectInfo = projectInfo;
@@ -105,14 +102,6 @@ public class Task {
         this.estimationTime = estimationTime;
     }
 
-    public int getReporter() {
-        return reporter;
-    }
-
-    public void setReporter(int reporter) {
-        this.reporter = reporter;
-    }
-
     public int getAssignee() {
         return assignee;
     }
@@ -171,10 +160,7 @@ public class Task {
                 ", currentStatus = " + currentStatus +
                 ", dueDate = " + dueDate +
                 ", estimationTime = " + estimationTime +
-                ", reporter = " + reporter +
                 ", assignee = " + assignee +
-                ", description = " + description +
-                "; " + attachmentList.toString() +
-                "; " + commentList.toString();
+                ", description = " + description;
     }
 }

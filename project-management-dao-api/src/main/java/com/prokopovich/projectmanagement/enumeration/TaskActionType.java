@@ -7,11 +7,10 @@ public enum TaskActionType {
     START("Start"),
     RESOLVE("Resolve"),
     READY_FOR_TEST("Ready for Test"),
-    CHANGE_STATUS("Change status"),
+    CHANGE_STATUS("Change Status"),
     CHANGE_ASSIGNEE("Change Assignee");
 
     private String title;
-    private String accountStatus;
 
     TaskActionType(String title) {
         this.title = title;
