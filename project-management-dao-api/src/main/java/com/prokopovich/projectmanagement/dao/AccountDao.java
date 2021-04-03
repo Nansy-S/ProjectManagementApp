@@ -5,7 +5,7 @@ import com.prokopovich.projectmanagement.model.Account;
 
 import java.util.Collection;
 
-public interface AccountDao extends GenericDao<Account> {
+public interface AccountDao extends GenericDaoWithHistory<Account> {
 
     boolean update(Account account) throws DaoException;
 
@@ -14,6 +14,4 @@ public interface AccountDao extends GenericDao<Account> {
     Collection<Account> findAllByUserFullName(String fullName) throws DaoException;
 
     Account findByEmail(String email) throws DaoException;
-
-    Collection<Account> findAllByReporterAndAction(int reporterId, String actionType);
 }

@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.AccountAction;
@@ -29,13 +30,11 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
             "WHERE user_id = last_insert_id()";
     private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
 
-    private final AccountDao accountDao;
-    private final AccountActionDao accountActionDao;
+    private final AccountDao accountDao = new AccountMySqlDao();
+    private final AccountActionDao accountActionDao = new AccountActionMySqlDao();
 
-    public UserMySqlDao(AccountDao accountDao, AccountActionDao accountActionDao) {
+    public UserMySqlDao() {
         super();
-        this.accountDao = accountDao;
-        this.accountActionDao = accountActionDao;
     }
 
     @Override

@@ -38,7 +38,7 @@ public class ProjectController {
 
     public List<Project> displayProjectsByReporter() {
         LOGGER.trace("displayProjectsByReporter method is executed");
-        List<Project> projectList = projectService.getAllByReporterAndAction(App.getCurrentUser(),
+        List<Project> projectList = projectService.getAllByReporterAndAction(App.getCurrentUser().getAccountId(),
                 ProjectActionType.CREATE.getTitle());
         displayProjects(projectList);
 

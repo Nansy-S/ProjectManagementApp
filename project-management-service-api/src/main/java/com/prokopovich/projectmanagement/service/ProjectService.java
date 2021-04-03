@@ -13,7 +13,7 @@ public interface ProjectService {
 
     Project getByProjectId(int id);
 
-    List<Project> getAllByReporterAndAction(Account reporter, String actionType);
+    List<Project> getAllByReporterAndAction(int reporterId, String actionType);
 
     List<Project> getAllByReporterAndStatus(Account reporter, String ... statuses);
 

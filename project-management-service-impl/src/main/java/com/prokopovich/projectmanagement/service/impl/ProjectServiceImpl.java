@@ -64,8 +64,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAllByReporterAndAction(Account reporter, String actionType) {
-        return (List<Project>) projectDao.findAllByReporterAndAction(reporter, actionType);
+    public List<Project> getAllByReporterAndAction(int reporterId, String actionType) {
+        return (List<Project>) projectDao.findAllByReporterAndAction(reporterId, actionType);
     }
 
     @Override

@@ -14,7 +14,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(GenericMySqlDao.class);
 
-    GenericMySqlDao() { }
+    public GenericMySqlDao() { }
 
     protected abstract T getStatement(ResultSet rs) throws SQLException;
 

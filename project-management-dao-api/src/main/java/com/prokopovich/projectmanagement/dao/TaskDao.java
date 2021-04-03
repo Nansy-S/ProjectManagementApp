@@ -5,7 +5,7 @@ import com.prokopovich.projectmanagement.model.Task;
 
 import java.util.Collection;
 
-public interface TaskDao extends GenericDao<Task> {
+public interface TaskDao extends GenericDaoWithHistory<Task> {
 
     boolean updateTask(Task task) throws DaoException;
 

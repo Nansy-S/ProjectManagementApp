@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
@@ -7,11 +8,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class AccountMySqlDao extends GenericMySqlDao<Account> implements AccountDao {
+public class AccountMySqlDao extends GenericMySqlDaoWithHistory<Account> implements AccountDao {
 
     private static final String SQL_SELECT_ALL = "SELECT account_id, name, surname, patronymic, email, password, " +
             "role, photo FROM accounts";
@@ -30,15 +30,14 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     private static final String SQL_CREATE = "INSERT INTO accounts " +
             "(name, surname, patronymic, email, password, role , photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
-            "password = ?, role = ?, photo = ? WHERE account_id = ?";
+            "password = ?, role = ?, photo = ? WHERE `account_id` = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
 
-    private final AccountActionDao accountActionDao;
+    private final AccountActionDao accountActionDao = new AccountActionMySqlDao();
 
-    public AccountMySqlDao(AccountActionDao accountActionDao){
+    public AccountMySqlDao() {
         super();
-        this.accountActionDao = accountActionDao;
     }
 
     @Override
@@ -59,6 +58,11 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     @Override
     public String getSqlLastInsert() {
         return SQL_CREATE;
+    }
+
+    @Override
+    public String getSqlSelectByReporterAndAction() {
+        return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }
 
     @Override
@@ -118,28 +122,5 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
         LOGGER.trace("findAllByEmail method is executed - email = " + email);
         List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_EMAIL, email);
         return accounts.iterator().next();
-    }
-
-    @Override
-    public Collection<Account> findAllByReporterAndAction(int reporterId, String actionType) {
-        Account account;
-        List<Account> accountList = new ArrayList<>();
-
-        LOGGER.trace("findAllByReporterAndAction method is executed - " +
-                "reporterID = " + reporterId + ", actionType = " + actionType);
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
-            statement.setInt(1, reporterId);
-            statement.setString(2, actionType);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                account = getStatement(rs);
-                accountList.add(account);
-            }
-            LOGGER.debug("found users by reporter: " + accountList.toString());
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
-        return accountList;
     }
 }

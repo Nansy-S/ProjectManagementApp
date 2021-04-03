@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.*;
@@ -26,11 +27,10 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     private static final String SQL_CREATE = "INSERT INTO project_actions (action_id, project_id) VALUES (?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionMySqlDao.class);
 
-    private final ActionDao actionDao;
+    private final ActionDao actionDao = new ActionMySqlDao();
 
-    public ProjectActionMySqlDao(ActionDao actionDao) {
+    public ProjectActionMySqlDao() {
         super();
-        this.actionDao = actionDao;
     }
 
     @Override

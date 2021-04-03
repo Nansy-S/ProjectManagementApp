@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.List;
 
 public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements AttachmentDao {
 
@@ -97,11 +96,6 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     @Override
     public Collection<Attachment> findAllByTaskId(int taskId) throws DaoException {
         LOGGER.trace("findAllByTaskId method is executed - taskId = " + taskId);
-        List<Attachment> attachments = (List<Attachment>) findByParameter(SQL_SELECT_BY_TASK, taskId);
-        if (attachments.isEmpty()) {
-            return null;
-        } else {
-            return attachments;
-        }
+        return findByParameter(SQL_SELECT_BY_TASK, taskId);
     }
 }

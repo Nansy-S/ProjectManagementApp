@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.*;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ProjectMySqlDao extends GenericMySqlDao<Project> implements ProjectDao {
+public class ProjectMySqlDao extends GenericMySqlDaoWithHistory<Project> implements ProjectDao {
 
     private static final String SQL_SELECT_ALL = "SELECT project_id, project_code, summary, due_date, current_status " +
             "FROM projects";
@@ -23,6 +24,10 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
             "FROM projects WHERE project_id = ?";
     private static final String SQL_SELECT_BY_STATUS = "SELECT project_id, project_code, summary, due_date, " +
             "current_status FROM projects WHERE current_status = ?";
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT project_id, project_code, summary, " +
+            "due_date, current_status FROM projects p WHERE p.project_id IN " +
+            "(SELECT pa.project_id FROM project_actions pa INNER JOIN actions a ON a.action_id = pa.action_id " +
+            "WHERE a.reporter = ? AND a.type = ?)";
     private static final String SQL_CREATE = "INSERT INTO projects (project_code, summary, due_date, current_status) " +
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE projects SET project_code = ?, summary = ?, due_date = ?, "+
@@ -31,11 +36,10 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
     private static final Logger LOGGER = LogManager.getLogger(ProjectMySqlDao.class);
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
-    private final ProjectActionDao projectActionDao;
+    private final ProjectActionDao projectActionDao = new ProjectActionMySqlDao();
 
-    public ProjectMySqlDao(ProjectActionDao projectActionDao) {
+    public ProjectMySqlDao() {
         super();
-        this.projectActionDao = projectActionDao;
     }
 
     @Override
@@ -56,6 +60,11 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
     @Override
     public String getSqlLastInsert() {
         return SQL_CREATE;
+    }
+
+    @Override
+    public String getSqlSelectByReporterAndAction() {
+        return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }
 
     @Override
@@ -98,24 +107,6 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
         List<Project> projects = (List<Project>) findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
         return projects;
-    }
-
-    @Override
-    public Collection<Project> findAllByReporterAndAction(Account reporter, String actionType) {
-        Project project;
-        List<Project> projectList = new ArrayList<>();
-        List<ProjectAction> projectActionList;
-
-        LOGGER.trace("findAllByReporterAndAction method is executed - " +
-                "reporterID = " + reporter.getAccountId() + ", actionType = " + actionType);
-        projectActionList = (List<ProjectAction>) projectActionDao.findAllByReporterAndAction(
-                reporter, actionType);
-        for (ProjectAction action : projectActionList) {
-            project = findOne(action.getProjectId());
-            projectList.add(project);
-        }
-        LOGGER.trace("found projects by reporter - " + projectList.toString());
-        return projectList;
     }
 
     @Override

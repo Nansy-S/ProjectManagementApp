@@ -1,6 +1,8 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
+import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.TaskAction;
 import org.apache.log4j.LogManager;
@@ -21,11 +23,10 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     private static final String SQL_CREATE = "INSERT INTO task_actions (action_id, task_id, assignee_id) VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(TaskActionMySqlDao.class);
 
-    private final ActionDao actionDao;
+    private final ActionDao actionDao = new ActionMySqlDao();
 
-    public TaskActionMySqlDao(ActionDao actionDao) {
+    public TaskActionMySqlDao() {
         super();
-        this.actionDao = actionDao;
     }
 
     @Override

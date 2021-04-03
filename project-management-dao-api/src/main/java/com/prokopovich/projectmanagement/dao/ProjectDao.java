@@ -8,13 +8,11 @@ import com.prokopovich.projectmanagement.model.User;
 
 import java.util.Collection;
 
-public interface ProjectDao extends GenericDao<Project> {
+public interface ProjectDao extends GenericDaoWithHistory<Project> {
 
     boolean update(Project project) throws DaoException;
 
     Collection<Project> findAllByCurrentStatus(String currentStatus) throws DaoException;
-
-    Collection<Project> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException;
 
     Collection<Project> findAllByReporterAndStatus(Account reporter, String ... statuses) throws DaoException;
 }

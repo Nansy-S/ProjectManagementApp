@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
@@ -32,11 +33,10 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     private static final Logger LOGGER = LogManager.getLogger(AccountActionMySqlDao.class);
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
-    private final ActionDao actionDao;
+    private final ActionDao actionDao = new ActionMySqlDao();
 
-    public AccountActionMySqlDao(ActionDao actionDao) {
+    public AccountActionMySqlDao() {
         super();
-        this.actionDao = actionDao;
     }
 
     @Override
@@ -80,8 +80,7 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     @Override
     public Collection<AccountAction> findAllByAccountId(int accountId) throws DaoException {
         LOGGER.trace("findAllByAccountId method is executed - accountId = " + accountId);
-        List<AccountAction> accountActionList = (List<AccountAction>) findByParameter(SQL_SELECT_BY_ACCOUNT, accountId);
-        return accountActionList;
+        return findByParameter(SQL_SELECT_BY_ACCOUNT, accountId);
     }
 
     @Override

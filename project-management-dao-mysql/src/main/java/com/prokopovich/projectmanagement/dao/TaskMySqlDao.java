@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.*;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
+public class TaskMySqlDao extends GenericMySqlDaoWithHistory<Task> implements TaskDao {
 
     private static final String SQL_SELECT_ALL = "SELECT task_id, task_code, project_id, priority, current_status, " +
             "due_date, estimation_time, assignee, description FROM tasks";
@@ -26,6 +27,10 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
             "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE assignee = ?";
     private static final String SQL_SELECT_BY_REPORTER = "SELECT task_id, task_code, project_id, priority, " +
             "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE reporter = ?";
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT task_id, task_code, project_id, " +
+            "priority, current_status, due_date, estimation_time, assignee, description FROM tasks t " +
+            "WHERE t.task_id IN (SELECT ta.task_id FROM task_actions ta INNER JOIN actions a " +
+            "ON a.action_id = ta.action_id WHERE a.reporter = ? AND a.type = ?)";
     private static final String SQL_SELECT_BY_STATUS = "SELECT task_id, task_code, project_id, priority, " +
             "current_status, due_date, estimation_time, assignee, description FROM tasks WHERE current_status = ?";
     private static final String SQL_CREATE = "INSERT INTO tasks (task_code, project_id, priority, current_status, " +
@@ -37,18 +42,13 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
     private static final Logger LOGGER = LogManager.getLogger(TaskMySqlDao.class);
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
-    private final ProjectDao projectDao;
-    private final TaskActionDao taskActionDao;
-    private final AttachmentDao attachmentDao;
-    private final CommentDao commentDao;
+    private final ProjectDao projectDao = new ProjectMySqlDao();
+    private final TaskActionDao taskActionDao = new TaskActionMySqlDao();
+    private final AttachmentDao attachmentDao = new AttachmentMySqlDao();
+    private final CommentDao commentDao = new CommentMySqlDao();
 
-    public TaskMySqlDao(ProjectDao projectDao, TaskActionDao taskActionDao, AttachmentDao attachmentDao,
-                        CommentDao commentDao) {
+    public TaskMySqlDao() {
         super();
-        this.projectDao = projectDao;
-        this.taskActionDao = taskActionDao;
-        this.attachmentDao = attachmentDao;
-        this.commentDao = commentDao;
     }
 
     @Override
@@ -69,6 +69,11 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
     @Override
     public String getSqlLastInsert() {
         return SQL_CREATE;
+    }
+
+    @Override
+    public String getSqlSelectByReporterAndAction() {
+        return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }
 
     @Override
