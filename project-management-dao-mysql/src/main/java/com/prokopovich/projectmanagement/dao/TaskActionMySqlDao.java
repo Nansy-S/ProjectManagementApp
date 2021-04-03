@@ -23,10 +23,11 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     private static final String SQL_CREATE = "INSERT INTO task_actions (action_id, task_id, assignee_id) VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(TaskActionMySqlDao.class);
 
-    private final ActionDao actionDao = new ActionMySqlDao();
+    private final ActionDao actionDao;
 
-    public TaskActionMySqlDao() {
+    public TaskActionMySqlDao(ActionDao actionDao) {
         super();
+        this.actionDao = actionDao;
     }
 
     @Override

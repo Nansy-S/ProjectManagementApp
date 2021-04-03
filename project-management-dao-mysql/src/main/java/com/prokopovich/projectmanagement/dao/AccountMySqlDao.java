@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
+import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import org.apache.log4j.LogManager;
@@ -33,8 +34,6 @@ public class AccountMySqlDao extends GenericMySqlDaoWithHistory<Account> impleme
             "password = ?, role = ?, photo = ? WHERE `account_id` = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
-
-    private final AccountActionDao accountActionDao = new AccountActionMySqlDao();
 
     public AccountMySqlDao() {
         super();

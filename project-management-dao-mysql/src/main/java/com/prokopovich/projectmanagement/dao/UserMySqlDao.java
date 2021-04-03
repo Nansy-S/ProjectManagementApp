@@ -30,11 +30,13 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
             "WHERE user_id = last_insert_id()";
     private static final Logger LOGGER = LogManager.getLogger(UserMySqlDao.class);
 
-    private final AccountDao accountDao = new AccountMySqlDao();
-    private final AccountActionDao accountActionDao = new AccountActionMySqlDao();
+    private final AccountDao accountDao;
+    private final AccountActionDao accountActionDao;
 
-    public UserMySqlDao() {
+    public UserMySqlDao(AccountDao accountDao, AccountActionDao accountActionDao) {
         super();
+        this.accountDao = accountDao;
+        this.accountActionDao = accountActionDao;
     }
 
     @Override

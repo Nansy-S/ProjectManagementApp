@@ -42,13 +42,18 @@ public class TaskMySqlDao extends GenericMySqlDaoWithHistory<Task> implements Ta
     private static final Logger LOGGER = LogManager.getLogger(TaskMySqlDao.class);
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
-    private final ProjectDao projectDao = new ProjectMySqlDao();
-    private final TaskActionDao taskActionDao = new TaskActionMySqlDao();
-    private final AttachmentDao attachmentDao = new AttachmentMySqlDao();
-    private final CommentDao commentDao = new CommentMySqlDao();
+    private final ProjectDao projectDao;
+    private final TaskActionDao taskActionDao;
+    private final AttachmentDao attachmentDao;
+    private final CommentDao commentDao;
 
-    public TaskMySqlDao() {
+    public TaskMySqlDao(ProjectDao projectDao, TaskActionDao taskActionDao, AttachmentDao attachmentDao,
+                        CommentDao commentDao) {
         super();
+        this.projectDao = projectDao;
+        this.taskActionDao = taskActionDao;
+        this.attachmentDao = attachmentDao;
+        this.commentDao = commentDao;
     }
 
     @Override

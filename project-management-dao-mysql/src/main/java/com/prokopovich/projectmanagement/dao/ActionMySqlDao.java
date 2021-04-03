@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
+import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Action;
 import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
@@ -26,10 +27,12 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     private static final Logger LOGGER = LogManager.getLogger(ActionMySqlDao.class);
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
-    private final AccountDao accountDao = new AccountMySqlDao();
+    private final AccountDao accountDao;
+    //private final AccountDao accountDao = DaoFactoryProvider.getDAOFactory(DatabaseType.MYSQL).getAccountDao();
 
-    public ActionMySqlDao() {
+    public ActionMySqlDao(AccountDao accountDao) {
         super();
+        this.accountDao = accountDao;
     }
 
     @Override
