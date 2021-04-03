@@ -4,8 +4,6 @@ import com.prokopovich.projectmanagement.dao.ProjectDao;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.ProjectActionType;
 import com.prokopovich.projectmanagement.enumeration.ProjectStatus;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
-import com.prokopovich.projectmanagement.factory.ServiceFactoryProvider;
 import com.prokopovich.projectmanagement.model.*;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.ProjectActionService;
@@ -16,22 +14,27 @@ import java.util.List;
 
 public class ProjectServiceImpl implements ProjectService {
 
-    private static final ProjectDao PROJECT_DAO = DaoFactoryProvider.getDAOFactory(1).getProjectDao();
-    private static final ActionService ACTION_SERVICE =
-            ServiceFactoryProvider.getServiceFactory(1).getActionServiceImpl();
-    private static final ProjectActionService PROJECT_ACTION_SERVICE =
-            ServiceFactoryProvider.getServiceFactory(1).getProjectActionService();
+    private final ProjectDao projectDao;
+    private final ActionService actionService;
+    private final ProjectActionService projectActionService;
+
+    public ProjectServiceImpl(ProjectDao projectDao, ActionService actionService,
+                              ProjectActionService projectActionService) {
+        this.projectDao = projectDao;
+        this.actionService = actionService;
+        this.projectActionService = projectActionService;
+    }
 
     @Override
     public void addNewProject(Project newProject, Account reporter) {
         newProject.setCurrentStatus(ProjectStatus.OPEN.getTitle());
-        newProject = PROJECT_DAO.create(newProject, newProject.getProjectId());
+        newProject = projectDao.create(newProject);
         setProjectAction(newProject.getProjectId(), reporter, ProjectActionType.CREATE.getTitle());
     }
 
     @Override
     public boolean editProject(Project project, Account reporter) {
-        if (PROJECT_DAO.update(project)) {
+        if (projectDao.update(project)) {
             setProjectAction(project.getProjectId(), reporter, AccountActionType.UPDATE.getTitle());
             return true;
         } else {
@@ -47,32 +50,32 @@ public class ProjectServiceImpl implements ProjectService {
         newAction.setDatetime(LocalDateTime.now());
         newAction.setReporter(reporter.getAccountId());
         newAction.setReporterInfo(reporter);
-        newAction = ACTION_SERVICE.addNewAction(newAction);
+        newAction = actionService.addNewAction(newAction);
 
         newProjectAction.setActionId(newAction.getActionId());
         newProjectAction.setProjectId(projectId);
         newProjectAction.setAction(newAction);
-        PROJECT_ACTION_SERVICE.addNewProjectAction(newProjectAction);
+        projectActionService.addNewProjectAction(newProjectAction);
     }
 
     @Override
     public Project getByProjectId(int id) {
-        return PROJECT_DAO.findOne(id);
+        return projectDao.findOne(id);
     }
 
     @Override
     public List<Project> getAllByReporterAndAction(Account reporter, String actionType) {
-        return (List<Project>) PROJECT_DAO.findAllByReporterAndAction(reporter, actionType);
+        return (List<Project>) projectDao.findAllByReporterAndAction(reporter, actionType);
     }
 
     @Override
     public List<Project> getAllByReporterAndStatus(Account reporter, String ... statuses) {
-        return (List<Project>) PROJECT_DAO.findAllByReporterAndStatus(reporter, statuses);
+        return (List<Project>) projectDao.findAllByReporterAndStatus(reporter, statuses);
     }
 
     @Override
     public boolean changeStatus(Project project, Account reporter, String typeAction) {
-        if (PROJECT_DAO.update(project)) {
+        if (projectDao.update(project)) {
             setProjectAction(project.getProjectId(), reporter, typeAction);
             return true;
         } else {
@@ -82,8 +85,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void setProjectStatusInProgress(int projectId) {
-        Project project = PROJECT_DAO.findOne(projectId);
+        Project project = projectDao.findOne(projectId);
         project.setCurrentStatus(ProjectStatus.IN_PROGRESS.getTitle());
-        PROJECT_DAO.update(project);
+        projectDao.update(project);
     }
 }

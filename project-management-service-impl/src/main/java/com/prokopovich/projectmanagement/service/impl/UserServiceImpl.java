@@ -1,7 +1,6 @@
 package com.prokopovich.projectmanagement.service.impl;
 
-import com.prokopovich.projectmanagement.dao.UserMySqlDao;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
+import com.prokopovich.projectmanagement.dao.UserDao;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.UserService;
 
@@ -9,16 +8,20 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    private static final UserMySqlDao USER_DAO = (UserMySqlDao) DaoFactoryProvider.getDAOFactory(1).getUserDao();
+    private final UserDao userDao;
+
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public void addNewUser(User user) {
-        USER_DAO.create(user, user.getUserId());
+        userDao.create(user);
     }
 
     @Override
     public boolean editUser(User user) {
-        if (USER_DAO.update(user)) {
+        if (userDao.update(user)) {
             return true;
         } else {
             return false;
@@ -27,16 +30,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByUserId(int id) {
-        return USER_DAO.findOne(id);
+        return userDao.findOne(id);
     }
 
     @Override
     public List<User> getAll() {
-        return (List<User>) USER_DAO.findAll();
+        return (List<User>) userDao.findAll();
     }
 
     @Override
     public List<User> getAllByCurrentStatus(String currentStatus) {
-        return (List<User>) USER_DAO.findAllByCurrentStatus(currentStatus);
+        return (List<User>) userDao.findAllByCurrentStatus(currentStatus);
     }
 }

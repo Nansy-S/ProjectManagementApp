@@ -5,10 +5,8 @@ import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
-import com.prokopovich.projectmanagement.model.Attachment;
 import com.prokopovich.projectmanagement.service.AccountActionService;
 import com.prokopovich.projectmanagement.service.AccountService;
-import com.prokopovich.projectmanagement.service.impl.AccountActionServiceImpl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -18,9 +16,9 @@ public class ActionController {
 
     private static final Logger LOGGER = LogManager.getLogger(ActionController.class);
 
-    private static ServiceFactory service = new ServiceFactoryImpl();
-    private static AccountActionService accountActionService = new AccountActionServiceImpl();
-    private static AccountService accountService = service.getAccountServiceImpl();
+    private final ServiceFactory service = new ServiceFactoryImpl();
+    private final AccountActionService accountActionService = service.getAccountActionService();
+    private final AccountService accountService = service.getAccountService();
 
     public void displayAccountActionByReporter() {
         List<AccountAction> accountActions;
@@ -31,7 +29,7 @@ public class ActionController {
         accountActions = accountActionService.findAllByReporter(App.getCurrentUser());
         System.out.println(" #) email - role - action type - time - reason");
         for (AccountAction action : accountActions) {
-            userAccount = accountService.getByAccountId(action.getAccountId());
+            userAccount = accountService.findByAccountId(action.getAccountId());
             number++;
             System.out.println(number + ") " +
                     userAccount.getEmail() + " - " +

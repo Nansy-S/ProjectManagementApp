@@ -33,9 +33,9 @@ public class ProjectMySqlDao extends GenericMySqlDao<Project> implements Project
 
     private final ProjectActionDao projectActionDao;
 
-    public ProjectMySqlDao(){
+    public ProjectMySqlDao(ProjectActionDao projectActionDao) {
         super();
-        projectActionDao = new ProjectActionMySqlDao();
+        this.projectActionDao = projectActionDao;
     }
 
     @Override

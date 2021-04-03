@@ -23,9 +23,9 @@ public class AccountController {
     private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
     private static final Scanner INPUT = new Scanner(System.in);
 
-    private static ServiceFactory service = new ServiceFactoryImpl();
-    private static UserService userService = service.getUserServiceImpl();
-    private static AccountService accountService = service.getAccountServiceImpl();
+    private final ServiceFactory service = new ServiceFactoryImpl();
+    private final UserService userService = service.getUserService();
+    private final AccountService accountService = service.getAccountService();
 
     public Account displayUsersByReporter() {
         List<Account> userAccounts;
@@ -33,8 +33,8 @@ public class AccountController {
         int number = 0;
 
         LOGGER.trace("displayUsersByReporter method is executed");
-        userAccounts = accountService.getAllByReporterAndAction(
-                App.getCurrentUser(), AccountActionType.CREATE.getTitle());
+        userAccounts = accountService.getAllCreatedUser(
+                App.getCurrentUser().getAccountId(), AccountActionType.CREATE.getTitle());
         System.out.println(" #) email - role ");
         for(Account userAccount: userAccounts) {
             number++;

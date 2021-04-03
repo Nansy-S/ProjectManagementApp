@@ -29,7 +29,7 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     public abstract String getSqlLastInsert();
 
     @Override
-    public T create(T object, int id) {
+    public T create(T object) {
         String sql = getSqlCreate();
 
         LOGGER.trace("create object method is executed");
@@ -37,18 +37,16 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             setStatement(object, statement);
             statement.executeUpdate();
-            if (id == 0) {
-                ResultSet rs = statement.getGeneratedKeys();
-                if (rs != null && rs.next()) {
-                    id = rs.getInt(1);
-                }
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                int id = rs.getInt(1);
+                object = findOne(id);
             }
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
-        T newObject = findOne(id);
-        LOGGER.debug("new added object - " + newObject.toString());
-        return newObject;
+        LOGGER.debug("new added object - " + object.toString());
+        return object;
     }
 
     @Override

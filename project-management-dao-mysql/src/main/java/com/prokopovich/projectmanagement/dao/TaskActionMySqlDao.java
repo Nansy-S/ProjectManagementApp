@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.List;
 
 public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements TaskActionDao {
 
@@ -22,11 +21,11 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     private static final String SQL_CREATE = "INSERT INTO task_actions (action_id, task_id, assignee_id) VALUES (?, ?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(TaskActionMySqlDao.class);
 
-    private final ActionMySqlDao actionDao;
+    private final ActionDao actionDao;
 
-    public TaskActionMySqlDao(){
+    public TaskActionMySqlDao(ActionDao actionDao) {
         super();
-        actionDao = new ActionMySqlDao();
+        this.actionDao = actionDao;
     }
 
     @Override
@@ -70,8 +69,7 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     @Override
     public Collection<TaskAction> findAllByTaskId(int taskId) throws DaoException {
         LOGGER.trace("findAllByTaskId method is executed - taskId = " + taskId);
-        List<TaskAction> taskActionList = (List<TaskAction>) findByParameter(SQL_SELECT_BY_TASK, taskId);
-        return taskActionList;
+        return findByParameter(SQL_SELECT_BY_TASK, taskId);
     }
 
     public Collection<TaskAction> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException {

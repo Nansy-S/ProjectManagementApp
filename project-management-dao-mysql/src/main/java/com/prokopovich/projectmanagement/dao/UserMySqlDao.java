@@ -11,10 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
 
@@ -34,10 +32,10 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     private final AccountDao accountDao;
     private final AccountActionDao accountActionDao;
 
-    public UserMySqlDao() {
+    public UserMySqlDao(AccountDao accountDao, AccountActionDao accountActionDao) {
         super();
-        accountDao = new AccountMySqlDao();
-        accountActionDao = new AccountActionMySqlDao();
+        this.accountDao = accountDao;
+        this.accountActionDao = accountActionDao;
     }
 
     @Override
@@ -98,7 +96,6 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     @Override
     public Collection<User> findAllByCurrentStatus(String currentStatus) throws DaoException {
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
-        List<User> users = (List<User>) findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
-        return users;
+        return findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
     }
 }

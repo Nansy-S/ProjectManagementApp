@@ -32,17 +32,17 @@ public class MySqlDaoFactory extends DaoFactoryProvider {
 
     @Override
     public AccountActionDao getAccountActionDao() {
-        return new AccountActionMySqlDao();
+        return new AccountActionMySqlDao(getActionDao());
     }
 
     @Override
     public AccountDao getAccountDao() {
-        return new AccountMySqlDao();
+        return new AccountMySqlDao(getAccountActionDao());
     }
 
     @Override
     public ActionDao getActionDao() {
-        return new ActionMySqlDao();
+        return new ActionMySqlDao(getAccountDao());
     }
 
     @Override
@@ -57,26 +57,26 @@ public class MySqlDaoFactory extends DaoFactoryProvider {
 
     @Override
     public ProjectDao getProjectDao() {
-        return new ProjectMySqlDao();
+        return new ProjectMySqlDao(getProjectActionDao());
     }
 
     @Override
     public ProjectActionDao getProjectActionDao() {
-        return new ProjectActionMySqlDao();
+        return new ProjectActionMySqlDao(getActionDao());
     }
 
     @Override
     public TaskDao getTaskDao() {
-        return new TaskMySqlDao();
+        return new TaskMySqlDao(getProjectDao(), getTaskActionDao(), getAttachmentDao(), getCommentDao());
     }
 
     @Override
     public TaskActionDao getTaskActionDao() {
-        return new TaskActionMySqlDao();
+        return new TaskActionMySqlDao(getActionDao());
     }
 
     @Override
     public UserDao getUserDao() {
-        return new UserMySqlDao();
+        return new UserMySqlDao(getAccountDao(), getAccountActionDao());
     }
 }

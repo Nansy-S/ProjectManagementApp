@@ -19,12 +19,12 @@ public class TaskController {
     private static final Logger LOGGER = LogManager.getLogger(TaskController.class);
     private static final Scanner INPUT = new Scanner(System.in);
 
-    private static ServiceFactory service = new ServiceFactoryImpl();
-    private static TaskService taskService = service.getTaskService();
-    private static AccountService accountService = service.getAccountServiceImpl();
-    private static ProjectController projectController = new ProjectController();
-    private static CommentController commentController = new CommentController();
-    private static AttachmentController attachmentController = new AttachmentController();
+    private final ServiceFactory service = new ServiceFactoryImpl();
+    private final TaskService taskService = service.getTaskService();
+    private final AccountService accountService = service.getAccountService();
+    private final ProjectController projectController = new ProjectController();
+    private final CommentController commentController = new CommentController();
+    private final AttachmentController attachmentController = new AttachmentController();
 
     public void displayTasks(List<Task> taskList) {
         int number = 0;
@@ -68,7 +68,7 @@ public class TaskController {
                     "\n\tdue date: " + ObjectFormat.formattingDateTime(task.getDueDate()) +
                     "\n\testimation time: " + task.getEstimationTime() +
                     "\n\tdescription: " + task.getDescription());
-            Account assigneeInfo = accountService.getByAccountId(task.getAssignee());
+            Account assigneeInfo = accountService.findByAccountId(task.getAssignee());
             System.out.println("Assignee:" +
                     "\n\temail: " + assigneeInfo.getEmail() +
                     "\n\trole: " + assigneeInfo.getRole() +

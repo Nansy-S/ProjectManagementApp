@@ -29,7 +29,7 @@ public class App {
     private static Account currentUser = new Account();
     private static UserRole currentUserRole;
     private static ServiceFactory service = new ServiceFactoryImpl();
-    private static AuthenticationService authenticationService = service.getAuthenticationServiceImpl();
+    private static AuthenticationService authenticationService = service.getAuthenticationService();
 
     public static void main( String[] args ) {
         LOGGER.debug("Application is running.");

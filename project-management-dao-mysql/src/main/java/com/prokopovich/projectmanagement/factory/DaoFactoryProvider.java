@@ -1,10 +1,10 @@
 package com.prokopovich.projectmanagement.factory;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
+
 public abstract class DaoFactoryProvider implements DaoFactory {
 
-    public static final int MYSQL = 1;
-
-    public static DaoFactory getDAOFactory(int whichFactory) {
+    public static DaoFactory getDAOFactory(DatabaseType whichFactory) {
         switch (whichFactory) {
         case MYSQL:
             return new MySqlDaoFactory();

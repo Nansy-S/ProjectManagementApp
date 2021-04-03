@@ -19,8 +19,8 @@ public class ProjectController {
     private static final Logger LOGGER = LogManager.getLogger(ProjectController.class);
     private static final Scanner INPUT = new Scanner(System.in);
 
-    private static ServiceFactory service = new ServiceFactoryImpl();
-    private static ProjectService projectService = service.getProjectService();
+    private final ServiceFactory service = new ServiceFactoryImpl();
+    private final ProjectService projectService = service.getProjectService();
 
     public void displayProjects(List<Project> projectList) {
         int number = 0;

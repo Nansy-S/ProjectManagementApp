@@ -1,17 +1,12 @@
 package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.model.AccountAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,17 +23,22 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
             "password, role, photo FROM accounts WHERE CONCAT(surname, ' ', name, ' ', patronymic) LIKE '%?%'";
     private static final String SQL_SELECT_BY_EMAIL = "SELECT account_id, name, surname, patronymic, " +
             "email, password, role, photo FROM accounts WHERE email = ?";
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT account_id, name, surname, patronymic, " +
+            "email, password, role, photo FROM accounts acc WHERE acc.account_id IN " +
+            "(SELECT aa.account_id FROM account_actions aa INNER JOIN actions a ON a.action_id = aa.action_id " +
+            "WHERE a.reporter = ? AND a.type = ?)";
     private static final String SQL_CREATE = "INSERT INTO accounts " +
             "(name, surname, patronymic, email, password, role , photo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE accounts SET name = ?, surname = ?, patronymic = ?, email = ?, " +
             "password = ?, role = ?, photo = ? WHERE account_id = ?";
 
     private static final Logger LOGGER = LogManager.getLogger(AccountMySqlDao.class);
-    private static final AccountActionMySqlDao ACCOUNT_ACTION_DAO =
-            (AccountActionMySqlDao) DaoFactoryProvider.getDAOFactory(1).getAccountActionDao();
 
-    public AccountMySqlDao(){
+    private final AccountActionDao accountActionDao;
+
+    public AccountMySqlDao(AccountActionDao accountActionDao){
         super();
+        this.accountActionDao = accountActionDao;
     }
 
     @Override
@@ -104,15 +104,13 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     @Override
     public Collection<Account> findAllByUserRole(String role) throws DaoException {
         LOGGER.trace("findAllByUserRole method is executed - role = " + role);
-        List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_ROLE, role);
-        return accounts;
+        return findByParameter(SQL_SELECT_BY_ROLE, role);
     }
 
     @Override
     public Collection<Account> findAllByUserFullName(String fullName) throws DaoException {
         LOGGER.trace("findAllByUserFullName method is executed - Full name = " + fullName);
-        List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_FULL_NAME, fullName);
-        return accounts;
+        return findByParameter(SQL_SELECT_BY_FULL_NAME, fullName);
     }
 
     @Override
@@ -123,20 +121,25 @@ public class AccountMySqlDao extends GenericMySqlDao<Account> implements Account
     }
 
     @Override
-    public Collection<Account> findAllByReporterAndAction(Account reporter, String actionType) {
+    public Collection<Account> findAllByReporterAndAction(int reporterId, String actionType) {
         Account account;
         List<Account> accountList = new ArrayList<>();
-        List<AccountAction> accountActionList;
 
         LOGGER.trace("findAllByReporterAndAction method is executed - " +
-                "reporterID = " + reporter.getAccountId() + ", actionType = " + actionType);
-        accountActionList = (List<AccountAction>) ACCOUNT_ACTION_DAO.findAllByReporterAndAction(
-                reporter, actionType);
-        for(AccountAction action : accountActionList) {
-            account = findOne(action.getAccountId());
-            accountList.add(account);
+                "reporterID = " + reporterId + ", actionType = " + actionType);
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
+            statement.setInt(1, reporterId);
+            statement.setString(2, actionType);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                account = getStatement(rs);
+                accountList.add(account);
+            }
+            LOGGER.debug("found users by reporter: " + accountList.toString());
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
         }
-        LOGGER.trace("found users by reporter - " + accountList.toString());
         return accountList;
     }
 }

@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,9 +28,9 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
 
     private final AccountDao accountDao;
 
-    public ActionMySqlDao() {
+    public ActionMySqlDao(AccountDao accountDao) {
         super();
-        accountDao = new AccountMySqlDao();
+        this.accountDao = accountDao;
     }
 
     @Override

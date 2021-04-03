@@ -1,62 +1,70 @@
 package com.prokopovich.projectmanagement.factory;
 
+import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.service.*;
 import com.prokopovich.projectmanagement.service.impl.*;
 
 public class ServiceFactoryImpl extends ServiceFactoryProvider {
 
-    @Override
-    public AuthenticationServiceImpl getAuthenticationServiceImpl() {
-        return new AuthenticationServiceImpl();
+    private final DaoFactory daoFactory;
+
+    public ServiceFactoryImpl() {
+        daoFactory = DaoFactoryProvider.getDAOFactory(DatabaseType.MYSQL);
     }
 
     @Override
-    public AccountActionServiceImpl getAccountActionServiceImpl() {
-        return new AccountActionServiceImpl();
+    public AuthenticationService getAuthenticationService() {
+        return new AuthenticationServiceImpl(daoFactory.getAccountDao());
     }
 
     @Override
-    public ActionServiceImpl getActionServiceImpl() {
-        return new ActionServiceImpl();
+    public AccountActionService getAccountActionService() {
+        return new AccountActionServiceImpl(daoFactory.getAccountActionDao());
     }
 
     @Override
-    public AccountServiceImpl getAccountServiceImpl() {
-        return new AccountServiceImpl();
+    public ActionService getActionService() {
+        return new ActionServiceImpl(daoFactory.getActionDao());
     }
 
     @Override
-    public UserServiceImpl getUserServiceImpl() {
-        return new UserServiceImpl();
+    public AccountServiceImpl getAccountService() {
+        return new AccountServiceImpl(daoFactory.getAccountDao(), getUserService(),
+                getActionService(), getAccountActionService());
+    }
+
+    @Override
+    public UserService getUserService() {
+        return new UserServiceImpl(daoFactory.getUserDao());
     }
 
     @Override
     public AttachmentService getAttachmentService() {
-        return new AttachmentServiceImpl();
+        return new AttachmentServiceImpl(daoFactory.getAttachmentDao());
     }
 
     @Override
     public CommentService getCommentService() {
-        return new CommentServiceImpl();
+        return new CommentServiceImpl(daoFactory.getCommentDao());
     }
 
     @Override
     public ProjectService getProjectService() {
-        return new ProjectServiceImpl();
+        return new ProjectServiceImpl(daoFactory.getProjectDao(), getActionService(), getProjectActionService());
     }
 
     @Override
     public ProjectActionService getProjectActionService() {
-        return new ProjectActionServiceImpl();
+        return new ProjectActionServiceImpl(daoFactory.getProjectActionDao());
     }
 
     @Override
     public TaskService getTaskService() {
-        return new TaskServiceImpl();
+        return new TaskServiceImpl(daoFactory.getTaskDao(), getActionService(), getTaskActionService());
     }
 
     @Override
     public TaskActionService getTaskActionService() {
-        return new TaskActionServiceImpl();
+        return new TaskActionServiceImpl(daoFactory.getTaskActionDao());
     }
 }

@@ -4,15 +4,15 @@ import com.prokopovich.projectmanagement.service.*;
 
 public interface ServiceFactory {
 
-    AuthenticationService getAuthenticationServiceImpl();
+    AuthenticationService getAuthenticationService();
 
-    AccountActionService getAccountActionServiceImpl();
+    AccountActionService getAccountActionService();
 
-    ActionService getActionServiceImpl();
+    ActionService getActionService();
 
-    AccountService getAccountServiceImpl();
+    AccountService getAccountService();
 
-    UserService getUserServiceImpl();
+    UserService getUserService();
 
     AttachmentService getAttachmentService();
 

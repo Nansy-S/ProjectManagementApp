@@ -13,15 +13,16 @@ public interface AccountService {
 
     boolean editAccount(Account account, Account reporter, User user, String reason);
 
+    List<Account> getAllCreatedUser(int reporterId, String actionType);
+
     boolean changeRole(Account account, Account reporter, String reason);
 
     boolean changeStatus(User user, Account reporter, String reason, String typeAction);
 
-    Account getByAccountId(int id);
+    Account findByAccountId(int id);
 
-    List<Account> getAllByUserRole(String role);
+    List<Account> findByUserRole(String role);
 
-    List<Account> getAllByUserFullName(String fullName);
+    List<Account> findByUserFullName(String fullName);
 
-    List<Account> getAllByReporterAndAction(Account reporter, String actionType);
 }

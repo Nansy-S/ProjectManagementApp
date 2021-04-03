@@ -1,9 +1,7 @@
 package com.prokopovich.projectmanagement.service.impl;
 
-import com.prokopovich.projectmanagement.dao.AccountMySqlDao;
+import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
-import com.prokopovich.projectmanagement.factory.ServiceFactoryProvider;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.model.Action;
@@ -18,29 +16,33 @@ import java.util.List;
 
 public class AccountServiceImpl implements AccountService {
 
-    private static final AccountMySqlDao ACCOUNT_DAO =
-            (AccountMySqlDao) DaoFactoryProvider.getDAOFactory(1).getAccountDao();
-    private static final UserService USER_SERVICE =
-            ServiceFactoryProvider.getServiceFactory(1).getUserServiceImpl();
-    private static final ActionService ACTION_SERVICE =
-            ServiceFactoryProvider.getServiceFactory(1).getActionServiceImpl();
-    private static final AccountActionService ACCOUNT_ACTION_SERVICE =
-            ServiceFactoryProvider.getServiceFactory(1).getAccountActionServiceImpl();
+    private final AccountDao accountDao;
+    private final UserService userService;
+    private final ActionService actionService;
+    private final AccountActionService accountActionService;
+
+    public AccountServiceImpl(AccountDao accountDao, UserService userService, ActionService actionService,
+                              AccountActionService accountActionService) {
+        this.accountDao = accountDao;
+        this.userService = userService;
+        this.actionService = actionService;
+        this.accountActionService = accountActionService;
+    }
 
     @Override
     public void addNewAccount(Account newAccount, Account reporter, User newUser, String reason) {
-        newAccount = ACCOUNT_DAO.create(newAccount, newAccount.getAccountId());
+        newAccount = accountDao.create(newAccount);
 
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
-        USER_SERVICE.addNewUser(newUser);
+        userService.addNewUser(newUser);
         setAccountAction(newAccount.getAccountId(), reporter, reason, AccountActionType.CREATE.getTitle());
     }
 
     @Override
     public boolean editAccount(Account account, Account reporter, User user, String reason) {
-        if (ACCOUNT_DAO.update(account)) {
-            if (USER_SERVICE.editUser(user)) {
+        if (accountDao.update(account)) {
+            if (userService.editUser(user)) {
                 setAccountAction(account.getAccountId(), reporter, reason, AccountActionType.UPDATE.getTitle());
                 return true;
             } else {
@@ -53,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean changeRole(Account account, Account reporter, String reason) {
-        if (ACCOUNT_DAO.update(account)) {
+        if (accountDao.update(account)) {
             setAccountAction(account.getAccountId(), reporter, reason, AccountActionType.CHANGE_ROLE.getTitle());
             return true;
         } else {
@@ -63,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean changeStatus(User user, Account reporter, String reason, String typeAction) {
-        if (USER_SERVICE.editUser(user)) {
+        if (userService.editUser(user)) {
             setAccountAction(user.getUserId(), reporter, reason, typeAction);
             return true;
         } else {
@@ -79,32 +81,32 @@ public class AccountServiceImpl implements AccountService {
         newAction.setDatetime(LocalDateTime.now());
         newAction.setReporter(reporter.getAccountId());
         newAction.setReporterInfo(reporter);
-        newAction = ACTION_SERVICE.addNewAction(newAction);
+        newAction = actionService.addNewAction(newAction);
 
         newAccountAction.setActionId(newAction.getActionId());
         newAccountAction.setAccountId(userId);
         newAccountAction.setReason(reason);
         newAccountAction.setAction(newAction);
-        ACCOUNT_ACTION_SERVICE.addNewAccountAction(newAccountAction);
+        accountActionService.addNewAccountAction(newAccountAction);
     }
 
     @Override
-    public Account getByAccountId(int id) {
-        return ACCOUNT_DAO.findOne(id);
+    public List<Account> getAllCreatedUser(int reporterId, String actionType) {
+        return (List<Account>) accountDao.findAllByReporterAndAction(reporterId, actionType);
     }
 
     @Override
-    public List<Account> getAllByUserRole(String role) {
-        return (List<Account>) ACCOUNT_DAO.findAllByUserRole(role);
+    public Account findByAccountId(int id) {
+        return accountDao.findOne(id);
     }
 
     @Override
-    public List<Account> getAllByUserFullName(String fullName) {
-        return (List<Account>) ACCOUNT_DAO.findAllByUserFullName(fullName);
+    public List<Account> findByUserRole(String role) {
+        return (List<Account>) accountDao.findAllByUserRole(role);
     }
 
     @Override
-    public List<Account> getAllByReporterAndAction(Account reporter, String actionType) {
-        return (List<Account>) ACCOUNT_DAO.findAllByReporterAndAction(reporter, actionType);
+    public List<Account> findByUserFullName(String fullName) {
+        return (List<Account>) accountDao.findAllByUserFullName(fullName);
     }
 }

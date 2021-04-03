@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements A
     private static final String SQL_CREATE = "INSERT INTO attachments (file, task_id) VALUES (?, ?)";
     private static final String SQL_UPDATE = "UPDATE attachments SET file = ?, task_id = ? WHERE attachment_id = ?";
     private static final String SQL_DELETE = "DELETE FROM attachments WHERE attachment_id = ?";
+
     private static final Logger LOGGER = LogManager.getLogger(AttachmentMySqlDao.class);
 
     public AttachmentMySqlDao(){

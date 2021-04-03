@@ -3,7 +3,6 @@ package com.prokopovich.projectmanagement.dao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.*;
-import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -13,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implements ProjectActionDao {
 
@@ -28,11 +26,11 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     private static final String SQL_CREATE = "INSERT INTO project_actions (action_id, project_id) VALUES (?, ?)";
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionMySqlDao.class);
 
-    private final ActionMySqlDao actionDao;
+    private final ActionDao actionDao;
 
-    public ProjectActionMySqlDao() {
+    public ProjectActionMySqlDao(ActionDao actionDao) {
         super();
-        actionDao = new ActionMySqlDao();
+        this.actionDao = actionDao;
     }
 
     @Override
@@ -74,8 +72,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     @Override
     public Collection<ProjectAction> findAllByProjectId(int projectId) throws DaoException {
         LOGGER.trace("findAllByProjectId method is executed - projectId = " + projectId);
-        List<ProjectAction> projectActionList = (List<ProjectAction>) findByParameter(SQL_SELECT_BY_PROJECT, projectId);
-        return projectActionList;
+        return findByParameter(SQL_SELECT_BY_PROJECT, projectId);
     }
 
     @Override

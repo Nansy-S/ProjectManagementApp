@@ -38,16 +38,17 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final ProjectDao projectDao;
+    private final TaskActionDao taskActionDao;
     private final AttachmentDao attachmentDao;
     private final CommentDao commentDao;
-    private final TaskActionDao taskActionDao;
 
-    public TaskMySqlDao(){
+    public TaskMySqlDao(ProjectDao projectDao, TaskActionDao taskActionDao, AttachmentDao attachmentDao,
+                        CommentDao commentDao) {
         super();
-        projectDao = new ProjectMySqlDao();
-        attachmentDao = new AttachmentMySqlDao();
-        commentDao = new CommentMySqlDao();
-        taskActionDao = new TaskActionMySqlDao();
+        this.projectDao = projectDao;
+        this.taskActionDao = taskActionDao;
+        this.attachmentDao = attachmentDao;
+        this.commentDao = commentDao;
     }
 
     @Override
@@ -118,25 +119,21 @@ public class TaskMySqlDao extends GenericMySqlDao<Task> implements TaskDao {
 
     public Collection<Task> findAllByProjectId(int projectId) throws DaoException {
         LOGGER.trace("findAllByProjectId method is executed - projectId = " + projectId);
-        List<Task> tasks = (List<Task>) findByParameter(SQL_SELECT_BY_PROJECT, projectId);
-        return tasks;
+        return findByParameter(SQL_SELECT_BY_PROJECT, projectId);
     }
 
     public Collection<Task> findAllByAssignee(int assignee) throws DaoException {
         LOGGER.trace("findAllByAssignee method is executed - assignee = " + assignee);
-        List<Task> tasks = (List<Task>) findByParameter(SQL_SELECT_BY_ASSIGNEE, assignee);
-        return tasks;
+        return findByParameter(SQL_SELECT_BY_ASSIGNEE, assignee);
     }
 
     public Collection<Task> findAllByReporter(int reporter) throws DaoException {
         LOGGER.trace("findAllByReporter method is executed - reporter = " + reporter);
-        List<Task> tasks = (List<Task>) findByParameter(SQL_SELECT_BY_REPORTER, reporter);
-        return tasks;
+        return findByParameter(SQL_SELECT_BY_REPORTER, reporter);
     }
 
     public Collection<Task> findAllByCurrentStatus(String currentStatus) throws DaoException {
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
-        List<Task> tasks = (List<Task>) findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
-        return tasks;
+        return findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
     }
 }

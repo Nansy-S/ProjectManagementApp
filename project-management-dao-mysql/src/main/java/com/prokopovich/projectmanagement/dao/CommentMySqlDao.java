@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.dao.CommentDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Comment;
@@ -11,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +28,7 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     private static final String SQL_UPDATE = "UPDATE comments SET title = ?, text = ?, date_time = ?, author = ?, " +
             "task_id = ? WHERE comment_id = ?";
     private static final String SQL_DELETE = "DELETE FROM comments WHERE comment_id = ?";
+
     private static final Logger LOGGER = LogManager.getLogger(CommentMySqlDao.class);
 
     public CommentMySqlDao(){
@@ -109,8 +108,7 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
     @Override
     public Collection<Comment> findAllByTaskId(int taskId) throws DaoException {
         LOGGER.trace("findAllByTaskId method is executed - taskId = " + taskId);
-        List<Comment> comments = (List<Comment>) findByParameter(SQL_SELECT_BY_TASK, taskId);
-        return comments;
+        return findByParameter(SQL_SELECT_BY_TASK, taskId);
     }
 
     @Override
