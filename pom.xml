@@ -33,5 +33,6 @@
     <module>project-management-dao-mysql</module>
     <module>project-management-dao-api</module>
     <module>project-management-service-api</module>
+    <module>project-management-dao-hibernate</module>
   </modules>
 </project>

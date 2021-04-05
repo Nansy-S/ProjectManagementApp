@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.AccountAction;
