@@ -1,10 +1,21 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "task_actions")
 public class TaskAction {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "action_id")
     private int actionId;
+    @Column(name = "task_id")
     private int taskId;
+    @Column(name = "assignee_id")
     private int assigneeId;
+    @OneToOne
+    @JoinColumn(name = "action_id")
     private Action action;
 
     public TaskAction() { }

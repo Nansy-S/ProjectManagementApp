@@ -1,9 +1,19 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "project_actions")
 public class ProjectAction {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "action_id")
     private int actionId;
+    @Column(name = "project_id")
     private int projectId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "action_id")
     private Action action;
 
     public ProjectAction() { }

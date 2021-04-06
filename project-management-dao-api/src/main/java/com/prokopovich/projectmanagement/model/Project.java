@@ -1,16 +1,28 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "projects")
 public class Project {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_id")
     private int projectId;
+    @Column(name = "project_code")
     private String projectCode;
+    @Column(name = "summary")
     private String summary;
+    @Column(name = "due_date")
     private LocalDateTime dueDate;
+    @Column(name = "current_status")
     private String currentStatus;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
     private List<ProjectAction> projectActions;
 
     public Project() {

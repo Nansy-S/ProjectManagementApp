@@ -1,11 +1,20 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
 import java.sql.Blob;
 
+@Entity
+@Table(name = "attachments")
 public class Attachment {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "attachment_id")
     private int attachmentId;
+    @Lob
+    @Column(name = "file")
     private Blob file;
+    @Column(name = "task_id")
     private int taskId;
 
     public Attachment() { }

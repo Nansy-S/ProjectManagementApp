@@ -1,10 +1,21 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "account_actions")
 public class AccountAction {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "action_id")
     private int actionId;
+    @Column(name = "account_id")
     private int accountId;
+    @Column(name = "reason")
     private String reason;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "action_id")
     private Action action;
 
     public AccountAction(){

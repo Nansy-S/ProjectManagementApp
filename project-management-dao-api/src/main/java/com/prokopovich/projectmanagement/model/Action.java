@@ -1,14 +1,24 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "actions")
 public class Action {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "action_id")
     private int actionId;
+    @Column(name = "type")
     private String type;
+    @Column(name = "date_time")
     private LocalDateTime datetime;
+    @Column(name = "reporter")
     private int reporter;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id")
     private Account reporterInfo;
 
     public Action() {

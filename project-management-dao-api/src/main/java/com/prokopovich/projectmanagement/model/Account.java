@@ -1,16 +1,30 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
 import java.sql.Blob;
 
+@Entity
+@Table(name = "accounts")
 public class Account {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private int accountId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "patronymic")
     private String patronymic;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
+    @Column(name = "role")
     private String role;
+    @Lob
+    @Column(name = "photo")
     private Blob photo;
 
     public Account() { }

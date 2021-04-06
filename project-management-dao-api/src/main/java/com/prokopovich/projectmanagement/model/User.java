@@ -1,15 +1,28 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
+    @Column(name = "position")
     private String position;
+    @Column(name = "current_status")
     private String currentStatus;
+    @Column(name = "phone")
     private String phone;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id")
     private Account accountInfo;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id")
     private List<AccountAction> accountActions;
 
     public User() {

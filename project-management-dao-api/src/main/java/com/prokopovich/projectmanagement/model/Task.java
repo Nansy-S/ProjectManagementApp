@@ -1,35 +1,60 @@
 package com.prokopovich.projectmanagement.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "tasks")
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
     private int taskId;
+    @Column(name = "task_code")
     private String taskCode;
+    @Column(name = "project_id")
     private int projectId;
+    @Column(name = "priority")
     private String priority;
+    @Column(name = "current_status")
     private String currentStatus;
+    @Column(name = "due_date")
     private LocalDateTime dueDate;
+    @Column(name = "estimation_time")
     private int estimationTime;
+    @Column(name = "assignee")
     private int assignee;
+    @Column(name = "description")
     private String description;
-
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project projectInfo;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User assigneeInfo;
+    @OneToMany
+    @JoinColumn(name = "task_id")
     private List<Attachment> attachmentList;
+    @OneToMany
+    @JoinColumn(name = "task_id")
     private List<Comment> commentList;
+    @OneToMany
+    @JoinColumn(name = "task_id")
     private List<TaskAction> taskActions;
 
     public Task() {
         projectInfo = new Project();
+        assigneeInfo = new User();
         attachmentList = new ArrayList<>();
         commentList = new ArrayList<>();
         taskActions = new ArrayList<>();
     }
 
     public Task(int taskId, String taskCode, int projectId, String priority, String currentStatus, LocalDateTime dueDate,
-                int estimationTime, int assignee, String description, Project projectInfo,
+                int estimationTime, int assignee, String description, Project projectInfo, User assigneeInfo,
                 List<Attachment> attachmentList, List<Comment> commentList, List<TaskAction> taskActions) {
         this.taskId = taskId;
         this.taskCode = taskCode;
@@ -41,6 +66,7 @@ public class Task {
         this.assignee = assignee;
         this.description = description;
         this.projectInfo = projectInfo;
+        this.assigneeInfo = assigneeInfo;
         this.attachmentList = attachmentList;
         this.commentList = commentList;
         this.taskActions = taskActions;
@@ -124,6 +150,14 @@ public class Task {
 
     public void setProjectInfo(Project projectInfo) {
         this.projectInfo = projectInfo;
+    }
+
+    public User getAssigneeInfo() {
+        return assigneeInfo;
+    }
+
+    public void setAssigneeInfo(User assigneeInfo) {
+        this.assigneeInfo = assigneeInfo;
     }
 
     public List<Attachment> getAttachmentList() {
