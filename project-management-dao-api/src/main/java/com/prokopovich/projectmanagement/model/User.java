@@ -9,7 +9,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int userId;
     @Column(name = "position")
@@ -21,7 +20,7 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     private Account accountInfo;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "account_id")
     private List<AccountAction> accountActions;
 

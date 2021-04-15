@@ -1,5 +1,5 @@
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
-    <persistence-unit name="projectmanagement">
+    <persistence-unit name="ps-hb-projectmanagement">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>com.prokopovich.projectmanagement.model.Account</class>

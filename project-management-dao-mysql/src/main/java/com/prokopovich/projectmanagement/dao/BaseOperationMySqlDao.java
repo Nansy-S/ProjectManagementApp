@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class GenericMySqlDao<T> implements GenericDao<T> {
+public abstract class BaseOperationMySqlDao<T> implements BaseOperationDao<T> {
 
-    private static final Logger LOGGER = LogManager.getLogger(GenericMySqlDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(BaseOperationMySqlDao.class);
 
-    public GenericMySqlDao() { }
+    public BaseOperationMySqlDao() { }
 
     protected abstract T getStatement(ResultSet rs) throws SQLException;
 
@@ -22,14 +22,11 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
     public abstract String getSqlSelectAll();
 
-    public abstract String getSqlSelectOne();
-
     public abstract String getSqlCreate();
 
-    public abstract String getSqlLastInsert();
-
     @Override
-    public T create(T object) {
+    public int create(T object) {
+        int id = 0;
         String sql = getSqlCreate();
 
         LOGGER.trace("create object method is executed");
@@ -39,32 +36,13 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
             if (rs != null && rs.next()) {
-                int id = rs.getInt(1);
-                object = findOne(id);
+                id = rs.getInt(1);
             }
         } catch (SQLException ex) {
             throw new DaoException(ex);
         }
         LOGGER.debug("new added object - " + object.toString());
-        return object;
-    }
-
-    @Override
-    public T findOne(int id) {
-        T object = null;
-
-        String sql = getSqlSelectOne();
-        try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (rs != null && rs.next()) {
-                object = getStatement(rs);
-            }
-        } catch (SQLException ex) {
-            throw new DaoException(ex);
-        }
-        return object;
+        return id;
     }
 
     @Override
@@ -88,13 +66,13 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public Collection<T> findByParameter(String sql, String parameter) {
+    public Collection<T> findByParameter(String sql, int parameter) {
         T object;
         List<T> objectsList = new ArrayList<>();
 
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, parameter);
+            statement.setInt(1, parameter);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 object = getStatement(rs);
@@ -108,13 +86,13 @@ public abstract class GenericMySqlDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public Collection<T> findByParameter(String sql, int parameter) {
+    public Collection<T> findByParameter(String sql, String parameter) {
         T object;
         List<T> objectsList = new ArrayList<>();
 
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, parameter);
+            statement.setString(1, parameter);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 object = getStatement(rs);

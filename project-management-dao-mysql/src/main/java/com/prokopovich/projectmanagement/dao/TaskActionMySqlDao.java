@@ -1,8 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.TaskAction;
 import org.apache.log4j.LogManager;
@@ -13,11 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements TaskActionDao {
+public class TaskActionMySqlDao extends BaseOperationMySqlDao<TaskAction> implements TaskActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, task_id, assignee_id FROM task_actions";
-    private static final String SQL_SELECT_ONE = "SELECT action_id, task_id, assignee_id FROM task_actions " +
-            "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_TASK = "SELECT action_id, task_id, assignee_id FROM task_actions " +
             "WHERE task_id = ?";
     private static final String SQL_CREATE = "INSERT INTO task_actions (action_id, task_id, assignee_id) VALUES (?, ?, ?)";
@@ -36,17 +32,7 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
     }
 
     @Override
-    public String getSqlSelectOne() {
-        return SQL_SELECT_ONE;
-    }
-
-    @Override
     public String getSqlCreate() {
-        return SQL_CREATE;
-    }
-
-    @Override
-    public String getSqlLastInsert() {
         return SQL_CREATE;
     }
 
@@ -74,7 +60,7 @@ public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements T
         return findByParameter(SQL_SELECT_BY_TASK, taskId);
     }
 
-    public Collection<TaskAction> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException {
+    public Collection<TaskAction> findAllByReporter(int reporterId) throws DaoException {
         return null;
     }
 }

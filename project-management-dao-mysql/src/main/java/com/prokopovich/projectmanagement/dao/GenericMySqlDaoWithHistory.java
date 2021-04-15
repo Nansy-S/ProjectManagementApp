@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class GenericMySqlDaoWithHistory<T> extends GenericMySqlDao<T> implements GenericDaoWithHistory<T> {
+public abstract class GenericMySqlDaoWithHistory<T> extends GenericFindMySqlDao<T> implements GenericDaoWithHistory<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(GenericMySqlDaoWithHistory.class);
 

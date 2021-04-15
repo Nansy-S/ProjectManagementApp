@@ -1,0 +1,37 @@
+package com.prokopovich.projectmanagement.dao.hibernate;
+
+import com.prokopovich.projectmanagement.dao.TaskActionDao;
+import com.prokopovich.projectmanagement.exception.DaoException;
+import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.ProjectAction;
+import com.prokopovich.projectmanagement.model.TaskAction;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import javax.persistence.EntityManagerFactory;
+import java.sql.SQLException;
+import java.util.Collection;
+
+public class TaskActionHibernateDao extends BaseOperationHibernateDao<TaskAction> implements TaskActionDao {
+
+    private static final Logger LOGGER = LogManager.getLogger(TaskActionHibernateDao.class);
+
+    private final EntityManagerFactory entityManagerFactory;
+
+    public TaskActionHibernateDao(EntityManagerFactory entityManagerFactory) {
+        super(entityManagerFactory, TaskAction.class);
+        this.entityManagerFactory = entityManagerFactory;
+    }
+
+    @Override
+    public Collection<TaskAction> findAllByTaskId(int taskId) throws SQLException {
+        LOGGER.trace("findAllByTaskId method is executed - taskId = " + taskId);
+        return findByParameter("taskId", taskId);
+    }
+
+    @Override
+    public Collection<TaskAction> findAllByReporter(int reporterId) throws DaoException {
+        LOGGER.trace("findAllByReporter method is executed - reporterID = " + reporterId);
+        return findByParameter("reporter", reporterId);
+    }
+}

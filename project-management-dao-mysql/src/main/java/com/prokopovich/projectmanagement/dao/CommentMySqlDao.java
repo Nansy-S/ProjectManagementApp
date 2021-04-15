@@ -11,9 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.List;
 
-public class CommentMySqlDao extends GenericMySqlDao<Comment> implements CommentDao {
+public class CommentMySqlDao extends GenericFindMySqlDao<Comment> implements CommentDao {
 
     private static final String SQL_SELECT_ALL = "SELECT comment_id, title, text, date_time, author, task_id " +
             "FROM comments";
@@ -47,11 +46,6 @@ public class CommentMySqlDao extends GenericMySqlDao<Comment> implements Comment
 
     @Override
     public String getSqlCreate() {
-        return SQL_CREATE;
-    }
-
-    @Override
-    public String getSqlLastInsert() {
         return SQL_CREATE;
     }
 

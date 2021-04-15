@@ -1,10 +1,7 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
-import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
@@ -18,16 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implements AccountActionDao {
+public class AccountActionMySqlDao extends BaseOperationMySqlDao<AccountAction> implements AccountActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, account_id, reason FROM account_actions";
-    private static final String SQL_SELECT_ONE = "SELECT action_id, account_id, reason FROM account_actions " +
-            "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
             "WHERE account_id = ?";
-    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT aa.action_id, aa.account_id, aa.reason, " +
+    private static final String SQL_SELECT_BY_REPORTER = "SELECT aa.action_id, aa.account_id, aa.reason, " +
             "a.type, a.date_time FROM account_actions aa INNER JOIN actions a ON a.action_id = aa.action_id " +
-            "WHERE a.reporter = ? AND a.type LIKE ?";
+            "WHERE a.reporter = ?";
     private static final String SQL_CREATE = "INSERT INTO account_actions (action_id, account_id, reason) " +
             "VALUES (?, ?, ?)";
 
@@ -35,7 +30,6 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final ActionDao actionDao;
-    //private final ActionDao actionDao = DaoFactoryProvider.getDAOFactory(DatabaseType.MYSQL).getActionDao();
 
     public AccountActionMySqlDao(ActionDao actionDao) {
         super();
@@ -48,17 +42,7 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     }
 
     @Override
-    public String getSqlSelectOne() {
-        return SQL_SELECT_ONE;
-    }
-
-    @Override
     public String getSqlCreate() {
-        return SQL_CREATE;
-    }
-
-    @Override
-    public String getSqlLastInsert() {
         return SQL_CREATE;
     }
 
@@ -87,17 +71,15 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
     }
 
     @Override
-    public Collection<AccountAction> findAllByReporterAndAction(Account reporter, String actionType)
+    public Collection<AccountAction> findAllByReporter(int reporterId)
                 throws DaoException {
         AccountAction accountAction;
         List<AccountAction> accountActionList = new ArrayList<>();
 
-        LOGGER.trace("findUserIdByReporterAndAction method is executed - " +
-                "reporterID = " + reporter.getAccountId() + ", action = " + actionType);
+        LOGGER.trace("findUserIdByReporterAndAction method is executed - reporterID = " + reporterId);
         try (Connection connection = MySqlDaoFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
-            statement.setInt(1, reporter.getAccountId());
-            statement.setString(2, "%" + actionType);
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER)) {
+            statement.setInt(1, reporterId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 accountAction = getStatement(rs);
@@ -105,8 +87,8 @@ public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implem
                 accountAction.getAction().setType(rs.getString(4));
                 accountAction.getAction().setDatetime(
                         CONVERTER.convertToEntityAttribute(rs.getTimestamp(5)));
-                accountAction.getAction().setReporter(reporter.getAccountId());
-                accountAction.getAction().setReporterInfo(reporter);
+                accountAction.getAction().setReporter(reporterId);
+              //  accountAction.getAction().setReporterInfo(reporter);
                 accountActionList.add(accountAction);
             }
             LOGGER.debug("found actions: " + accountActionList.toString());

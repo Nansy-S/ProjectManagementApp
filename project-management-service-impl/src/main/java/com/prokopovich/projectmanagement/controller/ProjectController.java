@@ -46,7 +46,7 @@ public class ProjectController {
     }
 
     public List<Project> displayActiveProjects() {
-        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser(),
+        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser().getAccountId(),
                 ProjectStatus.OPEN.getTitle(), ProjectStatus.IN_PROGRESS.getTitle());
         displayProjects(projectList);
         return projectList;
@@ -148,7 +148,7 @@ public class ProjectController {
 
     public void closeProject() {
         LOGGER.trace("closeProject method is executed");
-        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser(),
+        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser().getAccountId(),
                 ProjectStatus.IN_PROGRESS.getTitle());
         changeStatusProject(projectList, ProjectStatus.CLOSED.getTitle(),
                 ProjectActionType.CLOSED.getTitle());
@@ -156,7 +156,7 @@ public class ProjectController {
 
     public void deleteProject() {
         LOGGER.trace("closeProject method is executed");
-        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser(),
+        List<Project> projectList = projectService.getAllByReporterAndStatus(App.getCurrentUser().getAccountId(),
                 ProjectStatus.OPEN.getTitle(), ProjectStatus.IN_PROGRESS.getTitle());
         changeStatusProject(projectList, ProjectStatus.DELETED.getTitle(),
                 ProjectActionType.DELETE.getTitle());

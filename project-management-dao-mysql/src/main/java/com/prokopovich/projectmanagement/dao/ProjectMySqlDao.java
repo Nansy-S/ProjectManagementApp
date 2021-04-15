@@ -58,11 +58,6 @@ public class ProjectMySqlDao extends GenericMySqlDaoWithHistory<Project> impleme
     }
 
     @Override
-    public String getSqlLastInsert() {
-        return SQL_CREATE;
-    }
-
-    @Override
     public String getSqlSelectByReporterAndAction() {
         return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }
@@ -110,23 +105,22 @@ public class ProjectMySqlDao extends GenericMySqlDaoWithHistory<Project> impleme
     }
 
     @Override
-    public Collection<Project> findAllByReporterAndStatus(Account reporter, String ... statuses) throws DaoException {
+    public Collection<Project> findAllByReporterAndStatus(int reporterId, String ... statuses) throws DaoException {
         Project project;
         List<Project> projectList = new ArrayList<>();
         List<ProjectAction> projectActionList;
 
-        LOGGER.trace("findAllByReporterAndAction method is executed - " +
-                "reporterID = " + reporter.getAccountId() + ", project status = " + statuses.toString());
-        projectActionList = (List<ProjectAction>) projectActionDao.findAllByReporterAndAction(
-                reporter, "Create");
-        for (ProjectAction action : projectActionList) {
-            project = findOne(action.getProjectId());
-            for (String status : statuses) {
-                if (project.getCurrentStatus().equals(status)) {
-                    projectList.add(project);
-                }
-            }
-        }
+        //LOGGER.trace("findAllByReporterAndAction method is executed - " +
+        //        "reporterID = " + reporterId + ", project status = " + statuses.toString());
+        //projectActionList = (List<ProjectAction>) projectActionDao.findAllByReporterAndAction(reporterId, "Create");
+        //for (ProjectAction action : projectActionList) {
+        //    project = findOne(action.getProjectId());
+        //    for (String status : statuses) {
+        //        if (project.getCurrentStatus().equals(status)) {
+        //            projectList.add(project);
+        //        }
+        //    }
+        //}
         return projectList;
     }
 }

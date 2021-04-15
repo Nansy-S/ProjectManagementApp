@@ -53,11 +53,6 @@ public class AccountMySqlDao extends GenericMySqlDaoWithHistory<Account> impleme
     }
 
     @Override
-    public String getSqlLastInsert() {
-        return SQL_CREATE;
-    }
-
-    @Override
     public String getSqlSelectByReporterAndAction() {
         return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }

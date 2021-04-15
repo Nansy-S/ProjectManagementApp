@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
+public class UserMySqlDao extends GenericFindMySqlDao<User> implements UserDao {
 
     private static final String SQL_SELECT_ALL = "SELECT user_id, position, current_status, phone FROM users";
     private static final String SQL_SELECT_ONE = "SELECT user_id, position, current_status, phone FROM users " +
@@ -51,11 +51,6 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     @Override
     public String getSqlCreate() {
         return SQL_CREATE;
-    }
-
-    @Override
-    public String getSqlLastInsert() {
-        return SQL_LAST_INSERT;
     }
 
     @Override

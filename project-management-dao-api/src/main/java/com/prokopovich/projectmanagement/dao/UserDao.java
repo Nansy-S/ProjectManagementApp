@@ -5,7 +5,7 @@ import com.prokopovich.projectmanagement.model.User;
 
 import java.util.Collection;
 
-public interface UserDao extends GenericDao<User> {
+public interface UserDao extends GenericFindDao<User> {
 
     boolean update(User user) throws DaoException;
 

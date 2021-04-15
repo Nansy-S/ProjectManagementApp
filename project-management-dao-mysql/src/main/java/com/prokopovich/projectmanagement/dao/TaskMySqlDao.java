@@ -71,11 +71,6 @@ public class TaskMySqlDao extends GenericMySqlDaoWithHistory<Task> implements Ta
     }
 
     @Override
-    public String getSqlLastInsert() {
-        return SQL_CREATE;
-    }
-
-    @Override
     public String getSqlSelectByReporterAndAction() {
         return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }

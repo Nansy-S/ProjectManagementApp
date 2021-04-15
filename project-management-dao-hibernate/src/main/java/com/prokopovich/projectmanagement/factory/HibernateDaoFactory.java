@@ -1,64 +1,66 @@
 package com.prokopovich.projectmanagement.factory;
 
 import com.prokopovich.projectmanagement.dao.*;
+import com.prokopovich.projectmanagement.dao.hibernate.*;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class HibernateDaoFactory implements DaoFactory {
 
     private final EntityManagerFactory entityManagerFactory;
 
-    public HibernateDaoFactory(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+    public HibernateDaoFactory() {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory("ps-hb-projectmanagement");
     }
 
     @Override
     public AccountActionDao getAccountActionDao() {
-        return null;
+        return new AccountActionHibernateDao(entityManagerFactory);
     }
 
     @Override
     public AccountDao getAccountDao() {
-        return null;
+        return new AccountHibernateDao(entityManagerFactory);
     }
 
     @Override
     public ActionDao getActionDao() {
-        return null;
+        return new ActionHibernateDao(entityManagerFactory);
     }
 
     @Override
     public AttachmentDao getAttachmentDao() {
-        return null;
+        return new AttachmentHibernateDao(entityManagerFactory);
     }
 
     @Override
     public CommentDao getCommentDao() {
-        return null;
+        return new CommentHibernateDao(entityManagerFactory);
     }
 
     @Override
     public ProjectDao getProjectDao() {
-        return null;
+        return new ProjectHibernateDao(entityManagerFactory);
     }
 
     @Override
     public ProjectActionDao getProjectActionDao() {
-        return null;
+        return new ProjectActionHibernateDao(entityManagerFactory);
     }
 
     @Override
     public TaskDao getTaskDao() {
-        return null;
+        return new TaskHibernateDao(entityManagerFactory);
     }
 
     @Override
     public TaskActionDao getTaskActionDao() {
-        return null;
+        return new TaskActionHibernateDao(entityManagerFactory);
     }
 
     @Override
     public UserDao getUserDao() {
-        return null;
+        return new UserHibernateDao(entityManagerFactory);
     }
 }

@@ -1,8 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
 import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.*;
 import org.apache.log4j.LogManager;
@@ -15,11 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implements ProjectActionDao {
+public class ProjectActionMySqlDao extends BaseOperationMySqlDao<ProjectAction> implements ProjectActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, project_id FROM project_actions";
-    private static final String SQL_SELECT_ONE = "SELECT action_id, project_id FROM project_actions " +
-            "WHERE action_id = ?";
     private static final String SQL_SELECT_BY_PROJECT = "SELECT action_id, project_id FROM project_actions " +
             "WHERE project_id = ?";
     private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT pa.action_id, pa.project_id " +
@@ -29,7 +25,6 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionMySqlDao.class);
 
     private final ActionDao actionDao;
-    //private final ActionDao actionDao = DaoFactoryProvider.getDAOFactory(DatabaseType.MYSQL).getActionDao();
 
     public ProjectActionMySqlDao(ActionDao actionDao) {
         super();
@@ -42,17 +37,7 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     }
 
     @Override
-    public String getSqlSelectOne() {
-        return SQL_SELECT_ONE;
-    }
-
-    @Override
     public String getSqlCreate() {
-        return SQL_CREATE;
-    }
-
-    @Override
-    public String getSqlLastInsert() {
         return SQL_CREATE;
     }
 
@@ -79,16 +64,14 @@ public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implem
     }
 
     @Override
-    public Collection<ProjectAction> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException {
+    public Collection<ProjectAction> findAllByReporter(int reporterId) throws DaoException {
         ProjectAction projectAction;
         Collection<ProjectAction> projectActionList = new ArrayList<>();
 
-        LOGGER.trace("findAllByReporterAndAction method is executed - " +
-                "reporterID = " + reporter.getAccountId() + ", action = " + actionType);
+        LOGGER.trace("findAllByReporter method is executed - reporterID = " + reporterId);
         try (Connection connection = MySqlDaoFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_REPORTER_AND_ACTION)) {
-            statement.setInt(1, reporter.getAccountId());
-            statement.setString(2, "%" + actionType);
+            statement.setInt(1, reporterId);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 projectAction = getStatement(rs);

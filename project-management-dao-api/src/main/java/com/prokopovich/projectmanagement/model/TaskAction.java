@@ -1,20 +1,21 @@
 package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "task_actions")
-public class TaskAction {
+public class TaskAction implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "action_id")
     private int actionId;
+    @Id
     @Column(name = "task_id")
     private int taskId;
     @Column(name = "assignee_id")
     private int assigneeId;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "action_id")
     private Action action;
 

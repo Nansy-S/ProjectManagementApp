@@ -9,7 +9,7 @@ public class ServiceFactoryImpl extends ServiceFactoryProvider {
     private final DaoFactory daoFactory;
 
     public ServiceFactoryImpl() {
-        daoFactory = DaoFactoryProvider.getDAOFactory(DatabaseType.MYSQL);
+        daoFactory = DaoFactoryProvider.getDAOFactory(DatabaseType.HIBERNATE);
     }
 
     @Override

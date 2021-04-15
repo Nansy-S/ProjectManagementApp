@@ -28,8 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void addNewProject(Project newProject, Account reporter) {
         newProject.setCurrentStatus(ProjectStatus.OPEN.getTitle());
-        newProject = projectDao.create(newProject);
-        setProjectAction(newProject.getProjectId(), reporter, ProjectActionType.CREATE.getTitle());
+        int newProjectId = projectDao.create(newProject);
+        setProjectAction(newProjectId, reporter, ProjectActionType.CREATE.getTitle());
     }
 
     @Override
@@ -69,8 +69,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAllByReporterAndStatus(Account reporter, String ... statuses) {
-        return (List<Project>) projectDao.findAllByReporterAndStatus(reporter, statuses);
+    public List<Project> getAllByReporterAndStatus(int reporterId, String ... statuses) {
+        return (List<Project>) projectDao.findAllByReporterAndStatus(reporterId, statuses);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class TaskActionServiceImpl implements TaskActionService {
     }
 
     @Override
-    public List<TaskAction> findAllByReporter(Account reporter) {
-        return (List<TaskAction>) taskActionDao.findAllByReporterAndAction(reporter, "");
+    public List<TaskAction> findAllByReporter(int reporterId) {
+        return (List<TaskAction>) taskActionDao.findAllByReporter(reporterId);
     }
 }

@@ -1,9 +1,5 @@
 package com.prokopovich.projectmanagement.dao;
 
-import com.prokopovich.projectmanagement.enumeration.DatabaseType;
-import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.factory.DaoFactoryProvider;
-import com.prokopovich.projectmanagement.factory.MySqlDaoFactory;
 import com.prokopovich.projectmanagement.model.Action;
 import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
 import org.apache.log4j.LogManager;
@@ -13,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao {
+public class ActionMySqlDao extends GenericFindMySqlDao<Action> implements ActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, type, date_time, reporter FROM actions";
     private static final String SQL_SELECT_ONE = "SELECT action_id, type, date_time, reporter FROM actions " +
@@ -28,7 +24,6 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final AccountDao accountDao;
-    //private final AccountDao accountDao = DaoFactoryProvider.getDAOFactory(DatabaseType.MYSQL).getAccountDao();
 
     public ActionMySqlDao(AccountDao accountDao) {
         super();
@@ -47,11 +42,6 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
 
     @Override
     public String getSqlCreate() {
-        return SQL_CREATE;
-    }
-
-    @Override
-    public String getSqlLastInsert() {
         return SQL_CREATE;
     }
 

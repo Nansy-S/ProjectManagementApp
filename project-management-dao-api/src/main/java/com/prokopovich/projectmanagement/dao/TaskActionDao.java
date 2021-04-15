@@ -7,9 +7,9 @@ import com.prokopovich.projectmanagement.model.TaskAction;
 import java.sql.SQLException;
 import java.util.Collection;
 
-public interface TaskActionDao extends GenericDao<TaskAction> {
+public interface TaskActionDao extends BaseOperationDao<TaskAction> {
 
     Collection<TaskAction> findAllByTaskId(int taskId) throws SQLException;
 
-    Collection<TaskAction> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException;
+    Collection<TaskAction> findAllByReporter(int reporterId) throws DaoException;
 }

@@ -15,7 +15,7 @@ public interface ProjectService {
 
     List<Project> getAllByReporterAndAction(int reporterId, String actionType);
 
-    List<Project> getAllByReporterAndStatus(Account reporter, String ... statuses);
+    List<Project> getAllByReporterAndStatus(int reporterId, String ... statuses);
 
     boolean changeStatus(Project project, Account reporter, String typeAction);
 

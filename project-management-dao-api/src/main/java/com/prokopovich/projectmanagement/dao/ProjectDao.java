@@ -14,5 +14,5 @@ public interface ProjectDao extends GenericDaoWithHistory<Project> {
 
     Collection<Project> findAllByCurrentStatus(String currentStatus) throws DaoException;
 
-    Collection<Project> findAllByReporterAndStatus(Account reporter, String ... statuses) throws DaoException;
+    Collection<Project> findAllByReporterAndStatus(int reporterId, String ... statuses) throws DaoException;
 }

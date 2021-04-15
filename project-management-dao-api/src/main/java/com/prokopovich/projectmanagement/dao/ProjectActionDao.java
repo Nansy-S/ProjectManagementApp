@@ -6,9 +6,9 @@ import com.prokopovich.projectmanagement.model.ProjectAction;
 
 import java.util.Collection;
 
-public interface ProjectActionDao extends GenericDao<ProjectAction> {
+public interface ProjectActionDao extends BaseOperationDao<ProjectAction> {
 
     Collection<ProjectAction> findAllByProjectId(int projectId) throws DaoException;
 
-    Collection<ProjectAction> findAllByReporterAndAction(Account reporter, String actionType) throws DaoException;
+    Collection<ProjectAction> findAllByReporter(int reporter) throws DaoException;
 }

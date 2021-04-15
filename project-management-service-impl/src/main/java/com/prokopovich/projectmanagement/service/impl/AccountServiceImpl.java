@@ -31,8 +31,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addNewAccount(Account newAccount, Account reporter, User newUser, String reason) {
-        newAccount = accountDao.create(newAccount);
-
+        int newAccountId = accountDao.create(newAccount);
+        newAccount = accountDao.findOne(newAccountId);
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         userService.addNewUser(newUser);

@@ -1,20 +1,21 @@
 package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "account_actions")
-public class AccountAction {
+public class AccountAction implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "action_id")
     private int actionId;
+    @Id
     @Column(name = "account_id")
     private int accountId;
     @Column(name = "reason")
     private String reason;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(name = "action_id")
     private Action action;
 
