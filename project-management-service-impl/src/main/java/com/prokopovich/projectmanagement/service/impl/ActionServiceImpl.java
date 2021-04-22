@@ -3,7 +3,9 @@ package com.prokopovich.projectmanagement.service.impl;
 import com.prokopovich.projectmanagement.dao.ActionDao;
 import com.prokopovich.projectmanagement.model.Action;
 import com.prokopovich.projectmanagement.service.ActionService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ActionServiceImpl implements ActionService {
 
     private final ActionDao actionDao;

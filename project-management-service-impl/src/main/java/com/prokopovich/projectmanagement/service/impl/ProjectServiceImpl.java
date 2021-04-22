@@ -8,10 +8,12 @@ import com.prokopovich.projectmanagement.model.*;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.ProjectActionService;
 import com.prokopovich.projectmanagement.service.ProjectService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDao projectDao;

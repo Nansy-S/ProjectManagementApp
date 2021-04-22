@@ -4,9 +4,11 @@ import com.prokopovich.projectmanagement.dao.ProjectActionDao;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.ProjectAction;
 import com.prokopovich.projectmanagement.service.ProjectActionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProjectActionServiceImpl implements ProjectActionService {
 
     private final ProjectActionDao projectActionDao;

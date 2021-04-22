@@ -5,16 +5,20 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
+@Repository
 public class AccountActionHibernateDao extends BaseOperationHibernateDao<AccountAction> implements AccountActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountActionHibernateDao.class);
 
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public AccountActionHibernateDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory, AccountAction.class);
         this.entityManagerFactory = entityManagerFactory;

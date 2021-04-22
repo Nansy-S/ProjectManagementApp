@@ -17,7 +17,7 @@ public class User {
     private String currentStatus;
     @Column(name = "phone")
     private String phone;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account accountInfo;
     @OneToMany

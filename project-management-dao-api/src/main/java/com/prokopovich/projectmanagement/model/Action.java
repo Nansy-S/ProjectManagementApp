@@ -17,7 +17,7 @@ public class Action {
     private LocalDateTime datetime;
     @Column(name = "reporter")
     private int reporter;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "account_id")
     private Account reporterInfo;
 

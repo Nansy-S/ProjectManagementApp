@@ -1,4 +1,4 @@
-package com.prokopovich.projectmanagement.controller;
+package com.prokopovich.projectmanagement.webapp.controller;
 
 import com.prokopovich.projectmanagement.model.Attachment;
 

@@ -3,6 +3,10 @@ package com.prokopovich.projectmanagement.dao.hibernate;
 import com.prokopovich.projectmanagement.dao.BaseOperationDao;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,7 +16,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
 
-public class BaseOperationHibernateDao<T> implements BaseOperationDao<T> {
+@Repository
+public abstract class BaseOperationHibernateDao<T> implements BaseOperationDao<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountActionHibernateDao.class);
 

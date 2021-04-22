@@ -5,17 +5,21 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Comment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
+@Repository
 public class CommentHibernateDao extends BaseOperationHibernateDao<Comment> implements CommentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(CommentHibernateDao.class);
 
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public CommentHibernateDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory, Comment.class);
         this.entityManagerFactory = entityManagerFactory;

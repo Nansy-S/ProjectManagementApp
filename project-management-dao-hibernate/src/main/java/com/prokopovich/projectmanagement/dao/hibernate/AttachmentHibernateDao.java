@@ -5,17 +5,21 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Attachment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
+@Repository
 public class AttachmentHibernateDao extends GenericFindHibernateDao<Attachment> implements AttachmentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AttachmentHibernateDao.class);
 
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public AttachmentHibernateDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory, Attachment.class);
         this.entityManagerFactory = entityManagerFactory;

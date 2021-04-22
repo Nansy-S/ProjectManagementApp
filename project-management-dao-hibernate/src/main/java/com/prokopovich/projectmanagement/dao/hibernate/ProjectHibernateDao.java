@@ -5,6 +5,8 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Project;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,15 +16,21 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
 
+@Repository
 public class ProjectHibernateDao extends GenericHibernateDaoWithHistory<Project> implements ProjectDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectHibernateDao.class);
 
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public ProjectHibernateDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory, Project.class);
         this.entityManagerFactory = entityManagerFactory;
+    }
+
+    public String getSqlSelectByReporterAndAction() {
+        return "SQL_SELECT_BY_REPORTER_AND_ACTION";
     }
 
     @Override

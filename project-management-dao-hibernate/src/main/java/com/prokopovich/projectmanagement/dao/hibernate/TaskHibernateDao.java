@@ -5,20 +5,28 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Task;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
+@Repository
 public class TaskHibernateDao extends GenericHibernateDaoWithHistory<Task> implements TaskDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TaskHibernateDao.class);
 
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public TaskHibernateDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory, Task.class);
         this.entityManagerFactory = entityManagerFactory;
+    }
+
+    public String getSqlSelectByReporterAndAction() {
+        return "SQL_SELECT_BY_REPORTER_AND_ACTION";
     }
 
     @Override

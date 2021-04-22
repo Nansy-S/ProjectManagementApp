@@ -21,7 +21,7 @@ public class Project {
     private LocalDateTime dueDate;
     @Column(name = "current_status")
     private String currentStatus;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "project_id")
     private List<ProjectAction> projectActions;
 

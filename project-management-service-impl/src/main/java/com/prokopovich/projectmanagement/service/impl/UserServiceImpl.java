@@ -3,9 +3,11 @@ package com.prokopovich.projectmanagement.service.impl;
 import com.prokopovich.projectmanagement.dao.UserDao;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.UserService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;

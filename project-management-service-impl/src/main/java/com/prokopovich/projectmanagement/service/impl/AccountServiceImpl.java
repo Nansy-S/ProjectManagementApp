@@ -10,10 +10,12 @@ import com.prokopovich.projectmanagement.service.AccountActionService;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.UserService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class AccountServiceImpl implements AccountService {
 
     private final AccountDao accountDao;

@@ -7,7 +7,9 @@ import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AuthenticationService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);

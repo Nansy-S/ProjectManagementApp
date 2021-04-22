@@ -1,9 +1,9 @@
 package com.prokopovich;
 
-import com.prokopovich.projectmanagement.controller.AccountController;
-import com.prokopovich.projectmanagement.controller.ActionController;
-import com.prokopovich.projectmanagement.controller.ProjectController;
-import com.prokopovich.projectmanagement.controller.TaskController;
+import com.prokopovich.projectmanagement.webapp.controller.AccountController;
+import com.prokopovich.projectmanagement.webapp.controller.ActionController;
+import com.prokopovich.projectmanagement.webapp.controller.ProjectController;
+import com.prokopovich.projectmanagement.webapp.controller.TaskController;
 import com.prokopovich.projectmanagement.enumeration.UserRole;
 import com.prokopovich.projectmanagement.factory.ServiceFactoryImpl;
 import com.prokopovich.projectmanagement.factory.ServiceFactory;

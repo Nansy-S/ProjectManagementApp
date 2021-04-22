@@ -5,6 +5,8 @@ import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Account;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,15 +17,23 @@ import javax.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.List;
 
+@Repository
 public class AccountHibernateDao extends GenericHibernateDaoWithHistory<Account> implements AccountDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountHibernateDao.class);
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT e FROM Account e WHERE e.accountId IN " +
+            "(SELECT aa.accountId FROM AccountAction aa INNER JOIN Action a ON a.actionId = aa.actionId ";
 
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public AccountHibernateDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory, Account.class);
         this.entityManagerFactory = entityManagerFactory;
+    }
+
+    public String getSqlSelectByReporterAndAction() {
+        return SQL_SELECT_BY_REPORTER_AND_ACTION;
     }
 
     @Override

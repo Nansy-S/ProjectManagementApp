@@ -4,9 +4,11 @@ import com.prokopovich.projectmanagement.dao.TaskActionDao;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.TaskAction;
 import com.prokopovich.projectmanagement.service.TaskActionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TaskActionServiceImpl implements TaskActionService {
 
     private final TaskActionDao taskActionDao;
