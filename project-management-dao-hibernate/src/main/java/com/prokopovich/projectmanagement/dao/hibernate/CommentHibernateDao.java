@@ -13,7 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
 @Repository
-public class CommentHibernateDao extends BaseOperationHibernateDao<Comment> implements CommentDao {
+public class CommentHibernateDao extends GenericHibernateDao<Comment> implements CommentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(CommentHibernateDao.class);
 

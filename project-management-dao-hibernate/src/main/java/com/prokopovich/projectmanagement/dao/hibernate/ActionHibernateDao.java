@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManagerFactory;
 
 @Repository
-public class ActionHibernateDao extends GenericFindHibernateDao<Action> implements ActionDao {
+public class ActionHibernateDao extends GenericHibernateDao<Action> implements ActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ActionHibernateDao.class);
 

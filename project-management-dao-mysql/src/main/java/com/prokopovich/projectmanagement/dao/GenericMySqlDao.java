@@ -10,22 +10,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseOperationMySqlDao<T> implements BaseOperationDao<T> {
+public abstract class GenericMySqlDao<T> implements GenericDao<T> {
 
-    private static final Logger LOGGER = LogManager.getLogger(BaseOperationMySqlDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(GenericMySqlDao.class);
 
-    public BaseOperationMySqlDao() { }
+    public GenericMySqlDao() { }
 
     protected abstract T getStatement(ResultSet rs) throws SQLException;
 
     protected abstract void setStatement(T object, PreparedStatement statement) throws SQLException;
+
+    public abstract String getSqlSelectOne();
 
     public abstract String getSqlSelectAll();
 
     public abstract String getSqlCreate();
 
     @Override
-    public int create(T object) {
+    public T create(T object) {
         int id = 0;
         String sql = getSqlCreate();
 
@@ -42,7 +44,25 @@ public abstract class BaseOperationMySqlDao<T> implements BaseOperationDao<T> {
             throw new DaoException(ex);
         }
         LOGGER.debug("new added object - " + object.toString());
-        return id;
+        return findOne(id);
+    }
+
+    @Override
+    public T findOne(int id) {
+        T object = null;
+
+        String sql = getSqlSelectOne();
+        try (Connection connection = MySqlDaoFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs != null && rs.next()) {
+                object = getStatement(rs);
+            }
+        } catch (SQLException ex) {
+            throw new DaoException(ex);
+        }
+        return object;
     }
 
     @Override

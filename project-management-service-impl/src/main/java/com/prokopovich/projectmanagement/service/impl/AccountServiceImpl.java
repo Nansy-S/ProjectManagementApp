@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.service.impl;
 
 import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
+import com.prokopovich.projectmanagement.enumeration.AccountStatus;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.model.Action;
@@ -32,20 +33,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void addNewAccount(Account newAccount, Account reporter, User newUser, String reason) {
-        int newAccountId = accountDao.create(newAccount);
-        newAccount = accountDao.findOne(newAccountId);
+    public User addNewAccount(Account newAccount, int reporterId, User newUser, String reason) {
+        newAccount = accountDao.create(newAccount);
+        newAccount = accountDao.findOne(newAccount.getAccountId());
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
-        userService.addNewUser(newUser);
-        setAccountAction(newAccount.getAccountId(), reporter, reason, AccountActionType.CREATE.getTitle());
+        newUser = userService.addNewUser(newUser);
+        setAccountAction(newUser.getUserId(), reporterId, reason, AccountActionType.CREATE.getTitle());
+        return newUser;
     }
 
     @Override
-    public boolean editAccount(Account account, Account reporter, User user, String reason) {
+    public boolean editAccount(Account account, int reporterId, User user, String reason) {
         if (accountDao.update(account)) {
             if (userService.editUser(user)) {
-                setAccountAction(account.getAccountId(), reporter, reason, AccountActionType.UPDATE.getTitle());
+                setAccountAction(account.getAccountId(), reporterId, reason, AccountActionType.UPDATE.getTitle());
                 return true;
             } else {
                 return false;
@@ -56,9 +58,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean changeRole(Account account, Account reporter, String reason) {
+    public boolean changeRole(Account account, int reporterId, String reason) {
         if (accountDao.update(account)) {
-            setAccountAction(account.getAccountId(), reporter, reason, AccountActionType.CHANGE_ROLE.getTitle());
+            setAccountAction(account.getAccountId(), reporterId, reason, AccountActionType.CHANGE_ROLE.getTitle());
             return true;
         } else {
             return false;
@@ -66,23 +68,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean changeStatus(User user, Account reporter, String reason, String typeAction) {
+    public boolean changeStatus(User user, int reporterId, String reason) {
         if (userService.editUser(user)) {
-            setAccountAction(user.getUserId(), reporter, reason, typeAction);
+            AccountStatus status = AccountStatus.getByTitle(user.getCurrentStatus());
+            String typeAction = status.getAccountActionType("typeAction");
+            setAccountAction(user.getUserId(), reporterId, reason, typeAction);
             return true;
         } else {
             return false;
         }
     }
 
-    private void setAccountAction(int userId, Account reporter, String reason, String actionType) {
+    private void setAccountAction(int userId, int reporterId, String reason, String actionType) {
         Action newAction = new Action();
         AccountAction newAccountAction = new AccountAction();
 
         newAction.setType(actionType);
         newAction.setDatetime(LocalDateTime.now());
-        newAction.setReporter(reporter.getAccountId());
-        newAction.setReporterInfo(reporter);
+        newAction.setReporter(reporterId);
         newAction = actionService.addNewAction(newAction);
 
         newAccountAction.setActionId(newAction.getActionId());

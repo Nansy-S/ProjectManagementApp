@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ProjectActionMySqlDao extends BaseOperationMySqlDao<ProjectAction> implements ProjectActionDao {
+public class ProjectActionMySqlDao extends GenericMySqlDao<ProjectAction> implements ProjectActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, project_id FROM project_actions";
     private static final String SQL_SELECT_BY_PROJECT = "SELECT action_id, project_id FROM project_actions " +
@@ -55,6 +55,11 @@ public class ProjectActionMySqlDao extends BaseOperationMySqlDao<ProjectAction> 
     public void setStatement(ProjectAction projectAction, PreparedStatement statement) throws SQLException {
         statement.setInt(1, projectAction.getActionId());
         statement.setInt(2, projectAction.getProjectId());
+    }
+
+    @Override
+    public String getSqlSelectOne() {
+        return null;
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.prokopovich.projectmanagement.service.*;
 import com.prokopovich.projectmanagement.service.impl.*;
 import org.springframework.stereotype.Service;
 
-@Service
 public class ServiceFactoryImpl extends ServiceFactoryProvider {
 
     private final DaoFactory daoFactory;

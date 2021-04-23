@@ -1,7 +1,6 @@
 package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.TaskAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -11,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-public class TaskActionMySqlDao extends BaseOperationMySqlDao<TaskAction> implements TaskActionDao {
+public class TaskActionMySqlDao extends GenericMySqlDao<TaskAction> implements TaskActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, task_id, assignee_id FROM task_actions";
     private static final String SQL_SELECT_BY_TASK = "SELECT action_id, task_id, assignee_id FROM task_actions " +
@@ -52,6 +51,11 @@ public class TaskActionMySqlDao extends BaseOperationMySqlDao<TaskAction> implem
         statement.setInt(1, taskAction.getActionId());
         statement.setInt(2, taskAction.getTaskId());
         statement.setInt(3, taskAction.getAssigneeId());
+    }
+
+    @Override
+    public String getSqlSelectOne() {
+        return null;
     }
 
     @Override

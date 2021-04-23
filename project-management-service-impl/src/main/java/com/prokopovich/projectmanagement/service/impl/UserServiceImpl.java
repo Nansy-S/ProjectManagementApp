@@ -17,17 +17,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addNewUser(User user) {
-        userDao.create(user);
+    public User addNewUser(User user) {
+        return userDao.create(user);
     }
 
     @Override
     public boolean editUser(User user) {
-        if (userDao.update(user)) {
-            return true;
-        } else {
-            return false;
-        }
+        return userDao.update(user) ? true : false;
     }
 
     @Override

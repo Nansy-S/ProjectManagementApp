@@ -12,7 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
 @Repository
-public class ProjectActionHibernateDao extends BaseOperationHibernateDao<ProjectAction> implements ProjectActionDao {
+public class ProjectActionHibernateDao extends GenericHibernateDao<ProjectAction> implements ProjectActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionHibernateDao.class);
 

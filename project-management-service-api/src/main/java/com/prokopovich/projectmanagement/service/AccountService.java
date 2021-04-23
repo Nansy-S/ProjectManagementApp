@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface AccountService {
 
-    void addNewAccount(Account newAccount, Account reporter, User newUser, String reason);
+    User addNewAccount(Account newAccount, int reporterId, User newUser, String reason);
 
-    boolean editAccount(Account account, Account reporter, User user, String reason);
+    boolean editAccount(Account account, int reporterId, User user, String reason);
 
     List<Account> getAllCreatedUser(int reporterId, String actionType);
 
-    boolean changeRole(Account account, Account reporter, String reason);
+    boolean changeRole(Account account, int reporterId, String reason);
 
-    boolean changeStatus(User user, Account reporter, String reason, String typeAction);
+    boolean changeStatus(User user, int reporterId, String reason);
 
     Account findByAccountId(int id);
 

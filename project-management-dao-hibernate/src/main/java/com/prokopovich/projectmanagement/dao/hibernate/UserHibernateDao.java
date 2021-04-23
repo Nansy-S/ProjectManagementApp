@@ -17,7 +17,7 @@ import javax.persistence.criteria.*;
 import java.util.Collection;
 
 @Repository
-public class UserHibernateDao extends GenericFindHibernateDao<User> implements UserDao {
+public class UserHibernateDao extends GenericHibernateDao<User> implements UserDao {
 
     private static final Logger LOGGER = LogManager.getLogger(UserHibernateDao.class);
 

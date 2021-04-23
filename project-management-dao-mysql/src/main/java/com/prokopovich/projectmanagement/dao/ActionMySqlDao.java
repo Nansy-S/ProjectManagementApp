@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ActionMySqlDao extends GenericFindMySqlDao<Action> implements ActionDao {
+public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, type, date_time, reporter FROM actions";
     private static final String SQL_SELECT_ONE = "SELECT action_id, type, date_time, reporter FROM actions " +

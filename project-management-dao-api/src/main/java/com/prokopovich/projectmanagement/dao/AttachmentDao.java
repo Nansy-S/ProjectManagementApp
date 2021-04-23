@@ -5,7 +5,7 @@ import com.prokopovich.projectmanagement.model.Attachment;
 
 import java.util.Collection;
 
-public interface AttachmentDao extends GenericFindDao<Attachment> {
+public interface AttachmentDao extends GenericDao<Attachment> {
 
     boolean update(Attachment attachment) throws DaoException;
 

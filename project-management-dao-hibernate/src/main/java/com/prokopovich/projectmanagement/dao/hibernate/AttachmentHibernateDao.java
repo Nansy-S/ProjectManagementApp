@@ -13,7 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import java.util.Collection;
 
 @Repository
-public class AttachmentHibernateDao extends GenericFindHibernateDao<Attachment> implements AttachmentDao {
+public class AttachmentHibernateDao extends GenericHibernateDao<Attachment> implements AttachmentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AttachmentHibernateDao.class);
 

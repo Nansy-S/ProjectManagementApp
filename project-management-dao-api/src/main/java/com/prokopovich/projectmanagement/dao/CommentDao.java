@@ -5,7 +5,7 @@ import com.prokopovich.projectmanagement.model.Comment;
 
 import java.util.Collection;
 
-public interface CommentDao extends BaseOperationDao<Comment> {
+public interface CommentDao extends GenericDao<Comment> {
 
     boolean updateComment(Comment comment) throws DaoException;
 

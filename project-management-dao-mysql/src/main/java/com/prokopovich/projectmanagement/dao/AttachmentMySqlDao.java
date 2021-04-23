@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-public class AttachmentMySqlDao extends GenericFindMySqlDao<Attachment> implements AttachmentDao {
+public class AttachmentMySqlDao extends GenericMySqlDao<Attachment> implements AttachmentDao {
 
     private static final String SQL_SELECT_ALL = "SELECT attachment_id, file, task_id FROM attachments";
     private static final String SQL_SELECT_ONE = "SELECT attachment_id, task_id FROM attachments " +

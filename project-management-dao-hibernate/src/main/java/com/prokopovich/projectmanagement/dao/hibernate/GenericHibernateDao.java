@@ -1,11 +1,8 @@
 package com.prokopovich.projectmanagement.dao.hibernate;
 
-import com.prokopovich.projectmanagement.dao.BaseOperationDao;
+import com.prokopovich.projectmanagement.dao.GenericDao;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,7 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 @Repository
-public abstract class BaseOperationHibernateDao<T> implements BaseOperationDao<T> {
+public abstract class GenericHibernateDao<T> implements GenericDao<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountActionHibernateDao.class);
 
@@ -25,13 +22,13 @@ public abstract class BaseOperationHibernateDao<T> implements BaseOperationDao<T
 
     private Class<T> className;
 
-    public BaseOperationHibernateDao(EntityManagerFactory entityManagerFactory, Class<T> className) {
+    public GenericHibernateDao(EntityManagerFactory entityManagerFactory, Class<T> className) {
         this.entityManagerFactory = entityManagerFactory;
         this.className = className;
     }
 
     @Override
-    public int create(T newObject) {
+    public T create(T newObject) {
         LOGGER.trace("create object method is executed");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
@@ -39,12 +36,18 @@ public abstract class BaseOperationHibernateDao<T> implements BaseOperationDao<T
             entityManager.persist(newObject);
             entityManager.getTransaction().commit();
             entityManager.close();
-            return 0;
+            return newObject;
         } finally {
             entityManager.close();
         }
     }
 
+    @Override
+    public T findOne(int id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager.find(className, id);
+    }
+    
     @Override
     public Collection<T> findAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class AccountActionMySqlDao extends BaseOperationMySqlDao<AccountAction> implements AccountActionDao {
+public class AccountActionMySqlDao extends GenericMySqlDao<AccountAction> implements AccountActionDao {
 
     private static final String SQL_SELECT_ALL = "SELECT action_id, account_id, reason FROM account_actions";
     private static final String SQL_SELECT_BY_ACCOUNT = "SELECT action_id, account_id, reason FROM account_actions " +
@@ -62,6 +62,11 @@ public class AccountActionMySqlDao extends BaseOperationMySqlDao<AccountAction> 
         statement.setInt(1, accountAction.getAction().getActionId());
         statement.setInt(2, accountAction.getAccountId());
         statement.setString(3, accountAction.getReason());
+    }
+
+    @Override
+    public String getSqlSelectOne() {
+        return null;
     }
 
     @Override

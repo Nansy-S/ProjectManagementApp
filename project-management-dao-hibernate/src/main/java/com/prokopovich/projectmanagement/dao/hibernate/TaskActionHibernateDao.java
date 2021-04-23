@@ -2,8 +2,6 @@ package com.prokopovich.projectmanagement.dao.hibernate;
 
 import com.prokopovich.projectmanagement.dao.TaskActionDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
-import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.model.ProjectAction;
 import com.prokopovich.projectmanagement.model.TaskAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,7 +13,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 @Repository
-public class TaskActionHibernateDao extends BaseOperationHibernateDao<TaskAction> implements TaskActionDao {
+public class TaskActionHibernateDao extends GenericHibernateDao<TaskAction> implements TaskActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TaskActionHibernateDao.class);
 

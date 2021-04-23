@@ -2,9 +2,11 @@ package com.prokopovich.projectmanagement.dao;
 
 import java.util.Collection;
 
-public interface BaseOperationDao<T> {
+public interface GenericDao<T> {
 
-    int create(T newObject);
+    T create(T newObject);
+
+    T findOne(int id);
 
     Collection<T> findAll();
 

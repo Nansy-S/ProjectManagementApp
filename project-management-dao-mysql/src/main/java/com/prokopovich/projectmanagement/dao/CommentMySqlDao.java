@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-public class CommentMySqlDao extends GenericFindMySqlDao<Comment> implements CommentDao {
+public class CommentMySqlDao extends GenericMySqlDao<Comment> implements CommentDao {
 
     private static final String SQL_SELECT_ALL = "SELECT comment_id, title, text, date_time, author, task_id " +
             "FROM comments";
