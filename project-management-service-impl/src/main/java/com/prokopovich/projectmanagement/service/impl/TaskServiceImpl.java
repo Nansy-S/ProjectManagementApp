@@ -28,9 +28,9 @@ public class TaskServiceImpl implements TaskService {
     public void addNewTask(Task newTask, Account reporter) {
         newTask.setCurrentStatus(TaskStatus.OPEN.getTitle());
         newTask.setAssignee(reporter.getAccountId());
-        int newTaskId = taskDao.create(newTask);
-        newTask = taskDao.findOne(newTaskId);
-        setTaskAction(newTaskId, reporter, newTask.getAssignee(), TaskActionType.CREATE.getTitle());
+        newTask = taskDao.create(newTask);
+        newTask = taskDao.findOne(newTask.getTaskId());
+        setTaskAction(newTask.getTaskId(), reporter, newTask.getAssignee(), TaskActionType.CREATE.getTitle());
     }
 
     @Override

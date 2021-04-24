@@ -2,10 +2,10 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum UserRole {
 
-    ADMIN("Administrator"),
-    MANAGER("Project manager"),
-    DEVELOPER("Developer"),
-    TESTER("Tester");
+    ROLE_ADMIN("Administrator"),
+    ROLE_MANAGER("Project manager"),
+    ROLE_DEVELOPER("Developer"),
+    ROLE_TESTER("Tester");
 
     private final String title;
 

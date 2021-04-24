@@ -16,12 +16,12 @@ public class AccountMySqlDao extends GenericMySqlDaoWithHistory<Account> impleme
             "role, photo FROM accounts";
     private static final String SQL_SELECT_ONE = "SELECT account_id, name, surname, patronymic, email, password, " +
             "role, photo FROM accounts WHERE account_id = ?";
+    private static final String SQL_SELECT_BY_EMAIL = "SELECT account_id, name, surname, patronymic, email, password, " +
+            "role, photo FROM accounts WHERE email = ?";
     private static final String SQL_SELECT_BY_ROLE = "SELECT account_id, name, surname, patronymic, email, password, " +
-            "role, photo FROM accounts WHERE current_status = ?";
+            "role, photo FROM accounts WHERE role = ?";
     private static final String SQL_SELECT_BY_FULL_NAME = "SELECT account_id, name, surname, patronymic, email, " +
             "password, role, photo FROM accounts WHERE CONCAT(surname, ' ', name, ' ', patronymic) LIKE '%?%'";
-    private static final String SQL_SELECT_BY_EMAIL = "SELECT account_id, name, surname, patronymic, " +
-            "email, password, role, photo FROM accounts WHERE email = ?";
     private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT account_id, name, surname, patronymic, " +
             "email, password, role, photo FROM accounts acc WHERE acc.account_id IN " +
             "(SELECT aa.account_id FROM account_actions aa INNER JOIN actions a ON a.action_id = aa.action_id " +
@@ -95,6 +95,12 @@ public class AccountMySqlDao extends GenericMySqlDaoWithHistory<Account> impleme
             throw new DaoException(ex);
         }
         return true;
+    }
+
+    @Override
+    public Collection<Account> findAllByEmail(String email) throws DaoException {
+        LOGGER.trace("findAllByEmail method is executed - email = " + email);
+        return findByParameter(SQL_SELECT_BY_EMAIL, email);
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Blob;
 
 @Entity
 @Table(name = "accounts")
-public class Account {
+public class Account implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,6 +11,8 @@ import com.prokopovich.projectmanagement.service.AccountActionService;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,9 @@ public class AccountServiceImpl implements AccountService {
     private final ActionService actionService;
     private final AccountActionService accountActionService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public AccountServiceImpl(AccountDao accountDao, UserService userService, ActionService actionService,
                               AccountActionService accountActionService) {
         this.accountDao = accountDao;
@@ -34,6 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public User addNewAccount(Account newAccount, int reporterId, User newUser, String reason) {
+        newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
         newAccount = accountDao.create(newAccount);
         newAccount = accountDao.findOne(newAccount.getAccountId());
         newUser.setUserId(newAccount.getAccountId());
@@ -103,6 +109,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findByAccountId(int id) {
         return accountDao.findOne(id);
+    }
+
+    @Override
+    public List<Account> findByEmail(String email) {
+        return (List<Account>) accountDao.findAllByEmail(email);
     }
 
     @Override

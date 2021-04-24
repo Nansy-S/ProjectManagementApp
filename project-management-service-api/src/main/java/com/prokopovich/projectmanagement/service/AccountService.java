@@ -21,6 +21,8 @@ public interface AccountService {
 
     Account findByAccountId(int id);
 
+    List<Account> findByEmail(String email);
+
     List<Account> findByUserRole(String role);
 
     List<Account> findByUserFullName(String fullName);

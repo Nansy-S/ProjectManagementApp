@@ -9,6 +9,8 @@ public interface AccountDao extends GenericDaoWithHistory<Account> {
 
     boolean update(Account account) throws DaoException;
 
+    Collection<Account> findAllByEmail(String email) throws DaoException;
+
     Collection<Account> findAllByUserRole(String role) throws DaoException;
 
     Collection<Account> findAllByUserFullName(String fullName) throws DaoException;

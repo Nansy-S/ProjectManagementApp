@@ -52,6 +52,12 @@ public class AccountHibernateDao extends GenericHibernateDaoWithHistory<Account>
     }
 
     @Override
+    public Collection<Account> findAllByEmail(String email) throws DaoException {
+        LOGGER.trace("findAllByEmail method is executed - email = " + email);
+        return findByParameter("email", email);
+    }
+
+    @Override
     public Collection<Account> findAllByUserRole(String role) throws DaoException {
         LOGGER.trace("findAllByUserRole method is executed - role = " + role);
         return findByParameter("role", role);

@@ -22,6 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Account userAuthorization(String login, String password) {
+        LOGGER.debug("login: " + login + " - password: " + password);
         try {
             Account account = accountDao.findByEmail(login);
             if (account.getEmail() != null) {

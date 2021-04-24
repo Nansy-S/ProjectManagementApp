@@ -16,7 +16,7 @@ public class ActionServiceImpl implements ActionService {
 
     @Override
     public Action addNewAction(Action action) {
-        int actionId = actionDao.create(action);
-        return actionDao.findOne(actionId);
+        action = actionDao.create(action);
+        return actionDao.findOne(action.getActionId());
     }
 }

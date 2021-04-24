@@ -30,8 +30,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void addNewProject(Project newProject, Account reporter) {
         newProject.setCurrentStatus(ProjectStatus.OPEN.getTitle());
-        int newProjectId = projectDao.create(newProject);
-        setProjectAction(newProjectId, reporter, ProjectActionType.CREATE.getTitle());
+        newProject = projectDao.create(newProject);
+        setProjectAction(newProject.getProjectId(), reporter, ProjectActionType.CREATE.getTitle());
     }
 
     @Override
