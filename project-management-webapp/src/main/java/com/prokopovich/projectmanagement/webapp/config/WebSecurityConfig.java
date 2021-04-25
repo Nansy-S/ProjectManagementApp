@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.webapp.config;
 
+import com.prokopovich.projectmanagement.webapp.util.jwt.CustomUserDetailsService;
 import com.prokopovich.projectmanagement.webapp.util.jwt.JwtAuthenticationEntryPoint;
 import com.prokopovich.projectmanagement.webapp.util.jwt.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,12 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
+    private CustomUserDetailsService userDetailsService;
     private JwtFilter filter;
+
+    @Autowired
+    public WebSecurityConfig(JwtAuthenticationEntryPoint authenticationEntryPoint,
+                             CustomUserDetailsService userDetailsService, JwtFilter filter) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.userDetailsService = userDetailsService;
+        this.filter = filter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin/*").hasRole("ADMIN")
                 .antMatchers("/user/*").hasRole("USER")
-                .antMatchers("/login").permitAll()
+                .antMatchers("/*").permitAll()
                 .and()
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }

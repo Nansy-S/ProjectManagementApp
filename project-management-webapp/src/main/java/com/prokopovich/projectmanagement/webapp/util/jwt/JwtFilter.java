@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.webapp.util.jwt;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

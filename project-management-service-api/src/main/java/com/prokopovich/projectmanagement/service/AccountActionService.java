@@ -9,5 +9,5 @@ public interface AccountActionService {
 
     void addNewAccountAction(AccountAction accountAction);
 
-    List<AccountAction> findAllByReporter(Account reporter);
+    List<AccountAction> findAllByReporter(int reporterId);
 }

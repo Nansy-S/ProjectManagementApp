@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.webapp.util.jwt;
 
+import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AccountService;
 import io.jsonwebtoken.Claims;
@@ -27,14 +28,16 @@ public class TokenManager implements Serializable {
 
     public static final long TOKEN_VALIDITY = 15 * 60 * 60;
 
-    private final AccountService accountService;
+    //private final AccountService accountService;
+    private final AccountDao accountDao;
 
     @Value("${secret}")
     private String jwtSecret;
 
     @Autowired
-    public TokenManager(AccountService accountService) {
-        this.accountService = accountService;
+    public TokenManager(AccountDao accountDao) {
+        //this.accountService = accountService;
+        this.accountDao = accountDao;
     }
 
     public String generateJwtToken(String email) {
@@ -81,7 +84,7 @@ public class TokenManager implements Serializable {
                 email = (String) authentication.getPrincipal();
             }
         }
-        return accountService.findByEmail(email).iterator().next();
+        return accountDao.findAllByEmail(email).iterator().next();
     }
 
     public String getEmailFromToken(String token) {

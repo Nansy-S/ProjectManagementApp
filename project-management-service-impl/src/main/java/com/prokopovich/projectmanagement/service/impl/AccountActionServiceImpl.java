@@ -23,7 +23,7 @@ public class AccountActionServiceImpl implements AccountActionService {
     }
 
     @Override
-    public List<AccountAction> findAllByReporter(Account reporter) {
-        return (List<AccountAction>) accountActionDao.findAllByReporter(reporter.getAccountId());
+    public List<AccountAction> findAllByReporter(int reporterId) {
+        return (List<AccountAction>) accountActionDao.findAllByReporter(reporterId);
     }
 }
