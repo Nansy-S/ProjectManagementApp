@@ -1,5 +1,6 @@
 package com.prokopovich.projectmanagement.webapp.rest;
 
+import com.prokopovich.projectmanagement.model.Project;
 import com.prokopovich.projectmanagement.model.Task;
 import com.prokopovich.projectmanagement.service.TaskService;
 import com.prokopovich.projectmanagement.webapp.util.jwt.TokenManager;
@@ -43,12 +44,49 @@ public class TaskRestController {
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/tasks/{id}")
+    public ResponseEntity<Task> getProjectInfo(@PathVariable int id) {
+        LOGGER.trace("getUserInfo method is executed");
+        Task task = taskService.getByTaskId(id);
+        if(task == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/tasks/add")
     @Secured("Project manager")
     public ResponseEntity<Task> addTask(@RequestBody Task newTask) {
         LOGGER.trace("addTask method is executed");
         Task addedTask = taskService.addNewTask(newTask, tokenManager.getCurrentUser());
+        if(addedTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         LOGGER.trace("new task added");
         return new ResponseEntity<>(addedTask, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/tasks/change/status")
+    @Secured("Project manager")
+    public ResponseEntity<Task> changeTaskStatus(@RequestBody Task task) {
+        LOGGER.trace("changeTaskStatus method is executed");
+        Task updatedTask = taskService.changeStatus(task, tokenManager.getCurrentUser());
+        if(updatedTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LOGGER.trace("current status changed");
+        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/tasks/change/assignee")
+    @Secured("Project manager")
+    public ResponseEntity<Task> changeTaskAssignee(@RequestBody Task task) {
+        LOGGER.trace("changeTaskAssignee method is executed");
+        Task updatedTask = taskService.changeAssignee(task, tokenManager.getCurrentUser());
+        if(updatedTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LOGGER.trace("current status changed");
+        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
 }

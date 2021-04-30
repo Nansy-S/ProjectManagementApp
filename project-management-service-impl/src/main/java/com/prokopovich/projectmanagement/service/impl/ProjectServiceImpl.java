@@ -65,7 +65,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project getByProjectId(int id) {
-        return projectDao.findOne(id);
+        Project projectInfo = projectDao.findOne(id);
+        //projectInfo.setProjectActions(actionService.f);
+        return projectInfo;
     }
 
     @Override

@@ -51,15 +51,15 @@ public class ProjectRestController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    //@GetMapping(value = "/{id}")
-    //public ResponseEntity<User> getUserInfo(@PathVariable int id) {
-    //    LOGGER.trace("getUserInfo method is executed");
-    //    User user = userService.getByUserId(id);
-    //    if(user == null) {
-    //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //    }
-    //    return new ResponseEntity<>(user, HttpStatus.OK);
-    //}
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Project> getProjectInfo(@PathVariable int id) {
+        LOGGER.trace("getProjectInfo method is executed");
+        Project project = projectService.getByProjectId(id);
+        if(project == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
 
     @PostMapping(value = "/add")
     public ResponseEntity<Project> addProject(@RequestBody Project newProject) {

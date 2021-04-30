@@ -47,6 +47,17 @@ public class UserAccountRestController {
         return new ResponseEntity<>(userAccounts, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{role}")
+    @Secured("Project manager")
+    public ResponseEntity<List<Account>> getUsersByRole(@PathVariable String role) {
+        LOGGER.trace("getUsersByRole method is executed");
+        List<Account> userAccounts = accountService.findByUserRole(role);
+        if(userAccounts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(userAccounts, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<User> getUserInfo(@PathVariable int id) {
         LOGGER.trace("getUserInfo method is executed");
@@ -100,17 +111,6 @@ public class UserAccountRestController {
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-    }
-
-    @GetMapping(value = "/assignee/{assigneeId}")
-    @Secured("Project manager")
-    public ResponseEntity<Account> getAssigneeByTask(@PathVariable int assigneeId) {
-        LOGGER.trace("getAssigneeByTask method is executed");
-        Account assignee = accountService.findByAccountId(assigneeId);
-        if(assignee == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(assignee, HttpStatus.OK);
     }
 }
 

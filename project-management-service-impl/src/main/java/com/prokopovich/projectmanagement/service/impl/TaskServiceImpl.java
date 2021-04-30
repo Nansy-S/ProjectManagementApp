@@ -1,6 +1,7 @@
 package com.prokopovich.projectmanagement.service.impl;
 
 import com.prokopovich.projectmanagement.dao.TaskDao;
+import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.TaskActionType;
 import com.prokopovich.projectmanagement.enumeration.TaskStatus;
 import com.prokopovich.projectmanagement.model.*;
@@ -27,6 +28,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task getByTaskId(int id) {
+        Task taskInfo = taskDao.findOne(id);
+        return taskInfo;
+    }
+
+    @Override
     public Task addNewTask(Task newTask, Account reporter) {
         newTask.setTaskCode("code");
         newTask.setCurrentStatus(TaskStatus.OPEN.getTitle());
@@ -44,6 +51,30 @@ public class TaskServiceImpl implements TaskService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public Task changeStatus(Task task, Account reporterId) {
+        if (taskDao.updateTask(task)) {
+            setTaskAction(task.getTaskId(), reporterId,
+                    task.getAssigneeInfo().getUserId(),
+                    TaskStatus.getByTitle(task.getCurrentStatus()).getTaskActionType());
+            return task;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Task changeAssignee(Task task, Account reporterId) {
+        if (taskDao.updateTask(task)) {
+            setTaskAction(task.getTaskId(), reporterId,
+                    task.getAssigneeInfo().getUserId(),
+                    TaskActionType.CHANGE_ASSIGNEE.getTitle());
+            return task;
+        } else {
+            return null;
         }
     }
 
