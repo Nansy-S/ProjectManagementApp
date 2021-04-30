@@ -5,10 +5,12 @@ import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.ProjectAction;
 import com.prokopovich.projectmanagement.service.ProjectActionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ProjectActionServiceImpl implements ProjectActionService {
 
     private final ProjectActionDao projectActionDao;

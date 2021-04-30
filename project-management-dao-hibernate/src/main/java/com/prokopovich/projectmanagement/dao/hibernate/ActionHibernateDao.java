@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 
 @Repository
+@Transactional
 public class ActionHibernateDao extends GenericHibernateDao<Action> implements ActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ActionHibernateDao.class);
@@ -21,4 +23,6 @@ public class ActionHibernateDao extends GenericHibernateDao<Action> implements A
         super(entityManagerFactory, Action.class);
         this.entityManagerFactory = entityManagerFactory;
     }
+
+
 }

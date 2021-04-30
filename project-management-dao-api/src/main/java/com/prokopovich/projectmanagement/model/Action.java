@@ -17,13 +17,11 @@ public class Action {
     private LocalDateTime datetime;
     @Column(name = "reporter")
     private int reporter;
-    @ManyToOne
-    @JoinColumn(name = "account_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "reporter", referencedColumnName = "account_id", insertable = false, updatable = false)
     private Account reporterInfo;
 
-    public Action() {
-        reporterInfo = new Account();
-    }
+    public Action() { }
 
     public Action(int actionId, String type, LocalDateTime datetime, int reporter) {
         this.actionId = actionId;

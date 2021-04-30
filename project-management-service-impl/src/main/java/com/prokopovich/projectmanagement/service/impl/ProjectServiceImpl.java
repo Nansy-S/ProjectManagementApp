@@ -9,11 +9,13 @@ import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.ProjectActionService;
 import com.prokopovich.projectmanagement.service.ProjectService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDao projectDao;
@@ -28,10 +30,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void addNewProject(Project newProject, Account reporter) {
+    public Project addNewProject(Project newProject, Account reporter) {
         newProject.setCurrentStatus(ProjectStatus.OPEN.getTitle());
         newProject = projectDao.create(newProject);
         setProjectAction(newProject.getProjectId(), reporter, ProjectActionType.CREATE.getTitle());
+        return newProject;
     }
 
     @Override

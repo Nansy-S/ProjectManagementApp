@@ -41,21 +41,12 @@ public abstract class GenericHibernateDaoWithHistory<T> extends GenericHibernate
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             String sql = getSqlSelectByReporterAndAction() +
-                    "WHERE a.reporter =: reporterId AND a.type =: actionType)";
+                    " WHERE a.reporter =: reporterId AND a.type =: actionType)";
 
             Query query = entityManager.createQuery(sql);
             query.setParameter("reporterId", reporterId);
             query.setParameter("actionType", actionType);
-
             return query.getResultList();
-
-            //CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            //CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(className);
-            //Root<T> tRoot = criteriaQuery.from(className);
-            //Predicate predicateReporter = criteriaBuilder.equal(tRoot.get("reporter"), reporterId);
-            //Predicate predicateActionType = criteriaBuilder.equal(tRoot.get("type"), actionType);
-            //criteriaQuery.where(predicateReporter, predicateActionType);
-            //return entityManager.createQuery(criteriaQuery).getResultList();
         } finally {
             entityManager.close();
         }

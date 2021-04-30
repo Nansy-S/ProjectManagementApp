@@ -23,17 +23,7 @@ public class ProjectController {
     private final ProjectService projectService = service.getProjectService();
 
     public void displayProjects(List<Project> projectList) {
-        int number = 0;
 
-        System.out.println(" #) Project code - Status - Due Date - Summary");
-        for(Project project: projectList) {
-            number++;
-            System.out.println(number +
-                    ") " + project.getProjectCode() +
-                    " - " + project.getCurrentStatus() +
-                    " - " + ObjectFormat.formattingDateTime(project.getDueDate()) +
-                    " - " + project.getSummary());
-        }
     }
 
     public List<Project> displayProjectsByReporter() {

@@ -15,8 +15,8 @@ public class TaskAction implements Serializable {
     private int taskId;
     @Column(name = "assignee_id")
     private int assigneeId;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "action_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "action_id", updatable = false, insertable = false)
     private Action action;
 
     public TaskAction() { }

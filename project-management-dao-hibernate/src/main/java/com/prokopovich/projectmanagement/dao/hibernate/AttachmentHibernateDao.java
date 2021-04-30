@@ -10,9 +10,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
+@Transactional
 public class AttachmentHibernateDao extends GenericHibernateDao<Attachment> implements AttachmentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AttachmentHibernateDao.class);

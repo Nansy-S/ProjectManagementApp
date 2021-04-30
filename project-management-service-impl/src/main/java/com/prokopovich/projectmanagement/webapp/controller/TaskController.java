@@ -16,45 +16,6 @@ import java.util.Scanner;
 
 public class TaskController {
 
-    //private static final Logger LOGGER = LogManager.getLogger(TaskController.class);
-    //private static final Scanner INPUT = new Scanner(System.in);
-//
-    //private final ServiceFactory service = new ServiceFactoryImpl();
-    //private final TaskService taskService = service.getTaskService();
-    //private final AccountService accountService = service.getAccountService();
-    //private final ProjectController projectController = new ProjectController();
-    //private final CommentController commentController = new CommentController();
-    //private final AttachmentController attachmentController = new AttachmentController();
-//
-    //public void displayTasks(List<Task> taskList) {
-    //    int number = 0;
-//
-    //    System.out.println(" #) Task code - Priority - Status - Due Date - Estimation time - Assignee - Description");
-    //    for(Task task: taskList) {
-    //        number++;
-    //        System.out.println(number +
-    //                ") " + task.getTaskCode() +
-    //                " - " + task.getPriority() +
-    //                " - " + task.getCurrentStatus() +
-    //                " - " + ObjectFormat.formattingDateTime(task.getDueDate()) +
-    //                " - " + task.getEstimationTime() +
-    //                " - " + task.getAssignee() +
-    //                " - " + task.getDescription());
-    //    }
-    //}
-//
-    //public List<Task> displayTasksByProject() {
-    //    List<Task> taskList;
-    //    List<Project> projectList;
-    //    Project project;
-//
-    //    LOGGER.trace("displayTasksByProject method is executed");
-    //    projectList = projectController.displayProjectsByReporter();
-    //    project = projectController.chooseProject(projectList);
-    //    taskList = taskService.getAllByProject(project.getProjectId());
-    //    displayTasks(taskList);
-    //    return taskList;
-    //}
 //
     //public void displayTaskInfo(Task task) {
     //    int numberAction = 0;
@@ -91,40 +52,10 @@ public class TaskController {
     //    }
     //}
 //
-    //public Task chooseTask(List<Task> taskList) {
-    //    Task task;
-//
-    //    System.out.print("Enter record number to view (edit) detailed information or 0 to exit: ");
-    //    int chosenProjectNumber = INPUT.nextInt();
-    //    if (chosenProjectNumber != 0) {
-    //        chosenProjectNumber--;
-    //        task = taskList.get(chosenProjectNumber);
-    //        return task;
-    //    }
-    //    else {
-    //        return null;
-    //    }
-    //}
-//
+
     //public void addTask() {
-    //    Task newTask = new Task();
-    //    Project project;
-    //    List<Project> projectList;
-//
-    //    LOGGER.trace("addTask method is executed");
-    //    projectList = projectController.displayActiveProjects();
-    //    System.out.print("Enter project number to add task or 0 to exit: ");
-    //    int chosenProjectNumber = INPUT.nextInt();
-    //    if (chosenProjectNumber != 0) {
-    //        chosenProjectNumber--;
-    //        project = projectList.get(chosenProjectNumber);
-    //        newTask.setProjectId(project.getProjectId());
-    //        System.out.println("Enter new task: ");
-    //        System.out.println("\tchoose priority task: ");
-    //        newTask.setPriority(enterTaskPriority());
-    //        INPUT.nextLine();
-    //        System.out.print("\tdue date (dd.MM.yyyy hh:mm:ss): ");
-    //        String dateTime = INPUT.nextLine();
+
+
     //        newTask.setDueDate(ObjectFormat.formattingInputDateTime(dateTime));
     //        System.out.print("\testimation time: ");
     //        newTask.setEstimationTime(INPUT.nextInt());

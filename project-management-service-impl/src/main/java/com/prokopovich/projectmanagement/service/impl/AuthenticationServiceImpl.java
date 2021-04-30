@@ -9,7 +9,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);

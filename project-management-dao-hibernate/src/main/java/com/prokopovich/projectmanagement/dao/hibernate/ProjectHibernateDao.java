@@ -1,8 +1,10 @@
 package com.prokopovich.projectmanagement.dao.hibernate;
 
+import com.prokopovich.projectmanagement.dao.ProjectActionDao;
 import com.prokopovich.projectmanagement.dao.ProjectDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Project;
+import com.prokopovich.projectmanagement.model.ProjectAction;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,27 +12,42 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
 
 @Repository
+@Transactional
 public class ProjectHibernateDao extends GenericHibernateDaoWithHistory<Project> implements ProjectDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectHibernateDao.class);
+    private static final String SQL_SELECT_BY_REPORTER_AND_ACTION = "SELECT p FROM Project p WHERE p.projectId IN " +
+            "(SELECT pa.projectId FROM ProjectAction pa INNER JOIN Action a ON a.actionId = pa.actionId ";
 
     private final EntityManagerFactory entityManagerFactory;
+    private final ProjectActionDao projectActionDao;
 
     @Autowired
-    public ProjectHibernateDao(EntityManagerFactory entityManagerFactory) {
+    public ProjectHibernateDao(EntityManagerFactory entityManagerFactory, ProjectActionDao projectActionDao) {
         super(entityManagerFactory, Project.class);
         this.entityManagerFactory = entityManagerFactory;
+        this.projectActionDao = projectActionDao;
     }
 
     public String getSqlSelectByReporterAndAction() {
-        return "SQL_SELECT_BY_REPORTER_AND_ACTION";
+        return SQL_SELECT_BY_REPORTER_AND_ACTION;
+    }
+
+    @Override
+    public Collection<Project> findAllByReporterAndAction(int reporterId, String actionType) {
+        List<Project> projectList = (List<Project>) super.findAllByReporterAndAction(reporterId, actionType);
+        projectList = setListActions(projectList);
+        return projectList;
     }
 
     @Override
@@ -51,7 +68,9 @@ public class ProjectHibernateDao extends GenericHibernateDaoWithHistory<Project>
     @Override
     public Collection<Project> findAllByCurrentStatus(String currentStatus) throws DaoException {
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
-        return findByParameter("currentStatus", currentStatus);
+        List<Project> projectList = (List<Project>) findByParameter("currentStatus", currentStatus);
+        projectList = setListActions(projectList);
+        return projectList;
     }
 
     @Override
@@ -75,9 +94,19 @@ public class ProjectHibernateDao extends GenericHibernateDaoWithHistory<Project>
                     criteriaBuilder.and(predicateId,
                             criteriaBuilder.or(predicates[0], predicates[1], predicates[2]))
             );
-            return entityManager.createQuery(criteriaQuery).getResultList();
+            List<Project> projectList = entityManager.createQuery(criteriaQuery).getResultList();
+            projectList = setListActions(projectList);
+            return projectList;
         } finally {
             entityManager.close();
         }
+    }
+
+    private List<Project> setListActions(List<Project> projectList) {
+        for(Project project : projectList) {
+            project.setProjectActions(
+                    (List<ProjectAction>) projectActionDao.findAllByProjectId(project.getProjectId()));
+        }
+        return projectList;
     }
 }

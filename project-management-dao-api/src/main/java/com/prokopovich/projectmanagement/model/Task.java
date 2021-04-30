@@ -1,5 +1,7 @@
 package com.prokopovich.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private int taskId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_code")
     private String taskCode;
     @Column(name = "project_id")
@@ -29,33 +32,32 @@ public class Task {
     private int assignee;
     @Column(name = "description")
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "project_id", insertable = false, updatable = false)
-    private Project projectInfo;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    //@ManyToOne
+    //@JoinColumn(name = "project_id", insertable = false, updatable = false)
+    //private Project projectInfo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assignee", referencedColumnName = "user_id", insertable = false, updatable = false)
     private User assigneeInfo;
-    @OneToMany
-    @JoinColumn(name = "task_id")
-    private List<Attachment> attachmentList;
-    @OneToMany
-    @JoinColumn(name = "task_id")
-    private List<Comment> commentList;
-    @OneToMany
+    //@OneToMany
+    //@JoinColumn(name = "task_id")
+    //private List<Attachment> attachmentList;
+    //@OneToMany
+    //@JoinColumn(name = "task_id")
+    //private List<Comment> commentList;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    //@OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
     private List<TaskAction> taskActions;
 
-    public Task() {
-        projectInfo = new Project();
-        assigneeInfo = new User();
-        attachmentList = new ArrayList<>();
-        commentList = new ArrayList<>();
-        taskActions = new ArrayList<>();
-    }
+    public Task() { }
 
     public Task(int taskId, String taskCode, int projectId, String priority, String currentStatus, LocalDateTime dueDate,
-                int estimationTime, int assignee, String description, Project projectInfo, User assigneeInfo,
-                List<Attachment> attachmentList, List<Comment> commentList, List<TaskAction> taskActions) {
+                int estimationTime, int assignee, String description,
+                //Project projectInfo,
+                User assigneeInfo,
+                //List<Attachment> attachmentList, List<Comment> commentList,
+                List<TaskAction> taskActions) {
         this.taskId = taskId;
         this.taskCode = taskCode;
         this.projectId = projectId;
@@ -65,10 +67,10 @@ public class Task {
         this.estimationTime = estimationTime;
         this.assignee = assignee;
         this.description = description;
-        this.projectInfo = projectInfo;
+    //    this.projectInfo = projectInfo;
         this.assigneeInfo = assigneeInfo;
-        this.attachmentList = attachmentList;
-        this.commentList = commentList;
+    //    this.attachmentList = attachmentList;
+    //    this.commentList = commentList;
         this.taskActions = taskActions;
     }
 
@@ -144,14 +146,14 @@ public class Task {
         this.description = description;
     }
 
-    public Project getProjectInfo() {
-        return projectInfo;
-    }
-
-    public void setProjectInfo(Project projectInfo) {
-        this.projectInfo = projectInfo;
-    }
-
+    //public Project getProjectInfo() {
+    //    return projectInfo;
+    //}
+//
+    //public void setProjectInfo(Project projectInfo) {
+    //    this.projectInfo = projectInfo;
+    //}
+//
     public User getAssigneeInfo() {
         return assigneeInfo;
     }
@@ -159,22 +161,22 @@ public class Task {
     public void setAssigneeInfo(User assigneeInfo) {
         this.assigneeInfo = assigneeInfo;
     }
-
-    public List<Attachment> getAttachmentList() {
-        return attachmentList;
-    }
-
-    public void setAttachmentList(List<Attachment> attachmentList) {
-        this.attachmentList = attachmentList;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
+//
+    //public List<Attachment> getAttachmentList() {
+    //    return attachmentList;
+    //}
+//
+    //public void setAttachmentList(List<Attachment> attachmentList) {
+    //    this.attachmentList = attachmentList;
+    //}
+//
+    //public List<Comment> getCommentList() {
+    //    return commentList;
+    //}
+//
+    //public void setCommentList(List<Comment> commentList) {
+    //    this.commentList = commentList;
+    //}
 
     public List<TaskAction> getTaskActions() {
         return taskActions;

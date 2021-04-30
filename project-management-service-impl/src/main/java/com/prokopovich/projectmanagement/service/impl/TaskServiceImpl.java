@@ -9,10 +9,12 @@ import com.prokopovich.projectmanagement.service.TaskActionService;
 import com.prokopovich.projectmanagement.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class TaskServiceImpl implements TaskService {
     private final TaskDao taskDao;
     private final ActionService actionService;
@@ -25,12 +27,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void addNewTask(Task newTask, Account reporter) {
+    public Task addNewTask(Task newTask, Account reporter) {
+        newTask.setTaskCode("code");
         newTask.setCurrentStatus(TaskStatus.OPEN.getTitle());
         newTask.setAssignee(reporter.getAccountId());
         newTask = taskDao.create(newTask);
         newTask = taskDao.findOne(newTask.getTaskId());
         setTaskAction(newTask.getTaskId(), reporter, newTask.getAssignee(), TaskActionType.CREATE.getTitle());
+        return newTask;
     }
 
     @Override

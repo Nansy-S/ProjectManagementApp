@@ -14,10 +14,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 
 @Repository
+@Transactional
 public class AccountHibernateDao extends GenericHibernateDaoWithHistory<Account> implements AccountDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountHibernateDao.class);

@@ -6,9 +6,11 @@ import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.service.AccountActionService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class AccountActionServiceImpl implements AccountActionService {
 
     private final AccountActionDao accountActionDao;

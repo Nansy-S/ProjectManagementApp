@@ -41,7 +41,7 @@ public class HibernateDaoFactory implements DaoFactory {
 
     @Override
     public ProjectDao getProjectDao() {
-        return new ProjectHibernateDao(entityManagerFactory);
+        return new ProjectHibernateDao(entityManagerFactory, getProjectActionDao());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class HibernateDaoFactory implements DaoFactory {
 
     @Override
     public TaskDao getTaskDao() {
-        return new TaskHibernateDao(entityManagerFactory);
+        return new TaskHibernateDao(entityManagerFactory, getTaskActionDao());
     }
 
     @Override
@@ -61,6 +61,6 @@ public class HibernateDaoFactory implements DaoFactory {
 
     @Override
     public UserDao getUserDao() {
-        return new UserHibernateDao(entityManagerFactory);
+        return new UserHibernateDao(entityManagerFactory, getAccountActionDao());
     }
 }

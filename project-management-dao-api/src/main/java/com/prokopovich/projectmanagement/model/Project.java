@@ -1,5 +1,7 @@
 package com.prokopovich.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,13 +23,13 @@ public class Project {
     private LocalDateTime dueDate;
     @Column(name = "current_status")
     private String currentStatus;
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    //@OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private List<ProjectAction> projectActions;
 
-    public Project() {
-        projectActions = new ArrayList<>();
-    }
+    public Project() { }
 
     public Project(int projectId, String projectCode, String summary, LocalDateTime dueDate, String currentStatus,
                    List<ProjectAction> projectActions) {

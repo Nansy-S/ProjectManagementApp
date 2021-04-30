@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    void addNewTask(Task newTask, Account reporter);
+    Task addNewTask(Task newTask, Account reporter);
 
     boolean editTask(Task task, Account reporter);
 

@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.webapp.rest;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.AccountStatus;
 import com.prokopovich.projectmanagement.model.Account;
+import com.prokopovich.projectmanagement.model.Task;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.UserService;
@@ -11,11 +12,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserAccountRestController {
@@ -32,6 +36,7 @@ public class UserAccountRestController {
     }
 
     @GetMapping(value = "/")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<List<Account>> getUsersByReporter() {
         LOGGER.trace("getUsersByReporter method is executed");
         List<Account> userAccounts = accountService.getAllCreatedUser(
@@ -96,4 +101,22 @@ public class UserAccountRestController {
         }
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping(value = "/assignee/{assigneeId}")
+    @Secured("Project manager")
+    public ResponseEntity<Account> getAssigneeByTask(@PathVariable int assigneeId) {
+        LOGGER.trace("getAssigneeByTask method is executed");
+        Account assignee = accountService.findByAccountId(assigneeId);
+        if(assignee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(assignee, HttpStatus.OK);
+    }
 }
+
+
+//<div *ngIf="currentUser">
+//<div *ngIf="currentUser.role as 'Administrator'">
+//<app-users></app-users>
+//</div>
+//</div>

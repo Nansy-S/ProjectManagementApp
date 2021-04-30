@@ -19,9 +19,7 @@ public class AccountAction implements Serializable {
     @JoinColumn(name = "action_id")
     private Action action;
 
-    public AccountAction(){
-        action = new Action();
-    }
+    public AccountAction() { }
 
     public AccountAction(int actionId, int accountId, String reason, Action action) {
         this.actionId = actionId;

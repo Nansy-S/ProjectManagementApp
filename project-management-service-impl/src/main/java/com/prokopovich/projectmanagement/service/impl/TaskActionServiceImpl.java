@@ -6,9 +6,11 @@ import com.prokopovich.projectmanagement.model.TaskAction;
 import com.prokopovich.projectmanagement.service.TaskActionService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class TaskActionServiceImpl implements TaskActionService {
 
     private final TaskActionDao taskActionDao;

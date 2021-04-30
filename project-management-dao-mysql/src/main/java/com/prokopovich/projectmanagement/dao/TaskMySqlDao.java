@@ -88,9 +88,9 @@ public class TaskMySqlDao extends GenericMySqlDaoWithHistory<Task> implements Ta
         task.setEstimationTime(rs.getInt(7));
         task.setAssignee(rs.getInt(8));
         task.setDescription(rs.getString(9));
-        task.setProjectInfo(projectDao.findOne(task.getProjectId()));
-        task.setAttachmentList((List<Attachment>) attachmentDao.findAllByTaskId(task.getTaskId()));
-        task.setCommentList((List<Comment>) commentDao.findAllByTaskId(task.getTaskId()));
+        //task.setProjectInfo(projectDao.findOne(task.getProjectId()));
+        //task.setAttachmentList((List<Attachment>) attachmentDao.findAllByTaskId(task.getTaskId()));
+        //task.setCommentList((List<Comment>) commentDao.findAllByTaskId(task.getTaskId()));
         task.setTaskActions((List<TaskAction>) taskActionDao.findAllByTaskId(task.getTaskId()));
         return task;
     }

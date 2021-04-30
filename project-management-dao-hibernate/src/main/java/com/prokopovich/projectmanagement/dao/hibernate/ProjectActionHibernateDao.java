@@ -8,10 +8,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
+@Transactional
 public class ProjectActionHibernateDao extends GenericHibernateDao<ProjectAction> implements ProjectActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionHibernateDao.class);

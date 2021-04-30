@@ -2,20 +2,20 @@ package com.prokopovich.projectmanagement.webapp.util.jwt;
 
 public class JwtRequestModel {
 
-    private String login;
+    private String email;
     private String password;
 
-    public JwtRequestModel(String login, String password) {
-        this.login = login;
+    public JwtRequestModel(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

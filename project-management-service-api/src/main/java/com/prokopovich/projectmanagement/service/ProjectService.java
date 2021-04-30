@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    void addNewProject(Project newProject, Account reporter);
+    Project addNewProject(Project newProject, Account reporter);
 
     boolean editProject(Project project, Account reporter);
 

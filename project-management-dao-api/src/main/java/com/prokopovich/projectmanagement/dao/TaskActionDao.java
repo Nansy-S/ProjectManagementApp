@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface TaskActionDao extends GenericDao<TaskAction> {
 
-    Collection<TaskAction> findAllByTaskId(int taskId) throws SQLException;
+    Collection<TaskAction> findAllByTaskId(int taskId);
 
     Collection<TaskAction> findAllByReporter(int reporterId) throws DaoException;
 }

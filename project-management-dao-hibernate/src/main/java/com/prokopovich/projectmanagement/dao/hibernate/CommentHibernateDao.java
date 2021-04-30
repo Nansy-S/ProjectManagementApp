@@ -10,9 +10,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
+@Transactional
 public class CommentHibernateDao extends GenericHibernateDao<Comment> implements CommentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(CommentHibernateDao.class);

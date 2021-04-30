@@ -1,5 +1,7 @@
 package com.prokopovich.projectmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +19,15 @@ public class User {
     private String currentStatus;
     @Column(name = "phone")
     private String phone;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "account_id", insertable = false, updatable = false)
     private Account accountInfo;
-    @OneToMany
-    @JoinColumn(name = "account_id")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private List<AccountAction> accountActions;
 
-    public User() {
-        accountInfo = new Account();
-        accountActions = new ArrayList<>();
-    }
+    public User() { }
 
     public User(int userId, String position, String currentStatus, String phone, Account accountInfo) {
         this.userId = userId;
