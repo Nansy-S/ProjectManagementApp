@@ -1,16 +1,8 @@
 package com.prokopovich.projectmanagement.webapp.rest;
 
-
-import com.prokopovich.App;
-import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.ProjectActionType;
-import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.Project;
-import com.prokopovich.projectmanagement.model.User;
-import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.ProjectService;
-import com.prokopovich.projectmanagement.service.UserService;
-import com.prokopovich.projectmanagement.util.ObjectFormat;
 import com.prokopovich.projectmanagement.webapp.util.jwt.TokenManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

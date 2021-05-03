@@ -39,6 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllByUserRole(String role) {
+        return (List<User>) userDao.findAllByUserRole(role);
+    }
+
+    @Override
     public List<User> getAllByCurrentStatus(String currentStatus) {
         return (List<User>) userDao.findAllByCurrentStatus(currentStatus);
     }

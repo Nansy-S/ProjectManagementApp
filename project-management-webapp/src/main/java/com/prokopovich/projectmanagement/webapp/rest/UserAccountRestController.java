@@ -3,10 +3,10 @@ package com.prokopovich.projectmanagement.webapp.rest;
 import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.AccountStatus;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.model.Task;
 import com.prokopovich.projectmanagement.model.User;
 import com.prokopovich.projectmanagement.service.AccountService;
 import com.prokopovich.projectmanagement.service.UserService;
+import com.prokopovich.projectmanagement.webapp.util.jwt.TokenManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,34 +28,34 @@ public class UserAccountRestController {
 
     private final UserService userService;
     private final AccountService accountService;
+    private final TokenManager tokenManager;
 
     @Autowired
-    public UserAccountRestController(UserService userService, AccountService accountService) {
+    public UserAccountRestController(UserService userService, AccountService accountService, TokenManager tokenManager) {
         this.userService = userService;
         this.accountService = accountService;
+        this.tokenManager = tokenManager;
     }
 
     @GetMapping(value = "/")
-    @Secured("ROLE_ADMIN")
     public ResponseEntity<List<Account>> getUsersByReporter() {
         LOGGER.trace("getUsersByReporter method is executed");
         List<Account> userAccounts = accountService.getAllCreatedUser(
-                35, AccountActionType.CREATE.getTitle()); /////////////////////////////////
+                tokenManager.getCurrentUser().getAccountId(), AccountActionType.CREATE.getTitle());
         if(userAccounts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userAccounts, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{role}")
-    @Secured("Project manager")
-    public ResponseEntity<List<Account>> getUsersByRole(@PathVariable String role) {
+    @GetMapping(value = "/role/{role}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
         LOGGER.trace("getUsersByRole method is executed");
-        List<Account> userAccounts = accountService.findByUserRole(role);
-        if(userAccounts.isEmpty()) {
+        List<User> userList = userService.getAllByUserRole(role);
+        if(userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userAccounts, HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
@@ -72,7 +72,8 @@ public class UserAccountRestController {
     public ResponseEntity<User> addUser(@RequestBody Account newAccount,
                                         @RequestBody User newUser,
                                         @RequestBody String reason) {
-        User addedUser = accountService.addNewAccount(newAccount, 34, newUser, reason); ////////////
+        User addedUser = accountService.addNewAccount(newAccount,
+                tokenManager.getCurrentUser().getAccountId(), newUser, reason);
         LOGGER.trace("new user added - " + addedUser.toString());
         return new ResponseEntity<>(addedUser, HttpStatus.OK);
     }
@@ -83,7 +84,8 @@ public class UserAccountRestController {
                                         @RequestBody User newUser,
                                         @RequestBody String reason) {
         LOGGER.trace("new user added");
-        if(accountService.editAccount(newAccount, 34, newUser, reason)) { ////////////////////////
+        if(accountService.editAccount(newAccount,
+                tokenManager.getCurrentUser().getAccountId(), newUser, reason)) {
             LOGGER.trace("user information successfully edited - new user information - " + newUser.toString());
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
@@ -95,7 +97,7 @@ public class UserAccountRestController {
                                                     @PathVariable AccountStatus accountStatus,
                                                     @RequestBody User user,
                                                     @RequestBody String reason) {
-        if(accountService.changeStatus(user, 34, reason)) { ////////////
+        if(accountService.changeStatus(user, tokenManager.getCurrentUser().getAccountId(), reason)) {
             LOGGER.trace("user status successfully edited - new status - " + user.getCurrentStatus());
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
@@ -106,17 +108,10 @@ public class UserAccountRestController {
     public ResponseEntity<Boolean> changeUserRole(@PathVariable int id,
                                                   @RequestBody Account account,
                                                   @RequestBody String reason) {
-        if(accountService.changeRole(account, 34, reason)) { ////////////
+        if(accountService.changeRole(account, tokenManager.getCurrentUser().getAccountId(), reason)) {
             LOGGER.trace("user role successfully edited - new role - " + account.getRole());
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 }
-
-
-//<div *ngIf="currentUser">
-//<div *ngIf="currentUser.role as 'Administrator'">
-//<app-users></app-users>
-//</div>
-//</div>

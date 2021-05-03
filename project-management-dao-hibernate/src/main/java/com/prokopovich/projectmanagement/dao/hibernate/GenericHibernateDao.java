@@ -45,7 +45,11 @@ public abstract class GenericHibernateDao<T> implements GenericDao<T> {
     @Override
     public T findOne(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.find(className, id);
+        try {
+            return entityManager.find(className, id);
+        } finally {
+            entityManager.close();
+        }
     }
     
     @Override

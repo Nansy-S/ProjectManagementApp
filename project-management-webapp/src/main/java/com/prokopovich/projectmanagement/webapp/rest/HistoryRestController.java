@@ -7,6 +7,7 @@ import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.model.AccountAction;
 import com.prokopovich.projectmanagement.service.AccountActionService;
 import com.prokopovich.projectmanagement.service.AccountService;
+import com.prokopovich.projectmanagement.webapp.util.jwt.TokenManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,16 @@ public class HistoryRestController {
 
     private static final Logger LOGGER = LogManager.getLogger(UserAccountRestController.class);
 
+    private final TokenManager tokenManager;
     private final AccountActionService accountActionService;
     private final AccountService accountService;
 
     @Autowired
-    public HistoryRestController(AccountActionService accountActionService, AccountService accountService) {
+    public HistoryRestController(AccountActionService accountActionService, AccountService accountService,
+            TokenManager tokenManager) {
         this.accountActionService = accountActionService;
         this.accountService = accountService;
+        this.tokenManager = tokenManager;
     }
 
     @GetMapping(value = "/account")

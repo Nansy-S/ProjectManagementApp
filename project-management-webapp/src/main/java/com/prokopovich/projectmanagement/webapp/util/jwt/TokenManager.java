@@ -26,7 +26,7 @@ public class TokenManager implements Serializable {
 
     private static final long serialVersionUID = 7008375124389347049L;
 
-    public static final long TOKEN_VALIDITY = 15 * 60 * 60;
+    public static final long TOKEN_VALIDITY = 60 * 60 * 60;
 
     //private final AccountService accountService;
     private final AccountDao accountDao;

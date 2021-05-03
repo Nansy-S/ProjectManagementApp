@@ -11,9 +11,5 @@ public interface TaskDao extends GenericDaoWithHistory<Task> {
 
     Collection<Task> findAllByProjectId(int projectId) throws DaoException;
 
-    Collection<Task> findAllByAssignee(int assignee) throws DaoException;
-
-    Collection<Task> findAllByReporter(int reporter) throws DaoException;
-
-    Collection<Task> findAllByCurrentStatus(String currentStatus) throws DaoException;
+    Collection<Task> findAllByAssignee(int reporter) throws DaoException;
 }

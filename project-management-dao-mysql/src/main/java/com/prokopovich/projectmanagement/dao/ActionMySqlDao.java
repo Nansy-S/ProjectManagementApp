@@ -2,8 +2,6 @@ package com.prokopovich.projectmanagement.dao;
 
 import com.prokopovich.projectmanagement.model.Action;
 import com.prokopovich.projectmanagement.util.LocalDateTimeAttributeConverter;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,13 +12,8 @@ public class ActionMySqlDao extends GenericMySqlDao<Action> implements ActionDao
     private static final String SQL_SELECT_ALL = "SELECT action_id, type, date_time, reporter FROM actions";
     private static final String SQL_SELECT_ONE = "SELECT action_id, type, date_time, reporter FROM actions " +
             "WHERE action_id = ?";
-    //private static final String SQL_SELECT_BY_REPORTER = "SELECT action_id, type, date_time, reporter FROM actions " +
-    //        "WHERE reporter = ?";
-    //private static final String SQL_SELECT_BY_TYPE = "SELECT action_id, type, date_time, reporter FROM actions " +
-    //        "WHERE type = ?";
     private static final String SQL_CREATE = "INSERT INTO actions (type, date_time, reporter) VALUES (?, ?, ?)";
 
-    private static final Logger LOGGER = LogManager.getLogger(ActionMySqlDao.class);
     private static final LocalDateTimeAttributeConverter CONVERTER = new LocalDateTimeAttributeConverter();
 
     private final AccountDao accountDao;

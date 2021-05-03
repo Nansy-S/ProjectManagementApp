@@ -61,7 +61,8 @@ public class ServiceFactoryImpl extends ServiceFactoryProvider {
 
     @Override
     public TaskService getTaskService() {
-        return new TaskServiceImpl(daoFactory.getTaskDao(), getActionService(), getTaskActionService());
+        return new TaskServiceImpl(daoFactory.getTaskDao(), daoFactory.getAccountDao(), getActionService(),
+                getTaskActionService());
     }
 
     @Override

@@ -25,6 +25,4 @@ public interface AccountService {
 
     List<Account> findByUserRole(String role);
 
-    List<Account> findByUserFullName(String fullName);
-
 }

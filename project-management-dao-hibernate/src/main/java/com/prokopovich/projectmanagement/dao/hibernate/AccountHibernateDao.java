@@ -66,27 +66,6 @@ public class AccountHibernateDao extends GenericHibernateDaoWithHistory<Account>
     }
 
     @Override
-    public Collection<Account> findAllByUserFullName(String fullName) throws DaoException {
-        LOGGER.trace("findAllByUserFullName method is executed - Full name = " + fullName);
-        //EntityManager entityManager = entityManagerFactory.createEntityManager();
-        //try {
-        //    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        //    CriteriaQuery<Account> criteriaQuery = criteriaBuilder.createQuery(Account.class);
-        //    Root<Account> tRoot = criteriaQuery.from(Account.class);
-        //    //Predicate predicateName = criteriaBuilder.equal(tRoot.get("name"), name);
-        //    //Predicate predicateFirstname = criteriaBuilder.equal(tRoot.get("surname"), surname);
-        //    //Predicate predicatePatronymic = criteriaBuilder.equal(tRoot.get("patronymic"), patronymic);
-        //    //criteriaQuery.where(predicateName, predicateFirstname, predicatePatronymic);
-        //    return entityManager.createQuery(criteriaQuery).getResultList();
-        //} finally {
-        //    entityManager.close();
-        //}
-//
-        //return findByParameter("SQL_SELECT_BY_FULL_NAME", fullName);
-        return null;
-    }
-
-    @Override
     public Account findByEmail(String email) throws DaoException {
         LOGGER.trace("findAllByEmail method is executed - email = " + email);
         List<Account> accounts = (List<Account>) findByParameter("email", email);

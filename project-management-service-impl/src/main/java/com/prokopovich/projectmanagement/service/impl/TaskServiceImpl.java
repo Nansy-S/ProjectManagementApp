@@ -1,13 +1,14 @@
 package com.prokopovich.projectmanagement.service.impl;
 
+import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.dao.TaskDao;
-import com.prokopovich.projectmanagement.enumeration.AccountActionType;
 import com.prokopovich.projectmanagement.enumeration.TaskActionType;
 import com.prokopovich.projectmanagement.enumeration.TaskStatus;
 import com.prokopovich.projectmanagement.model.*;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.TaskActionService;
 import com.prokopovich.projectmanagement.service.TaskService;
+import com.prokopovich.projectmanagement.util.ValidateTaskData;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,12 +18,16 @@ import java.util.List;
 @Service
 @Transactional
 public class TaskServiceImpl implements TaskService {
+
     private final TaskDao taskDao;
+    private final AccountDao accountDao;
     private final ActionService actionService;
     private final TaskActionService taskActionService;
 
-    public TaskServiceImpl(TaskDao taskDao, ActionService actionService, TaskActionService taskActionService) {
+    public TaskServiceImpl(TaskDao taskDao, AccountDao accountDao,
+                           ActionService actionService, TaskActionService taskActionService) {
         this.taskDao = taskDao;
+        this.accountDao = accountDao;
         this.actionService = actionService;
         this.taskActionService = taskActionService;
     }
@@ -55,27 +60,39 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task changeStatus(Task task, Account reporterId) {
-        if (taskDao.updateTask(task)) {
-            setTaskAction(task.getTaskId(), reporterId,
-                    task.getAssigneeInfo().getUserId(),
-                    TaskStatus.getByTitle(task.getCurrentStatus()).getTaskActionType());
-            return task;
-        } else {
-            return null;
+    public Task changeStatus(int taskId, String newStatus, Account reporter) {
+        ValidateTaskData validateData = new ValidateTaskData();
+        Task currentTask = taskDao.findOne(taskId);
+        if(validateData.validateChangeStatus(currentTask, newStatus, reporter)) {
+            currentTask.setCurrentStatus(newStatus);
+            if (taskDao.updateTask(currentTask)) {
+                setTaskAction(currentTask.getTaskId(), reporter,
+                        currentTask.getAssigneeInfo().getUserId(),
+                        TaskStatus.getByTitle(currentTask.getCurrentStatus()).getTaskActionType());
+                return currentTask;
+            } else {
+                return null;
+            }
         }
+        return null;
     }
 
     @Override
-    public Task changeAssignee(Task task, Account reporterId) {
-        if (taskDao.updateTask(task)) {
-            setTaskAction(task.getTaskId(), reporterId,
-                    task.getAssigneeInfo().getUserId(),
-                    TaskActionType.CHANGE_ASSIGNEE.getTitle());
-            return task;
-        } else {
-            return null;
+    public Task changeAssignee(int taskId, int newAssigneeId, Account reporter) {
+        ValidateTaskData validateData = new ValidateTaskData();
+        Task currentTask = taskDao.findOne(taskId);
+        Account newAssignee = accountDao.findOne(newAssigneeId);
+
+        if(validateData.validateChangeAssigneeRole(currentTask, newAssignee)) {
+            currentTask.setAssignee(newAssigneeId);
+            if (taskDao.updateTask(currentTask)) {
+                setTaskAction(currentTask.getTaskId(), reporter,
+                        currentTask.getAssigneeInfo().getUserId(),
+                        TaskActionType.CHANGE_ASSIGNEE.getTitle());
+                return currentTask;
+            }
         }
+        return null;
     }
 
     private void setTaskAction(int taskId, Account reporter, int assigneeId, String actionType) {
@@ -98,5 +115,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllByProject(int projectId) {
         return (List<Task>) taskDao.findAllByProjectId(projectId);
+    }
+
+    @Override
+    public List<Task> getAllByReporter(int userId) {
+        return (List<Task>) taskDao.findAllByReporterAndAction(userId, TaskActionType.CREATE.getTitle());
+    }
+
+    @Override
+    public List<Task> getAllByAssignee(int userId) {
+        return (List<Task>) taskDao.findAllByAssignee(userId);
     }
 }

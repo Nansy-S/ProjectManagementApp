@@ -59,10 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/*").permitAll()
-                //.antMatchers("/*").hasRole("ADMIN")
-                //.antMatchers("/*").hasRole("Project manager")
-                //.antMatchers("/api/login", "/*").permitAll()
+                .antMatchers("/api/users/", "/api/users/{id}", "/api/users/add",
+                        "/api/users/edit",  "/api/users/edit/**").hasRole("Administrator")
+                .antMatchers("/api/users/role", "/api/users/{id}", "/api/projects/**",
+                        "/api/reporter/**", "/api/assignee/**", "/api/tasks/**").hasRole("Project manager")
+                .antMatchers("/api/users/{id}", "/api/reporter/**", "/api/assignee/**",
+                        "/api/tasks/{id}/**", "/api/projects/**").hasRole("Developer")
+                .antMatchers("/api/users/{id}", "/api/reporter/{id}", "/api/assignee/**",
+                        "/api/tasks/{id}/**", "/api/projects/{id}").hasRole("Tester")
+                .antMatchers("/api/login").permitAll()
                 .and()
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         http.headers().httpStrictTransportSecurity().disable();

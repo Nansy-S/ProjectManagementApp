@@ -7,6 +7,7 @@ public enum TaskStatus {
     RESOLVED("Resolved"),
     REOPENED("Reopened"),
     READY_FOR_TEST("Ready for Test"),
+    TESTED("Tested"),
     CLOSED("Closed");
 
     private String title;
@@ -45,6 +46,9 @@ public enum TaskStatus {
                 break;
             case READY_FOR_TEST:
                 taskActionType = TaskActionType.READY_FOR_TEST.getTitle();
+                break;
+            case TESTED:
+                taskActionType = TaskActionType.START_TEST.getTitle();
                 break;
             case CLOSED:
                 taskActionType = TaskActionType.CLOSED.getTitle();

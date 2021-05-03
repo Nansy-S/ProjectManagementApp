@@ -110,12 +110,6 @@ public class AccountMySqlDao extends GenericMySqlDaoWithHistory<Account> impleme
     }
 
     @Override
-    public Collection<Account> findAllByUserFullName(String fullName) throws DaoException {
-        LOGGER.trace("findAllByUserFullName method is executed - Full name = " + fullName);
-        return findByParameter(SQL_SELECT_BY_FULL_NAME, fullName);
-    }
-
-    @Override
     public Account findByEmail(String email) throws DaoException {
         LOGGER.trace("findAllByEmail method is executed - email = " + email);
         List<Account> accounts = (List<Account>) findByParameter(SQL_SELECT_BY_EMAIL, email);

@@ -13,9 +13,13 @@ public interface TaskService {
 
     boolean editTask(Task task, Account reporter);
 
-    Task changeStatus(Task task, Account reporterId);
+    Task changeStatus(int taskId, String newStatus, Account reporter);
 
-    Task changeAssignee(Task task, Account reporterId);
+    Task changeAssignee(int taskId, int newAssigneeId, Account reporterId);
 
     List<Task> getAllByProject(int projectId);
+
+    List<Task> getAllByReporter(int userId);
+
+    List<Task> getAllByAssignee(int userId);
 }

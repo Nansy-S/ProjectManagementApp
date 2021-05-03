@@ -23,6 +23,4 @@ public class ActionHibernateDao extends GenericHibernateDao<Action> implements A
         super(entityManagerFactory, Action.class);
         this.entityManagerFactory = entityManagerFactory;
     }
-
-
 }

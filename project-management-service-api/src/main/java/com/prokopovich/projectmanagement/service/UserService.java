@@ -14,5 +14,7 @@ public interface UserService {
 
     List<User> getAll();
 
+    List<User> getAllByUserRole(String role);
+
     List<User> getAllByCurrentStatus(String currentStatus);
 }

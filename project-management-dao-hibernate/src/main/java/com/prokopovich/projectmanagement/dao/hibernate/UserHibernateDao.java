@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.List;
 public class UserHibernateDao extends GenericHibernateDao<User> implements UserDao {
 
     private static final Logger LOGGER = LogManager.getLogger(UserHibernateDao.class);
+    private static final String SQL_SELECT_BY_ROLE = "SELECT e FROM User e " +
+            "INNER JOIN Account a ON e.userId = a.accountId ";
 
     private final EntityManagerFactory entityManagerFactory;
     private final AccountActionDao accountActionDao;
@@ -47,6 +50,20 @@ public class UserHibernateDao extends GenericHibernateDao<User> implements UserD
     }
 
     @Override
+    public Collection<User> findAllByUserRole(String role) throws DaoException {
+        LOGGER.trace("findAllByUserRole method is executed - role = " + role);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            String sql = SQL_SELECT_BY_ROLE + " WHERE a.role =: role";
+            Query query = entityManager.createQuery(sql);
+            query.setParameter("role", role);
+            return query.getResultList();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
     public Collection<User> findAllByCurrentStatus(String currentStatus) throws DaoException {
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
         List<User> userList = (List<User>) findByParameter("currentStatus", currentStatus);
@@ -61,25 +78,4 @@ public class UserHibernateDao extends GenericHibernateDao<User> implements UserD
         }
         return userList;
     }
-
-
-    //@Override
-    //public Collection<User> findAllByReporterAndAction(int reporterId, String actionType) {
-    //    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    //    try {
-    //        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    //        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-    //        Root<User> userRoot = criteriaQuery.from(User.class);
-    //        Join<User, AccountAction> joinAccountAction = userRoot.join("accountId");
-//
-//
-//
-    //        Predicate predicateReporter = criteriaBuilder.equal(accountRoot.get("reporter"), reporterId);
-    //        Predicate predicateActionType = criteriaBuilder.equal(tRoot.get("type"), actionType);
-    //        criteriaQuery.where(predicateReporter, predicateActionType);
-    //        return entityManager.createQuery(criteriaQuery).getResultList();
-    //    } finally {
-    //        entityManager.close();
-    //    }
-    //}
 }

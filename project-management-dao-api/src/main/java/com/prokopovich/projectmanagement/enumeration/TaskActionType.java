@@ -9,6 +9,7 @@ public enum TaskActionType {
     REOPEN("Reopen"),
     CLOSED("Closed"),
     READY_FOR_TEST("Ready for Test"),
+    START_TEST("Start test"),
     CHANGE_STATUS("Change Status"),
     CHANGE_ASSIGNEE("Change Assignee");
 

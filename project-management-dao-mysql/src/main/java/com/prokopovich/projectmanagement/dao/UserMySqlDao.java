@@ -89,6 +89,11 @@ public class UserMySqlDao extends GenericMySqlDao<User> implements UserDao {
     }
 
     @Override
+    public Collection<User> findAllByUserRole(String role) throws DaoException {
+        return null;
+    }
+
+    @Override
     public Collection<User> findAllByCurrentStatus(String currentStatus) throws DaoException {
         LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
         return findByParameter(SQL_SELECT_BY_STATUS, currentStatus);

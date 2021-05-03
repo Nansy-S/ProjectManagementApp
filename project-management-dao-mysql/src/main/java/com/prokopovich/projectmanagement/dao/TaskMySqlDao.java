@@ -121,23 +121,15 @@ public class TaskMySqlDao extends GenericMySqlDaoWithHistory<Task> implements Ta
         return true;
     }
 
+    @Override
     public Collection<Task> findAllByProjectId(int projectId) throws DaoException {
         LOGGER.trace("findAllByProjectId method is executed - projectId = " + projectId);
         return findByParameter(SQL_SELECT_BY_PROJECT, projectId);
     }
 
+    @Override
     public Collection<Task> findAllByAssignee(int assignee) throws DaoException {
         LOGGER.trace("findAllByAssignee method is executed - assignee = " + assignee);
         return findByParameter(SQL_SELECT_BY_ASSIGNEE, assignee);
-    }
-
-    public Collection<Task> findAllByReporter(int reporter) throws DaoException {
-        LOGGER.trace("findAllByReporter method is executed - reporter = " + reporter);
-        return findByParameter(SQL_SELECT_BY_REPORTER, reporter);
-    }
-
-    public Collection<Task> findAllByCurrentStatus(String currentStatus) throws DaoException {
-        LOGGER.trace("findAllByCurrentStatus method is executed - currentStatus = " + currentStatus);
-        return findByParameter(SQL_SELECT_BY_STATUS, currentStatus);
     }
 }

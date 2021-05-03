@@ -122,9 +122,4 @@ public class AccountServiceImpl implements AccountService {
     public List<Account> findByUserRole(String role) {
         return (List<Account>) accountDao.findAllByUserRole(role);
     }
-
-    @Override
-    public List<Account> findByUserFullName(String fullName) {
-        return (List<Account>) accountDao.findAllByUserFullName(fullName);
-    }
 }

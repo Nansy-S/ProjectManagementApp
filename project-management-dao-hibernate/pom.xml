@@ -31,6 +31,10 @@
       <artifactId>hibernate-core</artifactId>
       <version>5.4.30.Final</version>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-c3p0</artifactId>
+    </dependency>
     <!-- MySQL database driver -->
     <dependency>
       <groupId>mysql</groupId>
