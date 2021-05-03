@@ -13,13 +13,13 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthorizationServiceImpl implements AuthenticationService {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
 
     private final AccountDao accountDao;
 
-    public AuthenticationServiceImpl(AccountDao accountDao) {
+    public AuthorizationServiceImpl(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
 

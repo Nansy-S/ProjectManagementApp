@@ -3,7 +3,6 @@ package com.prokopovich.projectmanagement.factory;
 import com.prokopovich.projectmanagement.enumeration.DatabaseType;
 import com.prokopovich.projectmanagement.service.*;
 import com.prokopovich.projectmanagement.service.impl.*;
-import org.springframework.stereotype.Service;
 
 public class ServiceFactoryImpl extends ServiceFactoryProvider {
 
@@ -15,7 +14,7 @@ public class ServiceFactoryImpl extends ServiceFactoryProvider {
 
     @Override
     public AuthenticationService getAuthenticationService() {
-        return new AuthenticationServiceImpl(daoFactory.getAccountDao());
+        return new AuthorizationServiceImpl(daoFactory.getAccountDao());
     }
 
     @Override

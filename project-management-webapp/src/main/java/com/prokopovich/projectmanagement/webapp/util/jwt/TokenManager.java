@@ -28,7 +28,6 @@ public class TokenManager implements Serializable {
 
     public static final long TOKEN_VALIDITY = 60 * 60 * 60;
 
-    //private final AccountService accountService;
     private final AccountDao accountDao;
 
     @Value("${secret}")
@@ -36,7 +35,6 @@ public class TokenManager implements Serializable {
 
     @Autowired
     public TokenManager(AccountDao accountDao) {
-        //this.accountService = accountService;
         this.accountDao = accountDao;
     }
 

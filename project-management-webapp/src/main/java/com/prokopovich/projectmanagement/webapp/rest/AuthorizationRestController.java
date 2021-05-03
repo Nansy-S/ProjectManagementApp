@@ -1,6 +1,5 @@
 package com.prokopovich.projectmanagement.webapp.rest;
 
-import com.prokopovich.projectmanagement.enumeration.UserRole;
 import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AuthenticationService;
 import com.prokopovich.projectmanagement.webapp.util.jwt.JwtRequestModel;
