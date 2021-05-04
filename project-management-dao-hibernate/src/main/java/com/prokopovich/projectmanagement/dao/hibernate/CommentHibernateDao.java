@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
-@Transactional
 public class CommentHibernateDao extends GenericHibernateDao<Comment> implements CommentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(CommentHibernateDao.class);

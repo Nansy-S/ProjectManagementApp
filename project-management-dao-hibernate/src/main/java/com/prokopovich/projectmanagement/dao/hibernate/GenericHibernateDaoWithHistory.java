@@ -16,7 +16,6 @@ import javax.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.List;
 
-@Repository
 public abstract class GenericHibernateDaoWithHistory<T> extends GenericHibernateDao<T> implements GenericDaoWithHistory<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(GenericHibernateDaoWithHistory.class);

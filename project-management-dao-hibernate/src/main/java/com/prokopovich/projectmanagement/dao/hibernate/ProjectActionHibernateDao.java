@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
-@Transactional
 public class ProjectActionHibernateDao extends GenericHibernateDao<ProjectAction> implements ProjectActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectActionHibernateDao.class);

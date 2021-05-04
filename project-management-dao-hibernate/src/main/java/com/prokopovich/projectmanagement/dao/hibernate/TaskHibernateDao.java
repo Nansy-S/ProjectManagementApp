@@ -15,7 +15,6 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
-@Transactional
 public class TaskHibernateDao extends GenericHibernateDaoWithHistory<Task> implements TaskDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TaskHibernateDao.class);

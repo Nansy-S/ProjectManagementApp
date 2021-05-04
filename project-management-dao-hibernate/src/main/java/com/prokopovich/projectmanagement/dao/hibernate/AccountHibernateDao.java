@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-@Transactional
 public class AccountHibernateDao extends GenericHibernateDaoWithHistory<Account> implements AccountDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountHibernateDao.class);

@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 @Repository
-@Transactional
 public class TaskActionHibernateDao extends GenericHibernateDao<TaskAction> implements TaskActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TaskActionHibernateDao.class);

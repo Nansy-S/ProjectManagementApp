@@ -13,7 +13,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
 
-@Repository
 public abstract class GenericHibernateDao<T> implements GenericDao<T> {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountActionHibernateDao.class);

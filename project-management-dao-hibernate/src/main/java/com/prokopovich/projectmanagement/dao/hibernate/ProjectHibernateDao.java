@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-@Transactional
 public class ProjectHibernateDao extends GenericHibernateDaoWithHistory<Project> implements ProjectDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectHibernateDao.class);

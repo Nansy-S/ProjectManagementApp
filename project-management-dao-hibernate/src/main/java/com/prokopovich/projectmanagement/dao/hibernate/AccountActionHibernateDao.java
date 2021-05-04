@@ -13,7 +13,6 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Repository
-@Transactional
 public class AccountActionHibernateDao extends GenericHibernateDao<AccountAction> implements AccountActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountActionHibernateDao.class);

@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-@Transactional
 public class UserHibernateDao extends GenericHibernateDao<User> implements UserDao {
 
     private static final Logger LOGGER = LogManager.getLogger(UserHibernateDao.class);

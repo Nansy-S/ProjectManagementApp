@@ -11,7 +11,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 
 @Repository
-@Transactional
 public class ActionHibernateDao extends GenericHibernateDao<Action> implements ActionDao {
 
     private static final Logger LOGGER = LogManager.getLogger(ActionHibernateDao.class);
