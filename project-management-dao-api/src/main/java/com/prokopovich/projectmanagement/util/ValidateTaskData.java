@@ -74,8 +74,8 @@ public class ValidateTaskData {
             return true;
         }
         if(task.getCurrentStatus().equals(TaskStatus.TESTED.getTitle()) &&
-                (task.getCurrentStatus().equals(TaskStatus.REOPENED.getTitle()) ||
-                        task.getCurrentStatus().equals(TaskStatus.CLOSED.getTitle()))) {
+                (newStatus.equals(TaskStatus.REOPENED.getTitle()) ||
+                        newStatus.equals(TaskStatus.CLOSED.getTitle()))) {
             return true;
         }
         return false;

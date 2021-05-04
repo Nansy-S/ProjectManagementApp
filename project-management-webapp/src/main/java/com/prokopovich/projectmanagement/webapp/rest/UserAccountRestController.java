@@ -21,7 +21,6 @@ import java.util.List;
 @RestController
 @Transactional
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200")
 public class UserAccountRestController {
 
     private static final Logger LOGGER = LogManager.getLogger(UserAccountRestController.class);
@@ -38,10 +37,12 @@ public class UserAccountRestController {
     }
 
     @GetMapping(value = "/")
+    @Secured("ROLE_Administrator")
     public ResponseEntity<List<Account>> getUsersByReporter() {
         LOGGER.trace("getUsersByReporter method is executed");
         List<Account> userAccounts = accountService.getAllCreatedUser(
                 tokenManager.getCurrentUser().getAccountId(), AccountActionType.CREATE.getTitle());
+        LOGGER.trace(userAccounts);
         if(userAccounts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -49,6 +50,7 @@ public class UserAccountRestController {
     }
 
     @GetMapping(value = "/role/{role}")
+    @Secured({"ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
     public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
         LOGGER.trace("getUsersByRole method is executed");
         List<User> userList = userService.getAllByUserRole(role);
@@ -59,9 +61,11 @@ public class UserAccountRestController {
     }
 
     @GetMapping(value = "/{id}")
+    @Secured({"ROLE_Administrator", "ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
     public ResponseEntity<User> getUserInfo(@PathVariable int id) {
         LOGGER.trace("getUserInfo method is executed");
         User user = userService.getByUserId(id);
+        LOGGER.trace(user);
         if(user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -69,6 +73,7 @@ public class UserAccountRestController {
     }
 
     @PostMapping(value = "/add")
+    @Secured("ROLE_Administrator")
     public ResponseEntity<User> addUser(@RequestBody Account newAccount,
                                         @RequestBody User newUser,
                                         @RequestBody String reason) {
@@ -79,6 +84,7 @@ public class UserAccountRestController {
     }
 
     @PutMapping(value = "/edit/{id}")
+    @Secured({"ROLE_Administrator", "ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
     public ResponseEntity<Boolean> editUser(@PathVariable int id,
                                         @RequestBody Account newAccount,
                                         @RequestBody User newUser,
@@ -93,6 +99,7 @@ public class UserAccountRestController {
     }
 
     @PutMapping(value = "/edit/status/{id}/{accountStatus}")
+    @Secured("ROLE_Administrator")
     public ResponseEntity<Boolean> changeUserStatus(@PathVariable int id,
                                                     @PathVariable AccountStatus accountStatus,
                                                     @RequestBody User user,
@@ -105,6 +112,7 @@ public class UserAccountRestController {
     }
 
     @PutMapping(value = "/edit/role/{id}")
+    @Secured("ROLE_Administrator")
     public ResponseEntity<Boolean> changeUserRole(@PathVariable int id,
                                                   @RequestBody Account account,
                                                   @RequestBody String reason) {

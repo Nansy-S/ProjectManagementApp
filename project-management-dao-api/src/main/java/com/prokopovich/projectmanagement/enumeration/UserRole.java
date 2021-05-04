@@ -1,5 +1,8 @@
 package com.prokopovich.projectmanagement.enumeration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum UserRole {
 
     ROLE_ADMIN("Administrator"),

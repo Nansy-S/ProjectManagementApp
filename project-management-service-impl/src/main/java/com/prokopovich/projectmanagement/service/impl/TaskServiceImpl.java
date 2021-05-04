@@ -4,6 +4,7 @@ import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.dao.TaskDao;
 import com.prokopovich.projectmanagement.enumeration.TaskActionType;
 import com.prokopovich.projectmanagement.enumeration.TaskStatus;
+import com.prokopovich.projectmanagement.enumeration.UserRole;
 import com.prokopovich.projectmanagement.model.*;
 import com.prokopovich.projectmanagement.service.ActionService;
 import com.prokopovich.projectmanagement.service.TaskActionService;
@@ -82,17 +83,30 @@ public class TaskServiceImpl implements TaskService {
         ValidateTaskData validateData = new ValidateTaskData();
         Task currentTask = taskDao.findOne(taskId);
         Account newAssignee = accountDao.findOne(newAssigneeId);
-
         if(validateData.validateChangeAssigneeRole(currentTask, newAssignee)) {
             currentTask.setAssignee(newAssigneeId);
-            if (taskDao.updateTask(currentTask)) {
-                setTaskAction(currentTask.getTaskId(), reporter,
-                        currentTask.getAssigneeInfo().getUserId(),
+            Task taskForUpdate = changeStatusByAssignee(currentTask, newAssignee);
+            if (taskDao.updateTask(taskForUpdate)) {
+                setTaskAction(taskForUpdate.getTaskId(), reporter,
+                        taskForUpdate.getAssigneeInfo().getUserId(),
                         TaskActionType.CHANGE_ASSIGNEE.getTitle());
-                return currentTask;
+                return taskForUpdate;
             }
         }
         return null;
+    }
+
+    private Task changeStatusByAssignee(Task task, Account assignee) {
+        String roleAssignee = assignee.getRole();
+        if(roleAssignee.equals(UserRole.ROLE_DEVELOPER.getTitle()) &&
+                !task.getCurrentStatus().equals(TaskStatus.OPEN.getTitle())) {
+            task.setCurrentStatus(TaskStatus.OPEN.getTitle());
+        }
+        if(roleAssignee.equals(UserRole.ROLE_TESTER.getTitle()) &&
+                !task.getCurrentStatus().equals(TaskStatus.READY_FOR_TEST.getTitle())) {
+            task.setCurrentStatus(TaskStatus.READY_FOR_TEST.getTitle());
+        }
+        return task;
     }
 
     private void setTaskAction(int taskId, Account reporter, int assigneeId, String actionType) {

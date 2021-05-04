@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,6 @@ import java.util.List;
 @RestController
 @Transactional
 @RequestMapping("/api/projects")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectRestController {
 
     private static final Logger LOGGER = LogManager.getLogger(ProjectRestController.class);
@@ -32,6 +32,7 @@ public class ProjectRestController {
     }
 
     @GetMapping(value = "/")
+    @Secured("ROLE_Project manager")
     public ResponseEntity<List<Project>> getProjectsByReporter() {
         LOGGER.trace("getProjectsByReporter method is executed");
         List<Project> projects = projectService.getAllByReporterAndAction(
@@ -44,6 +45,7 @@ public class ProjectRestController {
     }
 
     @GetMapping(value = "/{id}")
+    @Secured({"ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
     public ResponseEntity<Project> getProjectInfo(@PathVariable int id) {
         LOGGER.trace("getProjectInfo method is executed");
         Project project = projectService.getByProjectId(id);
@@ -54,6 +56,7 @@ public class ProjectRestController {
     }
 
     @PostMapping(value = "/add")
+    @Secured("ROLE_Project manager")
     public ResponseEntity<Project> addProject(@RequestBody Project newProject) {
         LOGGER.trace("addProject method is executed");
         Project addedProject = projectService.addNewProject(newProject, tokenManager.getCurrentUser());

@@ -2,7 +2,6 @@ package com.prokopovich.projectmanagement.webapp.util.jwt;
 
 import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.service.AccountService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,14 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Component
 public class TokenManager implements Serializable {
@@ -29,13 +25,15 @@ public class TokenManager implements Serializable {
     public static final long TOKEN_VALIDITY = 60 * 60 * 60;
 
     private final AccountDao accountDao;
+    private final CustomUserDetailsService userDetailsService;
 
     @Value("${secret}")
     private String jwtSecret;
 
     @Autowired
-    public TokenManager(AccountDao accountDao) {
+    public TokenManager(AccountDao accountDao, CustomUserDetailsService userDetailsService) {
         this.accountDao = accountDao;
+        this.userDetailsService = userDetailsService;
     }
 
     public String generateJwtToken(String email) {
@@ -62,8 +60,9 @@ public class TokenManager implements Serializable {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
-        User user = new User(claims.getSubject(), "", authorities);
+        String email = claims.getSubject();
+        CustomUserDetails user = userDetailsService.loadUserByUsername(email);
+        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         return new UsernamePasswordAuthenticationToken(user, token, authorities);
     }
 
@@ -83,10 +82,5 @@ public class TokenManager implements Serializable {
             }
         }
         return accountDao.findAllByEmail(email).iterator().next();
-    }
-
-    public String getEmailFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        return claims.getSubject();
     }
 }

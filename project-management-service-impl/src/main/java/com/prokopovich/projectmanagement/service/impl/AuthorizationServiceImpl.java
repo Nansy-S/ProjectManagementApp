@@ -4,7 +4,7 @@ import com.prokopovich.App;
 import com.prokopovich.projectmanagement.dao.AccountDao;
 import com.prokopovich.projectmanagement.exception.DaoException;
 import com.prokopovich.projectmanagement.model.Account;
-import com.prokopovich.projectmanagement.service.AuthenticationService;
+import com.prokopovich.projectmanagement.service.AuthorizationService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class AuthorizationServiceImpl implements AuthenticationService {
+public class AuthorizationServiceImpl implements AuthorizationService {
 
     private static final Logger LOGGER = LogManager.getLogger(App.class);
 

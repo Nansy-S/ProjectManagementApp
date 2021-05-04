@@ -18,7 +18,7 @@ public class CustomUserDetails implements UserDetails {
         CustomUserDetails userDetails = new CustomUserDetails();
         userDetails.email = account.getEmail();
         userDetails.password = account.getPassword();
-        userDetails.grantedAuthorities = Arrays.asList(new SimpleGrantedAuthority(account.getRole()));
+        userDetails.grantedAuthorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_" + account.getRole()));
         return userDetails;
     }
 

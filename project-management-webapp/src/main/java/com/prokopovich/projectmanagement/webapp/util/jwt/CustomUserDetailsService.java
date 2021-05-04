@@ -12,12 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final AccountDao accountDao;
+
     @Autowired
-    private AccountDao accountDao;
+    public CustomUserDetailsService(AccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
 
     @Override
     public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountDao.findAllByEmail(email).iterator().next();
+        Account account = accountDao.findByEmail(email);
         return CustomUserDetails.fromUserEntityToCustomUserDetails(account);
     }
 }

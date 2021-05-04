@@ -13,7 +13,7 @@ public class ServiceFactoryImpl extends ServiceFactoryProvider {
     }
 
     @Override
-    public AuthenticationService getAuthenticationService() {
+    public AuthorizationService getAuthenticationService() {
         return new AuthorizationServiceImpl(daoFactory.getAccountDao());
     }
 
