@@ -15,8 +15,8 @@ public class AccountAction implements Serializable {
     private int accountId;
     @Column(name = "reason")
     private String reason;
-    @OneToOne
-    @JoinColumn(name = "action_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "action_id", updatable = false, insertable = false)
     private Action action;
 
     public AccountAction() { }

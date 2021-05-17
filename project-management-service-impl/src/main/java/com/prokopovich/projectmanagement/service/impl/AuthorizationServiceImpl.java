@@ -7,6 +7,8 @@ import com.prokopovich.projectmanagement.model.Account;
 import com.prokopovich.projectmanagement.service.AuthorizationService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,17 +21,19 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private final AccountDao accountDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public AuthorizationServiceImpl(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
 
     @Override
     public Account userAuthorization(String login, String password) {
-        LOGGER.debug("login: " + login + " - password: " + password);
         try {
             Account account = accountDao.findByEmail(login);
             if (account.getEmail() != null) {
-                if (account.getPassword().equals(password)) {
+                if (passwordEncoder.matches(password, account.getPassword())) {
                     LOGGER.debug("User entered as " + account.getRole());
                     return account;
                 } else {

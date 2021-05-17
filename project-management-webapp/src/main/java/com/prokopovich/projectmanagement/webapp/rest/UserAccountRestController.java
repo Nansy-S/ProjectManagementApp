@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,14 +29,15 @@ public class UserAccountRestController {
     private final TokenManager tokenManager;
 
     @Autowired
-    public UserAccountRestController(UserService userService, AccountService accountService, TokenManager tokenManager) {
+    public UserAccountRestController(UserService userService, AccountService accountService,
+                                     TokenManager tokenManager) {
         this.userService = userService;
         this.accountService = accountService;
         this.tokenManager = tokenManager;
     }
 
     @GetMapping(value = "/")
-    @Secured("ROLE_Administrator")
+    @Secured("ROLE_Администратор")
     public ResponseEntity<List<Account>> getUsersByReporter() {
         LOGGER.trace("getUsersByReporter method is executed");
         List<Account> userAccounts = accountService.getAllCreatedUser(
@@ -71,12 +73,9 @@ public class UserAccountRestController {
     }
 
     @PostMapping(value = "/add")
-    @Secured("ROLE_Administrator")
-    public ResponseEntity<User> addUser(@RequestBody Account newAccount,
-                                        @RequestBody User newUser,
-                                        @RequestBody String reason) {
-        User addedUser = accountService.addNewAccount(newAccount,
-                tokenManager.getCurrentUser().getAccountId(), newUser, reason);
+    @Secured("ROLE_Администратор")
+    public ResponseEntity<User> addUser(@RequestBody User newUser) {
+        User addedUser = accountService.addNewAccount(newUser, tokenManager.getCurrentUser().getAccountId());
         LOGGER.trace("new user added - " + addedUser.toString());
         return new ResponseEntity<>(addedUser, HttpStatus.OK);
     }
@@ -84,12 +83,8 @@ public class UserAccountRestController {
     @PutMapping(value = "/edit/{id}")
     @Secured({"ROLE_Administrator", "ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
     public ResponseEntity<Boolean> editUser(@PathVariable int id,
-                                        @RequestBody Account newAccount,
-                                        @RequestBody User newUser,
-                                        @RequestBody String reason) {
-        LOGGER.trace("new user added");
-        if(accountService.editAccount(newAccount,
-                tokenManager.getCurrentUser().getAccountId(), newUser, reason)) {
+                                        @RequestBody User newUser) {
+        if(accountService.editAccount(newUser, tokenManager.getCurrentUser().getAccountId())) {
             LOGGER.trace("user information successfully edited - new user information - " + newUser.toString());
             return new ResponseEntity<>(true, HttpStatus.OK);
         }

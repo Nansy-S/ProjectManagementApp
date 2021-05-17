@@ -40,22 +40,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User addNewAccount(Account newAccount, int reporterId, User newUser, String reason) {
-        //newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
-        newAccount = accountDao.create(newAccount);
-        newAccount = accountDao.findOne(newAccount.getAccountId());
+    public User addNewAccount(User newUser, int reporterId) {
+
+        newUser.getAccountInfo().setPassword(passwordEncoder.encode(newUser.getAccountInfo().getPassword()));
+        Account newAccount = accountDao.create(newUser.getAccountInfo());
         newUser.setUserId(newAccount.getAccountId());
         newUser.setCurrentStatus(AccountActionType.CREATE.getAccountStatus());
         newUser = userService.addNewUser(newUser);
-        setAccountAction(newUser.getUserId(), reporterId, reason, AccountActionType.CREATE.getTitle());
+        setAccountAction(newUser.getUserId(), reporterId, "Запрос на добавление пользователя",
+                AccountActionType.CREATE.getTitle());
         return newUser;
     }
 
     @Override
-    public boolean editAccount(Account account, int reporterId, User user, String reason) {
-        if (accountDao.update(account)) {
+    public boolean editAccount(User user, int reporterId) {
+        if (accountDao.update(user.getAccountInfo())) {
             if (userService.editUser(user)) {
-                setAccountAction(account.getAccountId(), reporterId, reason, AccountActionType.UPDATE.getTitle());
+                setAccountAction(user.getAccountInfo().getAccountId(), reporterId,
+                        "Редактирование информации", AccountActionType.UPDATE.getTitle());
                 return true;
             } else {
                 return false;

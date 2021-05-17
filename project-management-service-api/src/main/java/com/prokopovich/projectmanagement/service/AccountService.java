@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface AccountService {
 
-    User addNewAccount(Account newAccount, int reporterId, User newUser, String reason);
+    User addNewAccount(User newUser, int reporterId);
 
-    boolean editAccount(Account account, int reporterId, User user, String reason);
+    boolean editAccount(User newUser, int reporterId);
 
     List<Account> getAllCreatedUser(int reporterId, String actionType);
 
