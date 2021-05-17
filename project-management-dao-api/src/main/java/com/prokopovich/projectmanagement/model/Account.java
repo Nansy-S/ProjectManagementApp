@@ -3,6 +3,7 @@ package com.prokopovich.projectmanagement.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.util.Objects;
 
 @Entity
 @Table(name = "accounts")
@@ -116,5 +117,33 @@ public class Account implements Serializable {
                 ", email = " + email +
                 ", role = " + role +
                 ", photo = " + photo + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return accountId == account.accountId &&
+                Objects.equals(name, account.name) &&
+                Objects.equals(surname, account.surname) &&
+                Objects.equals(patronymic, account.patronymic) &&
+                Objects.equals(email, account.email) &&
+                Objects.equals(password, account.password) &&
+                Objects.equals(role, account.role) &&
+                Objects.equals(photo, account.photo);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accountId;
+        result = 37 * result + (name != null ? name.hashCode() : 0);
+        result = 37 * result + (surname != null ? surname.hashCode() : 0);
+        result = 37 * result + (patronymic != null ? patronymic.hashCode() : 0);
+        result = 37 * result + (email != null ? email.hashCode() : 0);
+        result = 37 * result + (password != null ? password.hashCode() : 0);
+        result = 37 * result + (role != null ? role.hashCode() : 0);
+        result = 37 * result + (photo != null ? photo.hashCode() : 0);
+        return result;
     }
 }

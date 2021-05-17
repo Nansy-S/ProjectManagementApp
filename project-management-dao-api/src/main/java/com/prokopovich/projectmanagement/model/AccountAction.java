@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "account_actions")
@@ -67,5 +68,23 @@ public class AccountAction implements Serializable {
                 ", accountId = " + accountId +
                 ", reason = " + reason + ", " +
                 action.toString() + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountAction accountAction = (AccountAction) o;
+        return accountId == accountAction.actionId &&
+                accountId == accountAction.accountId &&
+                Objects.equals(reason, accountAction.reason);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = actionId;
+        result = 37 * result + accountId;
+        result = 37 * result + (reason != null ? reason.hashCode() : 0);
+        return result;
     }
 }

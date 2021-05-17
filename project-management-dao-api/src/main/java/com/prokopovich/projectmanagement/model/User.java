@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -93,5 +94,25 @@ public class User {
                 ", currentStatus = " + currentStatus +
                 ", phone = " + phone +
                 "; " + accountInfo.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId &&
+                Objects.equals(position, user.position) &&
+                Objects.equals(currentStatus, user.currentStatus) &&
+                Objects.equals(phone, user.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId;
+        result = 37 * result + (position != null ? position.hashCode() : 0);
+        result = 37 * result + (currentStatus != null ? currentStatus.hashCode() : 0);
+        result = 37 * result + (phone != null ? phone.hashCode() : 0);
+        return result;
     }
 }

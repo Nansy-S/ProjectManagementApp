@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "task_actions")
@@ -66,5 +67,23 @@ public class TaskAction implements Serializable {
                 "actionId = " + actionId +
                 ", taskId = " + taskId +
                 ", assigneeId = " + assigneeId + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskAction that = (TaskAction) o;
+        return actionId == that.actionId &&
+                taskId == that.taskId &&
+                assigneeId == that.assigneeId;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = actionId;
+        result = 37 * result + taskId;
+        result = 37 * result + assigneeId;
+        return result;
     }
 }

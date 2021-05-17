@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "actions")
@@ -76,5 +77,25 @@ public class Action {
                 "id = " + actionId +
                 ", type = " + type +
                 ", datetime = " + datetime + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Action action = (Action) o;
+        return actionId == action.actionId &&
+                reporter == action.reporter &&
+                Objects.equals(type, action.type) &&
+                Objects.equals(datetime, action.datetime);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = actionId;
+        result = 37 * result + (type != null ? type.hashCode() : 0);
+        result = 37 * result + (datetime != null ? datetime.hashCode() : 0);
+        result = 37 * result + reporter;
+        return result;
     }
 }

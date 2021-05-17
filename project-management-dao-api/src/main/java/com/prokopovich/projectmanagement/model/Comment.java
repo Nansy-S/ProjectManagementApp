@@ -2,6 +2,7 @@ package com.prokopovich.projectmanagement.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
@@ -103,5 +104,29 @@ public class Comment {
                 ", datetime = " + datetime +
                 ", author = " + author +
                 ", taskId = " + taskId + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return commentId == comment.commentId &&
+                author == comment.author &&
+                taskId == comment.taskId &&
+                Objects.equals(title, comment.title) &&
+                Objects.equals(text, comment.text) &&
+                Objects.equals(datetime, comment.datetime);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = commentId;
+        result = 37 * result + (title != null ? title.hashCode() : 0);
+        result = 37 * result + (text != null ? text.hashCode() : 0);
+        result = 37 * result + (datetime != null ? datetime.hashCode() : 0);
+        result = 37 * result + author;
+        result = 37 * result + taskId;
+        return result;
     }
 }

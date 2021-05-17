@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "projects")
@@ -97,5 +98,27 @@ public class Project {
                 ", summary = " + summary +
                 ", dueDate = " + dueDate +
                 ", currentStatus = " + currentStatus + ";";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return projectId == project.projectId &&
+                Objects.equals(projectCode, project.projectCode) &&
+                Objects.equals(summary, project.summary) &&
+                Objects.equals(dueDate, project.dueDate) &&
+                Objects.equals(currentStatus, project.currentStatus);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = projectId;
+        result = 37 * result + (projectCode != null ? projectCode.hashCode() : 0);
+        result = 37 * result + (summary != null ? summary.hashCode() : 0);
+        result = 37 * result + (dueDate != null ? dueDate.hashCode() : 0);
+        result = 37 * result + (currentStatus != null ? currentStatus.hashCode() : 0);
+        return result;
     }
 }

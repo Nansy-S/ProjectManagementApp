@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tasks")
@@ -157,5 +158,35 @@ public class Task {
                 ", estimationTime = " + estimationTime +
                 ", assignee = " + assignee +
                 ", description = " + description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return taskId == task.taskId &&
+                projectId == task.projectId &&
+                estimationTime == task.estimationTime &&
+                assignee == task.assignee &&
+                Objects.equals(taskCode, task.taskCode) &&
+                Objects.equals(priority, task.priority) &&
+                Objects.equals(currentStatus, task.currentStatus) &&
+                Objects.equals(dueDate, task.dueDate) &&
+                Objects.equals(description, task.description);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = taskId;
+        result = 37 * result + (taskCode != null ? taskCode.hashCode() : 0);
+        result = 37 * result + projectId;
+        result = 37 * result + (priority != null ? priority.hashCode() : 0);
+        result = 37 * result + (currentStatus != null ? currentStatus.hashCode() : 0);
+        result = 37 * result + (dueDate != null ? dueDate.hashCode() : 0);
+        result = 37 * result + estimationTime;
+        result = 37 * result + assignee;
+        result = 37 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 }
