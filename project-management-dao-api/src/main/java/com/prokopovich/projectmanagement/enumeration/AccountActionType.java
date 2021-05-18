@@ -2,12 +2,12 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum AccountActionType {
 
-    CREATE("Create"),
-    UPDATE("Update"),
-    BLOCK("Block"),
-    UNBLOCK("Unblock"),
-    CHANGE_ROLE("Change role"),
-    DEACTIVATION("Deactivation");
+    CREATE("Создание"),
+    UPDATE("Редактирование"),
+    BLOCK("Блокировка"),
+    UNBLOCK("Разблокировка"),
+    CHANGE_ROLE("Смена роли"),
+    DEACTIVATION("Деактивация");
 
     private String title;
     private String accountStatus;

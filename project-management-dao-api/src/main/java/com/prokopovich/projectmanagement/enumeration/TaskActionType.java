@@ -2,16 +2,16 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum TaskActionType {
 
-    CREATE("Create"),
-    UPDATE("Update"),
-    START("Start"),
-    RESOLVE("Resolve"),
-    REOPEN("Reopen"),
-    CLOSED("Closed"),
-    READY_FOR_TEST("Ready for Test"),
-    START_TEST("Start test"),
-    CHANGE_STATUS("Change Status"),
-    CHANGE_ASSIGNEE("Change Assignee");
+    CREATE("Создание"),
+    UPDATE("Редактирование"),
+    START("Начато выполнение"),
+    RESOLVE("Реализация"),
+    REOPEN("Переоткрытие"),
+    CLOSED("Закрытие"),
+    READY_FOR_TEST("Готова к тестированию"),
+    START_TEST("Начато тестирование"),
+    CHANGE_STATUS("Смена статуса"),
+    CHANGE_ASSIGNEE("Смена исполнителя");
 
     private String title;
 

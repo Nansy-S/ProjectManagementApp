@@ -3,9 +3,9 @@ package com.prokopovich.projectmanagement.enumeration;
 public enum UserRole {
 
     ROLE_ADMIN("Администратор"),
-    ROLE_MANAGER("Project manager"),
-    ROLE_DEVELOPER("Developer"),
-    ROLE_TESTER("Tester");
+    ROLE_MANAGER("Менеджер проекта"),
+    ROLE_DEVELOPER("Разработчик"),
+    ROLE_TESTER("Тестировщик");
 
     private final String title;
 

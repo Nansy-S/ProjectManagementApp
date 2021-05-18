@@ -5,11 +5,11 @@ import java.util.List;
 
 public enum TaskPriority {
 
-    BLOCKER("Blocker"),
-    CRITICAL("Critical"),
-    MAJOR("Major"),
-    NORMAL("Normal"),
-    MINOR("Minor");
+    BLOCKER("Наивысший приоритет"),
+    CRITICAL("Критическая"),
+    MAJOR("Важная"),
+    NORMAL("Нормальная"),
+    MINOR("Второстепенная");
 
     private String title;
 

@@ -2,10 +2,10 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum ProjectActionType {
 
-    CREATE("Create"),
-    UPDATE("Update"),
-    DELETE("Delete"),
-    CLOSED("Closed");
+    CREATE("Создание"),
+    UPDATE("Редактирование"),
+    DELETE("Удаление"),
+    CLOSED("Завершение");
 
     private String title;
 

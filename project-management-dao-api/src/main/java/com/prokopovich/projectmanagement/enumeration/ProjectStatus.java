@@ -2,10 +2,10 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum ProjectStatus {
 
-    OPEN("Open"),
-    IN_PROGRESS("In progress"),
-    CLOSED("Closed"),
-    DELETED("Deleted");
+    OPEN("Открыт"),
+    IN_PROGRESS("В процессе"),
+    CLOSED("Завершен"),
+    DELETED("Удален");
 
     private String title;
 

@@ -2,9 +2,9 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum AccountStatus {
 
-    ACTIVE("Active"),
-    LOCKED("Blocked"),
-    DEACTIVATED("Not active");
+    ACTIVE("Активный"),
+    LOCKED("Заблокирован"),
+    DEACTIVATED("Не активный");
 
     private String title;
     private String accountActionType;

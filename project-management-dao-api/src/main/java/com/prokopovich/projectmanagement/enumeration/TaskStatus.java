@@ -2,13 +2,13 @@ package com.prokopovich.projectmanagement.enumeration;
 
 public enum TaskStatus {
 
-    OPEN("Open"),
-    IN_PROGRESS("In progress"),
-    RESOLVED("Resolved"),
-    REOPENED("Reopened"),
-    READY_FOR_TEST("Ready for Test"),
-    TESTED("Tested"),
-    CLOSED("Closed");
+    OPEN("Открыта"),
+    IN_PROGRESS("В процессе"),
+    RESOLVED("Реализована"),
+    REOPENED("Переоткрыта"),
+    READY_FOR_TEST("Готова к тестированию"),
+    TESTED("Тестируется"),
+    CLOSED("Закрыта");
 
     private String title;
     private String taskActionType;

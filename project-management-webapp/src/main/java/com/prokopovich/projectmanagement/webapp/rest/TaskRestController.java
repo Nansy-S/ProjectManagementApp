@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class TaskRestController {
     }
 
     @GetMapping(value = "/projects/{projectId}/tasks")
-    @Secured({"ROLE_Project manager"})
+    @Secured({"ROLE_Менеджер проекта"})
     public ResponseEntity<List<Task>> getTasksByProject(@PathVariable int projectId) {
         LOGGER.trace("getTasksByProject method is executed");
         List<Task> taskList = taskService.getAllByProject(projectId);
@@ -42,7 +41,7 @@ public class TaskRestController {
     }
 
     @GetMapping(value = "/reporter/{userId}/tasks")
-    @Secured("ROLE_Project manager")
+    @Secured("ROLE_Менеджер проекта")
     public ResponseEntity<List<Task>> getAllByReporter(@PathVariable int userId) {
         LOGGER.trace("getAllByReporter method is executed");
         List<Task> taskList = taskService.getAllByReporter(userId);
@@ -53,7 +52,7 @@ public class TaskRestController {
     }
 
     @GetMapping(value = "/assignee/{userId}/tasks")
-    @Secured({"ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
+    @Secured({"ROLE_Менеджер проекта", "ROLE_Разработчик", "ROLE_Тестировщик"})
     public ResponseEntity<List<Task>> getTasksByAssignee(@PathVariable int userId) {
         LOGGER.trace("getTasksByAssignee method is executed");
         List<Task> taskList = taskService.getAllByAssignee(userId);
@@ -64,7 +63,7 @@ public class TaskRestController {
     }
 
     @GetMapping(value = "/tasks/{id}")
-    @Secured({"ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
+    @Secured({"ROLE_Менеджер проекта", "ROLE_Разработчик", "ROLE_Тестировщик"})
     public ResponseEntity<Task> getTaskInfo(@PathVariable int id) {
         LOGGER.trace("getTaskInfo method is executed");
         Task task = taskService.getByTaskId(id);
@@ -75,7 +74,7 @@ public class TaskRestController {
     }
 
     @PostMapping(value = "/tasks/add")
-    @Secured("ROLE_Project manager")
+    @Secured("ROLE_Менеджер проекта")
     public ResponseEntity<Task> addTask(@RequestBody Task newTask) {
         LOGGER.trace("addTask method is executed");
         Task addedTask = taskService.addNewTask(newTask, tokenManager.getCurrentUser());
@@ -87,7 +86,7 @@ public class TaskRestController {
     }
 
     @PostMapping(value = "/tasks/{taskId}/change/status")
-    @Secured({"ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
+    @Secured({"ROLE_Менеджер проекта", "ROLE_Разработчик", "ROLE_Тестировщик"})
     public ResponseEntity<Task> changeTaskStatus(@PathVariable int taskId, @RequestBody String newStatus) {
         LOGGER.trace("changeTaskStatus method is executed");
         Task updatedTask = taskService.changeStatus(taskId, newStatus, tokenManager.getCurrentUser());
@@ -99,7 +98,7 @@ public class TaskRestController {
     }
 
     @PostMapping(value = "/tasks/{taskId}/change/assignee")
-    @Secured({"ROLE_Project manager", "ROLE_Developer", "ROLE_Tester"})
+    @Secured({"ROLE_Менеджер проекта", "ROLE_Разработчик", "ROLE_Тестировщик"})
     public ResponseEntity<Task> changeTaskAssignee(@PathVariable int taskId, @RequestBody int newAssigneeId) {
         LOGGER.trace("changeTaskAssignee method is executed");
         Task updatedTask = taskService.changeAssignee(taskId, newAssigneeId, tokenManager.getCurrentUser());
@@ -111,7 +110,7 @@ public class TaskRestController {
     }
 
     @GetMapping(value = "/tasks/priorities")
-    @Secured("ROLE_Project manager")
+    @Secured("ROLE_Менеджер проекта")
     public ResponseEntity<List<String>> getTaskPriorities() {
         LOGGER.trace("getTaskPriorities method is executed");
         List<String> priorityList = TaskPriority.getAllTitle();
